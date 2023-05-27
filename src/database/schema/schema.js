@@ -21,13 +21,11 @@ const userType = new GraphQLObjectType({
     password: { type: GraphQLString },
     phone: { type: GraphQLString },
     website: { type: GraphQLString },
-
     blogs: {
       type: new GraphQLList(blogType),
-      async resolve(parent, args) {
-        console.log(parent.id);
-        const user = await User.findById(parent.id).populate("blogs", "id");
-        console.log(user);
+      resolve: async (parent, args) => {
+        const user = await User.findById(parent.id).populate("blogs");
+        console.log(user.blogs);
         return user.blogs;
       },
     },
