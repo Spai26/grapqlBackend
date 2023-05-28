@@ -1,8 +1,21 @@
 import bcrypt from 'bcrypt';
-import { Schema, model } from 'mongoose';
-import { IUser } from 'src/interfaces';
+import { Model, Schema, model } from 'mongoose';
 
-const UserSchema = new Schema<IUser>(
+interface IUser {
+  name: String;
+  username: String;
+  email: String;
+  phone: String;
+  website?: String;
+  password: String;
+}
+
+interface MUser extends Model<IUser> {
+  encryptPassword(password: String): string;
+  comparePassword(password: String): String;
+}
+
+const UserSchema = new Schema<IUser, MUser>(
   {
     name: { type: String, require: true },
     username: { type: String },
@@ -29,4 +42,4 @@ UserSchema.statics.comparePassword = async (
   return await bcrypt.compare(password, recivePassword);
 };
 
-export const UserModel = model<IUser>('User', UserSchema);
+export const UserModel = model<IUser, MUser>('User', UserSchema);
