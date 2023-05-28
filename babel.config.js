@@ -18,8 +18,9 @@ module.exports = {
           '@config': './src/config',
           '@controllers': './src/controllers',
           '@routes': './src/routes',
-          '@models': './src/database/models',
-          '@graphql': './src/graphql'
+          '@models': './src/models',
+          '@graphql': './src/graphql',
+          '@interfaces': './src/interfaces'
         }
       }
     ]

@@ -1,14 +1,6 @@
-import { Document, Schema, model } from 'mongoose';
 import bcrypt from 'bcrypt';
-
-export interface IUser extends Document {
-  name: String;
-  username: String;
-  email: String;
-  phone: String;
-  website?: String;
-  password: String;
-}
+import { Schema, model } from 'mongoose';
+import { IUser } from 'src/interfaces';
 
 const UserSchema = new Schema<IUser>(
   {
@@ -25,13 +17,16 @@ const UserSchema = new Schema<IUser>(
   }
 );
 
-UserSchema.statics.encryptPassword = async (password) => {
+UserSchema.statics.encryptPassword = async (password: string) => {
   const salt = await bcrypt.genSalt(10);
   return await bcrypt.hash(password, salt);
 };
 
-UserSchema.statics.comparePassword = async (password, recivePassword) => {
+UserSchema.statics.comparePassword = async (
+  password: string,
+  recivePassword: string
+) => {
   return await bcrypt.compare(password, recivePassword);
 };
 
-export default model<IUser>('User', UserSchema);
+export const UserModel = model<IUser>('User', UserSchema);

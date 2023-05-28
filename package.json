@@ -9,7 +9,7 @@
   "scripts": {
     "build": "babel src --extensions \".ts,.js\" --out-dir build --copy-files",
     "start": "node build/index.js",
-    "dev": "ts-node-dev -r tsconfig-paths/register --respawn --ignore-watch node_modules src/index.ts",
+    "dev": "ts-node-dev  -r tsconfig-paths/register --respawn --ignore-watch node_modules --files src/index.ts",
     "lint": "eslint . --ext .ts",
     "format": "prettier --config .prettierrc 'src/**/*.ts' --write"
   },

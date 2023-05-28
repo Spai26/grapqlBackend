@@ -30,8 +30,9 @@
               "@routes": "./src/routes",
               "@constrollers": "./src/controllers",
               "@config": "./src/config",
-              "@models": "./src/database/models",
-              "@graphql": "./src/graphql"
+              "@models": "./src/models",
+              "@graphql": "./src/graphql",
+              "@interfaces": "./src/interfaces"
             }
           }
         ]
