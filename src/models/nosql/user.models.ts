@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import { Model, Schema, model } from 'mongoose';
 
-interface IUser {
+export interface IUser {
   name: String;
   username: String;
   email: String;
@@ -11,8 +11,8 @@ interface IUser {
 }
 
 interface MUser extends Model<IUser> {
-  encryptPassword(password: String): string;
-  comparePassword(password: String): String;
+  encryptPassword(password: String): String;
+  comparePassword(password: String, recivePassword: String): Boolean;
 }
 
 const UserSchema = new Schema<IUser, MUser>(
@@ -30,14 +30,14 @@ const UserSchema = new Schema<IUser, MUser>(
   }
 );
 
-UserSchema.statics.encryptPassword = async (password: string) => {
+UserSchema.statics.encryptPassword = async (password) => {
   const salt = await bcrypt.genSalt(10);
   return await bcrypt.hash(password, salt);
 };
 
 UserSchema.statics.comparePassword = async (
   password: string,
-  recivePassword: string
+  recivePassword: String
 ) => {
   return await bcrypt.compare(password, recivePassword);
 };

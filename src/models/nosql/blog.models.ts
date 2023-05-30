@@ -1,10 +1,24 @@
-import mongoose, { Document, Schema, model } from 'mongoose';
+import mongoose, { Model, Schema, model } from 'mongoose';
 import slug from 'mongoose-slug-generator';
 mongoose.plugin(slug);
 
-const BlogSchema = new Schema(
+interface IBlog {
+  title: String;
+  body_content: string;
+  front_image: String;
+  slug_title: String;
+  count_view: Number;
+  onwer: Schema.Types.ObjectId;
+}
+
+interface MBlog extends Model<IBlog> {
+  incrementViewCount(): Number;
+  updateSlug(id: String): String;
+}
+
+const BlogSchema = new Schema<IBlog, MBlog>(
   {
-    title: { type: String, require: true },
+    title: { type: String, require: true, unique: true },
     body_content: { type: String, require: true },
     front_image: { type: String, require: true },
     slug_title: { type: String, slug: 'title' },
@@ -22,7 +36,7 @@ BlogSchema.methods.incrementViewCount = async function () {
   await this.save();
 };
 
-BlogSchema.statics.updateSlug = async function (id) {
+BlogSchema.statics.updateSlug = async function (id: string) {
   const blogfound = await this.findById(id);
 
   if (!blogfound) {
@@ -30,7 +44,7 @@ BlogSchema.statics.updateSlug = async function (id) {
   }
 
   // Actualizar el slug basado en el título
-  blogfound.slug = blogfound.title
+  blogfound.slug_title = blogfound.title
     .toLowerCase()
     .replace(/[^\w ]+/g, '')
     .replace(/ +/g, '-');
@@ -40,4 +54,4 @@ BlogSchema.statics.updateSlug = async function (id) {
   return blogfound;
 };
 
-export default model('Blog', BlogSchema);
+export const BlogModel = model<IBlog, MBlog>('Blog', BlogSchema);

@@ -2,19 +2,22 @@
   "compilerOptions": {
     "target": "es2016",
     "module": "commonjs",
+    "moduleResolution": "node",
     "rootDirs": ["./src"],
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths": {
       "@routes/*": ["./src/routes/*"],
       "@config/*": ["./src/config/*"],
       "@models/*": ["./src/models/*"],
       "@graphql/*": ["./src/graphql/*"],
-      "@interfaces": ["./src/interfaces/*"]
+      "@interfaces/*": ["./src/interfaces/*"],
+      "@middlewares/*": ["./src/middlewares/*"]
     },
     "typeRoots": ["src/@types", "./node_modules/@types"],
     "allowJs": true,
     "declaration": true,
     "outDir": "build",
+    "sourceMap": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true

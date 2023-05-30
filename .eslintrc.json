@@ -4,7 +4,6 @@
     "node": true
   },
   "extends": [
-    "standard-with-typescript",
     "plugin:prettier/recommended",
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended"
@@ -32,7 +31,8 @@
               "@config": "./src/config",
               "@models": "./src/models",
               "@graphql": "./src/graphql",
-              "@interfaces": "./src/interfaces"
+              "@interfaces": "./src/interfaces",
+              "@middlewares": "./src/middlewares"
             }
           }
         ]

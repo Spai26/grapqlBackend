@@ -20,7 +20,8 @@ module.exports = {
           '@routes': './src/routes',
           '@models': './src/models',
           '@graphql': './src/graphql',
-          '@interfaces': './src/interfaces'
+          '@interfaces': './src/interfaces',
+          '@middlewares': './src/middlewares'
         }
       }
     ]

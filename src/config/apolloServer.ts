@@ -10,7 +10,7 @@ import { expressMiddleware } from '@apollo/server/express4';
 import apiRoute from '@routes/index';
 
 config();
-const PORT = Number.parseInt(process.env.PORT) || 3000;
+const PORT: Number = Number.parseInt(process.env.PORT) || 3000;
 
 export async function startApolloServer(typeDefs, resolvers) {
   const app = express();

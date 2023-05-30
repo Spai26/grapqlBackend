@@ -1,8 +1,21 @@
 import { gql } from 'graphql-tag';
 
 export const typeDefs = gql`
+  type User {
+    id: ID
+    name: String
+    username: String
+    email: String
+    phone: String
+    website: String
+    password: String
+    createdAt: String
+    updatedAt: String
+  }
+
   type Query {
     hello: String
+    allUsers: [User]
   }
 
   type Mutation {
@@ -12,17 +25,9 @@ export const typeDefs = gql`
       email: String
       phone: String
       website: String
-      passsword: String
+      password: String
     ): User
-  }
-
-  type User {
-    id: ID
-    name: String
-    username: String
-    email: String
-    phone: String
-    website: String
-    password: String
+    authConnect(email: String!, password: String!): String
+    authDisconnect(text: String): String
   }
 `;
