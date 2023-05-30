@@ -1,16 +1,24 @@
-import { IUser, UserModel } from '@models/nosql/user.models';
+import { UserModel } from '@models/nosql/user.models';
 import token from '@middlewares/authToken';
 import { handlerErrorAuth, handlerHttpError } from '@middlewares/handlerErrors';
+import { RolModel } from '@models/nosql/roles.models';
 
 export const resolvers = {
   Query: {
     hello: () => {
       'grapql';
     },
-    allUsers: async () => await UserModel.find({})
+    allUsers: async () => await UserModel.find({}).populate('roles', 'name'),
+    roles: async () => await RolModel.find({})
   },
   Mutation: {
     createUser: async (_: any, args: any) => {
+      let assigRol: string;
+
+      if (args.roles) {
+        assigRol = await RolModel.findById({ _id: args.roles });
+      }
+
       const hashPassword = await UserModel.encryptPassword(args.password);
 
       const newuser = new UserModel({
@@ -22,12 +30,11 @@ export const resolvers = {
         password: hashPassword
       });
 
+      //verificar que no tenga roles repetidos
+      newuser.roles = [...newuser.roles, assigRol];
+
       return newuser.save().catch((error) => {
-        throw handlerHttpError(
-          `something unexpected happened, try again ${error}`,
-          'BAD_REQUEST',
-          404
-        );
+        throw handlerHttpError(`something unexpected happened, try again`);
       });
     },
     /* detailUser: async (_: any, args: any) => {},

@@ -1,5 +1,6 @@
 import { GraphQLError } from 'graphql';
-export const handlerHttpError = (
+
+export const customMessageErrors = (
   message = 'Algo inesperado sucedio',
   code = 'BAD_REQUEST',
   status = 404
@@ -8,6 +9,15 @@ export const handlerHttpError = (
     extensions: {
       code,
       http: { status }
+    }
+  });
+};
+
+export const handlerHttpError = (message) => {
+  return new GraphQLError(message, {
+    extensions: {
+      code: 'something unexpected happened, try again',
+      http: { status: 404 }
     }
   });
 };
