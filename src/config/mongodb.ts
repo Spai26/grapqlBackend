@@ -8,7 +8,7 @@ export const connectionDB = async () => {
   if (database) {
     return;
   }
-
+  mongoose.set('strictQuery', false);
   await mongoose.connect(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true

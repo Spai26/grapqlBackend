@@ -1,20 +1,7 @@
-import mongoose, { Model, Schema, model } from 'mongoose';
 import slug from 'mongoose-slug-generator';
+import { IBlog, MBlog } from '@interfaces/blog.interface';
+import mongoose, { Schema, model } from 'mongoose';
 mongoose.plugin(slug);
-
-interface IBlog {
-  title: String;
-  body_content: string;
-  front_image: String;
-  slug_title: String;
-  count_view: Number;
-  onwer: Schema.Types.ObjectId;
-}
-
-interface MBlog extends Model<IBlog> {
-  incrementViewCount(): Number;
-  updateSlug(id: String): String;
-}
 
 const BlogSchema = new Schema<IBlog, MBlog>(
   {
