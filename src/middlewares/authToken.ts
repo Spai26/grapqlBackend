@@ -9,7 +9,7 @@ const generateToken = (user): String => {
   return token;
 };
 
-const verifiToken = (tokenAsign) => {
+const verifiToken = (tokenAsign: string) => {
   try {
     return jwt.verify(tokenAsign, SECRET_KEY);
   } catch (error) {

@@ -3,14 +3,14 @@ import { IBlog, MBlog } from '@interfaces/blog.interface';
 import mongoose, { Schema, model } from 'mongoose';
 mongoose.plugin(slug);
 
-const BlogSchema = new Schema<IBlog, MBlog>(
+const BlogSchema = new Schema<IBlog>(
   {
     title: { type: String, require: true, unique: true },
     body_content: { type: String, require: true },
     front_image: { type: String, require: true },
     slug_title: { type: String, slug: 'title' },
     count_view: { type: Number, default: 0 },
-    onwer: { type: Schema.Types.ObjectId, ref: 'User' }
+    author: { type: Schema.Types.ObjectId, ref: 'User' }
   },
   {
     timestamps: true,

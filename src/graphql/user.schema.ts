@@ -2,6 +2,8 @@ import { gql } from 'graphql-tag';
 import { RolModel } from '@models/nosql/roles.models';
 import { UserModel } from '@models/nosql/user.models';
 import { handlerHttpError } from '@middlewares/handlerErrors';
+import { validateRolesExist } from 'src/libs/helpers/Roles.helper';
+import { validateExisteEmail } from 'src/libs/helpers/user.helper';
 
 export const UsertypeDefs = gql`
   extend type Query {
@@ -29,14 +31,25 @@ export const UsertypeDefs = gql`
     name: String!
   }
 
+  input createNewUser {
+    name: String
+    username: String
+    password: String
+    email: String
+    phone: String
+    website: String
+    roles: [ID]
+  }
+
   extend type Mutation {
+    testcreate(input: createNewUser): User
     createUser(
       name: String
       username: String
+      password: String
       email: String
       phone: String
       website: String
-      password: String
       roles: ID
     ): User
 
@@ -66,6 +79,31 @@ export const UserResolvers = {
       })
   },
   Mutation: {
+    testcreate: async (_: any, { input }) => {
+      const { name, username, password, email, phone, website, roles } = input;
+
+      const emailExist = await validateExisteEmail(email);
+
+      if (emailExist) {
+        throw handlerHttpError('El email ya existe en la base de datos');
+      }
+
+      await validateRolesExist(roles).catch((error) => {
+        throw handlerHttpError(error);
+      });
+
+      const userCreate = new UserModel({
+        name,
+        username,
+        password: await UserModel.encryptPassword(password),
+        email,
+        phone,
+        website,
+        roles
+      });
+
+      return await userCreate.save();
+    },
     createUser: async (_: any, args: any) => {
       let assigRol: string;
 

@@ -13,7 +13,7 @@ export const BlogtypeDefs = gql`
     count_view: Int
     createdAt: String
     updatedAt: String
-    onwer: User!
+    author: User!
   }
 
   extend type Query {
@@ -25,7 +25,7 @@ export const BlogtypeDefs = gql`
       title: String
       body_content: String
       front_image: String
-      onwer: ID
+      author: ID
     ): Blog
   }
 `;

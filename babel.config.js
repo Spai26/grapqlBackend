@@ -21,7 +21,8 @@ module.exports = {
           '@models': './src/models',
           '@graphql': './src/graphql',
           '@interfaces': './src/interfaces',
-          '@middlewares': './src/middlewares'
+          '@middlewares': './src/middlewares',
+          '@helpers': './src/libs/helpers'
         }
       }
     ]
