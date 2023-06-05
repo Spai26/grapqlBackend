@@ -1,9 +1,10 @@
 import gql from 'graphql-tag';
-import token from '@middlewares/authToken';
+import { generateToken } from '@middlewares/authToken';
 import { UserModel } from '@models/nosql/user.models';
 import { handlerErrorAuth } from '@middlewares/handlerErrors';
 
 export const AuthTypeDefs = gql`
+  directive @skipAuth on FIELD_DEFINITION
   input AuthLogin {
     email: String!
     password: String!
@@ -22,8 +23,7 @@ export const AuthTypeDefs = gql`
     id: ID!
   }
   extend type Mutation {
-    AuthLogin(input: AuthLogin): AuthResponse
-    authConnect(email: String!, password: String!): String
+    AuthLogin(input: AuthLogin): AuthResponse @skipAuth
     authDisconnect(text: String): String
   }
 `;
@@ -33,51 +33,31 @@ export const AuthResolvers = {
     AuthLogin: async (_: any, { input }) => {
       const { email, password } = input;
 
-      const isValid = await UserModel.findOne({ email });
+      const isValidUser = await UserModel.findOne({ email });
 
-      if (!isValid) {
+      if (!isValidUser) {
         throw handlerErrorAuth('Invalid credentials, please verified.');
       }
 
       const validPass = await UserModel.comparePassword(
         password,
-        isValid.password
+        isValidUser.password
       );
 
       if (!validPass) {
         throw handlerErrorAuth('Invalid credentials, please verified.');
       }
+
       const userForToken = {
-        id: isValid._id
+        id: isValidUser.id
       };
-      const getoken = token.generateToken(input);
+
+      const getoken = await generateToken({ id: userForToken.id });
+
       return {
         userForToken,
         getoken
       };
-    },
-
-    authConnect: async (_: any, args: any) => {
-      const { email, password } = args;
-      const isExist = await UserModel.findOne({ email });
-
-      if (!isExist) {
-        throw handlerErrorAuth('Invalid credentials, please verified.');
-      }
-      const validatePass = await UserModel.comparePassword(
-        password,
-        isExist.password
-      );
-
-      if (!validatePass) {
-        throw handlerErrorAuth('Invalid credentials, please verified.');
-      }
-
-      const userForToken = {
-        id: isExist._id
-      };
-
-      return token.generateToken(userForToken);
     },
 
     authDisconnect: () => {

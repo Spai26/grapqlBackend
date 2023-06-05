@@ -42,17 +42,7 @@ export const UsertypeDefs = gql`
   }
 
   extend type Mutation {
-    testcreate(input: createNewUser): User
-    createUser(
-      name: String
-      username: String
-      password: String
-      email: String
-      phone: String
-      website: String
-      roles: ID
-    ): User
-
+    createUser(input: createNewUser): User
     updateUser(
       _id: ID!
       name: String
@@ -68,9 +58,6 @@ export const UsertypeDefs = gql`
 
 export const UserResolvers = {
   Query: {
-    hello: () => {
-      'grapql';
-    },
     allUsers: async () => await UserModel.find({}).populate('roles', 'name'),
     roles: async () => await RolModel.find({}),
     getUserbyId: async (_: any, { _id }) =>
@@ -79,7 +66,7 @@ export const UserResolvers = {
       })
   },
   Mutation: {
-    testcreate: async (_: any, { input }) => {
+    createUser: async (_: any, { input }) => {
       const { name, username, password, email, phone, website, roles } = input;
 
       const emailExist = await validateExisteEmail(email);
@@ -102,30 +89,7 @@ export const UserResolvers = {
         roles
       });
 
-      return await userCreate.save();
-    },
-    createUser: async (_: any, args: any) => {
-      let assigRol: string;
-
-      const hashPassword = await UserModel.encryptPassword(args.password);
-
-      const newuser = new UserModel({
-        name: args.name,
-        username: args.username,
-        email: args.email,
-        phone: args.phone,
-        website: args.website,
-        password: hashPassword
-      });
-
-      //verificar que no tenga roles repetidos
-      //valida cuando no pase rol
-      if (args.roles) {
-        assigRol = await RolModel.findById({ _id: args.roles });
-      }
-      newuser.roles = [...newuser.roles, assigRol];
-
-      return newuser.save().catch((error) => {
+      return await userCreate.save().catch((error) => {
         throw handlerHttpError(`something unexpected happened, try again`);
       });
     },

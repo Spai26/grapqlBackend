@@ -7,21 +7,30 @@ import { config } from 'dotenv';
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
-
 import apiRoute from '@routes/index';
+import { getUserToken } from 'src/libs/helpers/context';
 
 config();
+
 const PORT: Number = Number.parseInt(process.env.PORT) || 3000;
 
-interface Context {
-  token?: String;
+type BaseContext = {};
+
+interface MyContext {
+  user?: BaseContext;
 }
-export async function startApolloServer(typeDefs, resolvers) {
+
+export async function startApolloServer(
+  typeDefs: any,
+  resolvers: any
+): Promise<void> {
   const app = express();
   const httpServer = http.createServer(app);
-  const server = new ApolloServer<Context>({
+
+  const server = new ApolloServer<MyContext>({
     typeDefs,
     resolvers,
+    introspection: true,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
   });
 
@@ -29,14 +38,13 @@ export async function startApolloServer(typeDefs, resolvers) {
 
   app.use(morgan('dev'));
   app.use('/api', apiRoute);
+
   app.use(
     '/graphql',
-    cors(),
+    cors<cors.CorsRequest>(),
     json(),
     expressMiddleware(server, {
-      context: async ({ req }) => ({
-        token: req.headers.token
-      })
+      context: async ({ req }) => (await getUserToken(req)) as BaseContext
     })
   );
 
