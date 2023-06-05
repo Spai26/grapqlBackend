@@ -7,7 +7,7 @@ export interface IUser {
   phone: String;
   website?: String;
   password: String;
-  roles: String[];
+  roles: String;
 }
 
 export interface MUser extends Model<IUser> {

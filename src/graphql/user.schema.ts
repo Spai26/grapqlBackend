@@ -21,7 +21,7 @@ export const UsertypeDefs = gql`
     phone: String
     website: String
     password: String!
-    roles: [Rol]
+    roles: Rol
     createdAt: String
     updatedAt: String
   }
@@ -38,7 +38,7 @@ export const UsertypeDefs = gql`
     email: String
     phone: String
     website: String
-    roles: [ID]
+    roles: ID
   }
 
   extend type Mutation {

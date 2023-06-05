@@ -10,7 +10,7 @@ const UserSchema = new Schema<IUser, MUser>(
     phone: { type: String, require: true },
     website: { type: String },
     password: { type: String, require: true },
-    roles: [{ type: Schema.Types.ObjectId, ref: 'Role' }]
+    roles: { type: Schema.Types.ObjectId, ref: 'Role' }
   },
   {
     timestamps: true,
