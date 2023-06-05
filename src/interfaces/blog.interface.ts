@@ -1,4 +1,4 @@
-import mongoose, { Model } from 'mongoose';
+import mongoose, { Document, Model } from 'mongoose';
 import { IUser } from './user.interface';
 
 export interface IBlog {
@@ -10,7 +10,9 @@ export interface IBlog {
   author: mongoose.Types.ObjectId | IUser;
 }
 
-export interface MBlog extends Model<IBlog> {
+export interface IBlogDocument extends IBlog, Document {}
+
+export interface IBlogModel extends Model<IBlogDocument> {
   incrementViewCount(): Number;
   updateSlug(id: String): String;
 }

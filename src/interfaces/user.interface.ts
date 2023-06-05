@@ -1,4 +1,4 @@
-import { Model } from 'mongoose';
+import { Document, Model } from 'mongoose';
 
 export interface IUser {
   name: String;
@@ -10,7 +10,9 @@ export interface IUser {
   roles: String;
 }
 
-export interface MUser extends Model<IUser> {
+export interface IUserDocument extends IUser, Document {}
+
+export interface IUserModel extends Model<IUserDocument> {
   encryptPassword(password: String): String;
   comparePassword(password: String, recivePassword: String): Boolean;
 }
