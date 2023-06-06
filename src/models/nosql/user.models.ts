@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt';
 import { Schema, model } from 'mongoose';
-import { IUser, MUser } from '@interfaces/user.interface';
+import { IUserDocument, IUserModel } from '@interfaces/user.interface';
 
-const UserSchema = new Schema<IUser, MUser>(
+const UserSchema = new Schema<IUserDocument, IUserModel>(
   {
     name: { type: String, require: true },
     username: { type: String },
@@ -18,17 +18,16 @@ const UserSchema = new Schema<IUser, MUser>(
   }
 );
 
-UserSchema.statics.encryptPassword = async (password) => {
+UserSchema.statics.encryptPassword = async (password: string) => {
   const salt = await bcrypt.genSalt(10);
   return await bcrypt.hash(password, salt);
 };
 
 UserSchema.statics.comparePassword = async (
   password: string,
-  recivePassword: String
+  recivePassword: string
 ) => {
   return await bcrypt.compare(password, recivePassword);
 };
 
-export const UserModel = model<IUser, MUser>('User', UserSchema);
-export { IUser };
+export const UserModel = model<IUserDocument, IUserModel>('User', UserSchema);

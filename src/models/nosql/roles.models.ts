@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose';
-import { IRol } from '@interfaces/rol.interface';
-const RolSchema = new Schema<IRol>(
+import { IRolDocument } from '@interfaces/rol.interface';
+
+const RolSchema = new Schema<IRolDocument>(
   {
     name: { type: String, unique: true }
   },
@@ -10,5 +11,4 @@ const RolSchema = new Schema<IRol>(
   }
 );
 
-export const RolModel = model<IRol>('Role', RolSchema);
-export { IRol };
+export const RolModel = model<IRolDocument>('Role', RolSchema);

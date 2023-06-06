@@ -1,9 +1,9 @@
 import slug from 'mongoose-slug-generator';
-import { IBlog, MBlog } from '@interfaces/blog.interface';
+import { IBlogDocument, IBlogModel } from '@interfaces/blog.interface';
 import mongoose, { Schema, model } from 'mongoose';
 mongoose.plugin(slug);
 
-const BlogSchema = new Schema<IBlog>(
+const BlogSchema = new Schema<IBlogDocument, IBlogModel>(
   {
     title: { type: String, require: true, unique: true },
     body_content: { type: String, require: true },
@@ -41,4 +41,4 @@ BlogSchema.statics.updateSlug = async function (id: string) {
   return blogfound;
 };
 
-export const BlogModel = model<IBlog, MBlog>('Blog', BlogSchema);
+export const BlogModel = model<IBlogDocument, IBlogModel>('Blog', BlogSchema);
