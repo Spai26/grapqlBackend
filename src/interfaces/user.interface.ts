@@ -1,13 +1,13 @@
 import { Document, Model } from 'mongoose';
 
 export interface IUser {
-  name: String;
-  username: String;
+  firstname: String;
+  lastname: String;
   email: String;
   phone: String;
   website?: String;
   password: String;
-  roles: String;
+  rol: String;
 }
 
 export interface IUserDocument extends IUser, Document {}
