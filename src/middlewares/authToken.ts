@@ -1,5 +1,5 @@
 import * as jwt from 'jsonwebtoken';
-import { handlerErrorAuth } from './handlerErrors';
+import { handlerHttpError, typesErrors } from './handlerErrors';
 
 export const generateToken = (user: { id: string }): String => {
   const token = jwt.sign({ id: user.id }, process.env.ACCESS_TOKEN_SECRET, {
@@ -21,8 +21,8 @@ export const CheckVerifyToken = async (
 
       return valid;
     }
-    throw handlerErrorAuth('TOKEN NO PROVIDED');
+    throw handlerHttpError('TOKEN NO PROVIDED', typesErrors.UNAUTHENTIFATED);
   } catch (error) {
-    throw handlerErrorAuth('THIS TOKEN NO VALID');
+    throw handlerHttpError('THIS TOKEN NO VALID', typesErrors.UNAUTHENTIFATED);
   }
 };

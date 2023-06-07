@@ -1,32 +1,55 @@
+import { ApolloServerErrorCode } from '@apollo/server/errors';
 import { GraphQLError } from 'graphql';
 
-export const customMessageErrors = (
-  message = 'Algo inesperado sucedio',
-  code = 'BAD_REQUEST',
-  status = 404
+interface ErrorType {
+  errorCode: ApolloServerErrorCode | string;
+  errorStatus: number;
+}
+
+/**
+ * *list of error for assign
+ */
+export const typesErrors: Record<string, ErrorType> = {
+  BAD_USER_INPUT: {
+    errorCode: ApolloServerErrorCode.BAD_USER_INPUT,
+    errorStatus: 400
+  },
+
+  BAD_REQUEST: {
+    errorCode: ApolloServerErrorCode.BAD_REQUEST,
+    errorStatus: 400
+  },
+
+  INTERNAL_SERVER_ERROR: {
+    errorCode: ApolloServerErrorCode.INTERNAL_SERVER_ERROR,
+    errorStatus: 500
+  },
+
+  UNAUTHENTIFATED: {
+    errorCode: 'UNAUTHENTIFATED',
+    errorStatus: 401
+  },
+
+  NOT_FOUND: {
+    errorCode: 'NOT_FOUND',
+    errorStatus: 404
+  },
+
+  ALREADY_EXIST: {
+    errorCode: 'ALREADY_EXIST',
+    errorStatus: 400
+  }
+};
+
+export const handlerHttpError = (
+  messageError: string,
+  typesErrors: ErrorType
 ) => {
-  return new GraphQLError(message, {
+  const { errorCode, errorStatus } = typesErrors;
+  return new GraphQLError(messageError, {
     extensions: {
-      code,
-      http: { status }
-    }
-  });
-};
-
-export const handlerHttpError = (message) => {
-  return new GraphQLError(message, {
-    extensions: {
-      code: 'something unexpected happened, try again',
-      http: { status: 404 }
-    }
-  });
-};
-
-export const handlerErrorAuth = (message) => {
-  return new GraphQLError(message, {
-    extensions: {
-      code: 'UNAUTHENTICATED',
-      http: { status: 401 }
+      code: errorCode,
+      http: { status: errorStatus }
     }
   });
 };
