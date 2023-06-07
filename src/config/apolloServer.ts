@@ -8,7 +8,7 @@ import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
 import apiRoute from '@routes/index';
-import { getUserToken } from 'src/libs/helpers/context';
+import { getUserToken } from '@helpers/context';
 
 config();
 

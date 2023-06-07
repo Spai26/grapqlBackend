@@ -4,13 +4,13 @@ import { IUserDocument, IUserModel } from '@interfaces/user.interface';
 
 const UserSchema = new Schema<IUserDocument, IUserModel>(
   {
-    name: { type: String, require: true },
-    username: { type: String },
+    firstname: { type: String, require: true },
+    lastname: { type: String, require: true },
     email: { type: String, require: true, unique: true },
-    phone: { type: String, require: true },
-    website: { type: String },
+    phone: { type: String, default: null },
+    website: { type: String, default: null },
     password: { type: String, require: true },
-    roles: { type: Schema.Types.ObjectId, ref: 'Role' }
+    rol: { type: Schema.Types.ObjectId, ref: 'Role' }
   },
   {
     timestamps: true,
