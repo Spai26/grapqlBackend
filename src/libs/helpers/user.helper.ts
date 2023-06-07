@@ -1,11 +1,16 @@
-import { handlerHttpError } from '@middlewares/handlerErrors';
+import { handlerHttpError, typesErrors } from '@middlewares/handlerErrors';
 import { UserModel } from '@models/nosql/user.models';
 
-export const validateExisteEmail = async (email: String): Promise<Boolean> => {
-  const isExist = await UserModel.findOne({ email: email });
+/**
+ * * Validates if user exits in our data
+ * @param email
+ * @returns Boolean
+ */
+export const existUser = async (email: string): Promise<Boolean | null> => {
+  const user = await UserModel.findOne({ email: email });
 
-  if (!isExist) {
-    return false;
+  if (!user) {
+    return null;
   }
   return true;
 };
@@ -17,12 +22,12 @@ export const isExistUserTo = async (id: string): Promise<Object> => {
   });
 
   if (!validUser) {
-    throw handlerHttpError('User not fount');
+    throw handlerHttpError('User not fount', typesErrors.NOT_FOUND);
   }
 
   const userValidToken = {
     id: validUser.id,
-    roles: validUser.roles
+    roles: validUser.rol
   };
 
   return userValidToken;
