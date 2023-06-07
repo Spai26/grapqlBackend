@@ -1,65 +1,66 @@
 import { gql } from 'graphql-tag';
-import { RolModel } from '@models/nosql/roles.models';
-import { UserModel } from '@models/nosql/user.models';
-import { handlerHttpError } from '@middlewares/handlerErrors';
-import { validateRolesExist } from 'src/libs/helpers/Roles.helper';
-import { validateExisteEmail } from 'src/libs/helpers/user.helper';
 
+import { UserModel } from '@models/nosql/user.models';
+import { handlerHttpError, typesErrors } from '@middlewares/handlerErrors';
+
+import { existUser } from 'src/libs/helpers/user.helper';
+
+/**
+ * @important: add ! if is required
+ */
 export const UsertypeDefs = gql`
+  #Query consult list
   extend type Query {
     hello: String
     allUsers: [User]
     getUserbyId(_id: ID!): User
-    roles: [Rol]
   }
-
+  #Mutation list
+  extend type Mutation {
+    createUser(input: createNewUser): User
+    updateUser(input: updateuserExist): messageCrud
+    deletedUser(_id: ID!): String
+  }
+  #Base model User
   type User {
     id: ID
-    name: String!
-    username: String
+    firstname: String!
+    lastname: String!
     email: String!
     phone: String
     website: String
     password: String!
-    roles: Rol
+    rol: Rol
     createdAt: String
     updatedAt: String
   }
-
-  type Rol {
-    id: ID
-    name: String!
-  }
-
+  #fields necesary for create user
   input createNewUser {
-    name: String
-    username: String
+    firstname: String
+    lastname: String
     password: String
     email: String
-    phone: String
-    website: String
-    roles: ID
+    rol: ID
   }
 
-  extend type Mutation {
-    createUser(input: createNewUser): User
-    updateUser(
-      _id: ID!
-      name: String
-      email: String
-      username: String
-      phone: String
-      website: String
-    ): messageCrud
-
-    deletedUser(_id: ID!): String
+  #fields for update one user
+  input updateuserExist {
+    firstname: String
+    lastname: String
+    phone: String
+    website: String
+    rol: ID
   }
 `;
 
 export const UserResolvers = {
   Query: {
-    allUsers: async () => await UserModel.find({}).populate('roles', 'name'),
-    roles: async () => await RolModel.find({}),
+    allUsers: async () => {
+      const usuarios = await UserModel.find({}).populate('rol', 'name'); // Cargar la referencia de roles
+
+      return usuarios;
+    },
+
     getUserbyId: async (_: any, { _id }) =>
       UserModel.findById(_id, {
         password: 0
@@ -67,31 +68,31 @@ export const UserResolvers = {
   },
   Mutation: {
     createUser: async (_: any, { input }) => {
-      const { name, username, password, email, phone, website, roles } = input;
+      const { firstname, lastname, email, password, rol } = input;
 
-      const emailExist = await validateExisteEmail(email);
+      const emailExist = await existUser(email);
 
-      if (emailExist) {
-        throw handlerHttpError('El email ya existe en la base de datos');
+      //convert boolean if null
+      if (!emailExist) {
+        throw handlerHttpError('try another email', typesErrors.ALREADY_EXIST);
       }
 
-      await validateRolesExist(roles).catch((error) => {
-        throw handlerHttpError(error);
-      });
-
-      const userCreate = new UserModel({
-        name,
-        username,
+      /* verifica el rol entrante mirar a forma de generarlo desde el modelo similar a laravel o directamente por el momento */
+      const newuser = new UserModel({
+        firstname,
+        lastname,
         password: await UserModel.encryptPassword(password),
         email,
-        phone,
-        website,
-        roles
+        rol
       });
 
-      return await userCreate.save().catch((error) => {
-        throw handlerHttpError(`something unexpected happened, try again`);
-      });
+      const useradd = await newuser.save();
+
+      return {
+        ...useradd,
+        succes: true,
+        message: 'User Created!'
+      };
     },
 
     updateUser: async (_: any, args: any) => {
@@ -107,10 +108,6 @@ export const UserResolvers = {
         }
       );
 
-      if (!upUser) {
-        throw handlerHttpError('the fields do not match, please verify');
-      }
-
       return {
         succes: true,
         message: 'User updated!'
@@ -119,10 +116,6 @@ export const UserResolvers = {
 
     deletedUser: async (_: any, { _id }) => {
       const cleanUser = await UserModel.findByIdAndDelete(_id);
-
-      if (!cleanUser) {
-        handlerHttpError('this user dont found');
-      }
 
       return 'User Deleted';
     }

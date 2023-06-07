@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 import { generateToken } from '@middlewares/authToken';
 import { UserModel } from '@models/nosql/user.models';
-import { handlerErrorAuth } from '@middlewares/handlerErrors';
+import { handlerHttpError, typesErrors } from '@middlewares/handlerErrors';
 
 export const AuthTypeDefs = gql`
   directive @skipAuth on FIELD_DEFINITION
@@ -36,7 +36,10 @@ export const AuthResolvers = {
       const isValidUser = await UserModel.findOne({ email });
 
       if (!isValidUser) {
-        throw handlerErrorAuth('Invalid credentials, please verified.');
+        throw handlerHttpError(
+          'Invalid credentials, please verified.',
+          typesErrors.NOT_FOUND
+        );
       }
 
       const validPass = await UserModel.comparePassword(
@@ -45,7 +48,10 @@ export const AuthResolvers = {
       );
 
       if (!validPass) {
-        throw handlerErrorAuth('Invalid credentials, please verified.');
+        throw handlerHttpError(
+          'Invalid credentials, please verified.',
+          typesErrors.UNAUTHENTIFATED
+        );
       }
 
       const userForToken = {
