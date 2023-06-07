@@ -1,6 +1,7 @@
-import mongoose, { Schema } from 'mongoose';
+import { Schema, model } from 'mongoose';
+import { IPermisionDocument } from '@interfaces/permission.interface';
 
-const PermissionSchema = new Schema(
+const PermissionSchema = new Schema<IPermisionDocument>(
   {
     name: { type: String, unique: true }
   },
@@ -8,4 +9,9 @@ const PermissionSchema = new Schema(
     timestamps: false,
     versionKey: false
   }
+);
+
+export const PermisionModel = model<IPermisionDocument>(
+  'Permission',
+  PermissionSchema
 );
