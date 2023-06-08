@@ -3,7 +3,8 @@ import { IPermisionDocument } from '@interfaces/permission.interface';
 
 const PermissionSchema = new Schema<IPermisionDocument>(
   {
-    name: { type: String, unique: true }
+    name: { type: String, unique: true },
+    description: { type: String }
   },
   {
     timestamps: false,

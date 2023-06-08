@@ -1,9 +1,17 @@
 import { PermisionModel } from '@models/nosql/permission.models';
 import { RolModel } from '@models/nosql/roles.models';
 import { UserModel } from '@models/nosql/user.models';
-
+//mejorar !
 //base list
 export type list = {};
+
+export const createNewDocument = async (values, model: string) => {
+  const listFunctionCreator = {
+    rol: new PermisionModel(values)
+  };
+
+  return listFunctionCreator[model] || null;
+};
 
 export const validateExistenceData = async (params: string, model: string) => {
   const listExistData = {
