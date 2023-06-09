@@ -1,8 +1,9 @@
 import { RolModel } from '@models/nosql/roles.models';
-import { list } from './generalConsult';
+import { getModelByName, list } from './generalConsult';
 import { PermisionModel } from '@models/nosql/permission.models';
 import { handlerHttpError, typesErrors } from '@middlewares/handlerErrors';
 
+let Model;
 /**
  * * Verifica si la lista es un array valido
  * @param elements
@@ -41,27 +42,6 @@ export const assignPermissions = async (
   }
 
   return isListEqual;
-};
-
-/**
- * * Agrupo los query realizados a la bd para la actualizacion
- *
- * @param id
- * @param values
- * @param model
- * @returns object
- */
-export const updateOneElement = async (
-  id: string,
-  values: list,
-  model: string
-) => {
-  const listUpdate: list = {
-    rolupdate: await RolModel.updateOne({ _id: id }, values),
-    permissionupdate: await PermisionModel.updateOne({ _id: id }, values)
-  };
-
-  return listUpdate[model] || null;
 };
 
 /**
