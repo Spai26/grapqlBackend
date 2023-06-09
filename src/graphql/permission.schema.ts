@@ -2,14 +2,16 @@ import { gql } from 'apollo-server-express';
 
 import {
   createNewDocument,
+  existFields,
+  isExistById,
   showlist,
-  validateExistenceData
+  updateOneElement
 } from '@helpers/generalConsult';
 import { handlerHttpError, typesErrors } from '@middlewares/handlerErrors';
-import { updateOneElement } from '@helpers/RolesandPermisions.helper';
+
 import { RolModel } from '@models/nosql/roles.models';
 import { PermisionModel } from '@models/nosql/permission.models';
-import mongoose, { ObjectId } from 'mongoose';
+
 export const PermissionTypeDefs = gql`
   extend type Query {
     permision: [Permision]
@@ -47,8 +49,8 @@ export const PermissionResolvers = {
   Mutation: {
     createNewPermission: async (_: any, args: any) => {
       //verificar permisos validos (pendiente!)
-      const { name } = args.input;
-      const isExist = await PermisionModel.findOne({ name });
+
+      const isExist = await existFields('permission', { name: args.input });
 
       if (isExist) {
         throw handlerHttpError(
@@ -73,16 +75,16 @@ export const PermissionResolvers = {
     updateOnePermission: async (_: any, args: any) => {
       let result = undefined;
       const { id } = args.input;
-      const isExist = await validateExistenceData(id, 'permission');
+      const isExist = await isExistById(id, 'permission');
 
       if (!isExist) {
         throw handlerHttpError('invalid permission', typesErrors.BAD_REQUEST);
       }
 
       result = await updateOneElement(
-        isExist._id,
+        { _id: isExist._id },
         args.input,
-        'permissionupdate'
+        'permission'
       );
 
       if (result) {

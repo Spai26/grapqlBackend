@@ -2,9 +2,15 @@ import { gql } from 'graphql-tag';
 
 import { UserModel } from '@models/nosql/user.models';
 import { handlerHttpError, typesErrors } from '@middlewares/handlerErrors';
+import {
+  createNewDocument,
+  existFields,
+  isExistById,
+  showListRealTime,
+  updateOneElement
+} from '@helpers/generalConsult';
 
-import { existUser } from 'src/libs/helpers/user.helper';
-
+let result;
 /**
  * @important: add ! if is required
  */
@@ -13,13 +19,13 @@ export const UsertypeDefs = gql`
   extend type Query {
     hello: String
     allUsers: [User]
-    getUserbyId(_id: ID!): User
+    getUserbyId(id: ID!): User
   }
   #Mutation list
   extend type Mutation {
-    createUser(input: createNewUser): User
+    createUser(input: createNewUser): messageCrud
     updateUser(input: updateuserExist): messageCrud
-    deletedUser(_id: ID!): String
+    deletedUser(id: ID!): String
   }
   #Base model User
   type User {
@@ -38,13 +44,14 @@ export const UsertypeDefs = gql`
   input createNewUser {
     firstname: String
     lastname: String
-    password: String
-    email: String
-    rol: ID
+    password: String!
+    email: String!
+    rol: ID!
   }
 
   #fields for update one user
   input updateuserExist {
+    id: ID!
     firstname: String
     lastname: String
     phone: String
@@ -56,56 +63,59 @@ export const UsertypeDefs = gql`
 export const UserResolvers = {
   Query: {
     allUsers: async () => {
-      const usuarios = await UserModel.find({}).populate('rol', 'name'); // Cargar la referencia de roles
-
-      return usuarios;
+      return await showListRealTime('user', 'rol', { virtual: true });
     },
 
-    getUserbyId: async (_: any, { _id }) =>
-      UserModel.findById(_id, {
-        password: 0
-      })
+    getUserbyId: async (_: any, { id }) => {
+      return await isExistById(id, 'user', { password: 0 });
+    }
   },
   Mutation: {
     createUser: async (_: any, { input }) => {
       const { firstname, lastname, email, password, rol } = input;
 
-      const emailExist = await existUser(email);
+      const userExist = await existFields('user', email);
+      const rolExist = await isExistById(rol, 'rol');
 
-      //convert boolean if null
-      if (!emailExist) {
+      if (userExist) {
         throw handlerHttpError('try another email', typesErrors.ALREADY_EXIST);
       }
 
-      /* verifica el rol entrante mirar a forma de generarlo desde el modelo similar a laravel o directamente por el momento */
-      const newuser = new UserModel({
-        firstname,
-        lastname,
-        password: await UserModel.encryptPassword(password),
-        email,
-        rol
-      });
+      if (rolExist) {
+        const newuser = await createNewDocument(
+          {
+            firstname,
+            lastname,
+            password: await UserModel.encryptPassword(password),
+            email,
+            rol
+          },
+          'user'
+        );
+        result = await newuser.save();
+      }
 
-      const useradd = await newuser.save();
-
-      return {
-        ...useradd,
-        succes: true,
-        message: 'User Created!'
-      };
+      if (result) {
+        return {
+          succes: true,
+          message: 'User Created!'
+        };
+      }
+      return null;
     },
 
     updateUser: async (_: any, args: any) => {
-      const upUser = await UserModel.updateOne(
-        { _id: args._id },
+      const { id, firstname, lastname, phone, website } = args.input;
+
+      result = await updateOneElement(
+        { _id: id },
         {
-          $set: {
-            name: args.name,
-            username: args.username,
-            phone: args.phone,
-            website: args.website
-          }
-        }
+          firstname,
+          lastname,
+          phone,
+          website
+        },
+        'user'
       );
 
       return {

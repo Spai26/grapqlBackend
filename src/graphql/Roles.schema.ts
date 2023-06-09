@@ -1,7 +1,7 @@
 import { gql } from 'apollo-server-express';
 import { handlerHttpError, typesErrors } from '@middlewares/handlerErrors';
 
-import { showlist, validateExistenceData } from '@helpers/generalConsult';
+import { isExistById, showlist } from '@helpers/generalConsult';
 import { updateElement } from '@helpers/RolesandPermisions.helper';
 
 export const RolesTypeDefs = gql`
@@ -38,7 +38,7 @@ export const RolResolvers = {
       const updatePromiseArray = args.input.map(async (fieldForUpdate) => {
         const { id } = fieldForUpdate;
 
-        if (!(await validateExistenceData(id, 'rol'))) {
+        if (!(await isExistById(id, 'rol'))) {
           throw handlerHttpError('invalid role', typesErrors.BAD_REQUEST);
         }
 
