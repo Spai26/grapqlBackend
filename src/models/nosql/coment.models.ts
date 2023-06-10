@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema, model } from 'mongoose';
 
 const ComentSchema = new Schema(
   {
@@ -9,12 +9,12 @@ const ComentSchema = new Schema(
     /* slug: { type: String, slug: "title" }, */
     /* count_view: { type: Number, default: 0 }, */
     image: { type: String, required: true },
-    owner: { type: Schema.Types.ObjectId, ref: "User" },
+    owner: { type: Schema.Types.ObjectId, ref: 'User' }
   },
   {
     timestamps: true,
-    versionKey: false,
+    versionKey: false
   }
 );
 
-export default model("Coment", ComentSchema);
+export const ComentModel = model('Coment', ComentSchema);

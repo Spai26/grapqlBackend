@@ -67,7 +67,7 @@ export const UserResolvers = {
     },
 
     getUserbyId: async (_: any, { id }) => {
-      return await isExistById(id, 'user', { password: 0 });
+      return await isExistById(id, 'user', '', { password: 0 });
     }
   },
   Mutation: {

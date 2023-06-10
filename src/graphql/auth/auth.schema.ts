@@ -1,10 +1,13 @@
 import gql from 'graphql-tag';
-import { generateToken } from '@middlewares/authToken';
+import { createAccesToken } from '@middlewares/jwt';
 import { UserModel } from '@models/nosql/user.models';
 import { handlerHttpError, typesErrors } from '@middlewares/handlerErrors';
+import { existFields } from '@helpers/generalConsult';
+import { setAccessTokenCookie } from '@helpers/accessToken';
 
 export const AuthTypeDefs = gql`
   directive @skipAuth on FIELD_DEFINITION
+
   input AuthLogin {
     email: String!
     password: String!
@@ -15,25 +18,22 @@ export const AuthTypeDefs = gql`
   }
 
   type AuthResponse {
-    userForToken: UserForToken!
-    getoken: String!
+    message: messageCrud
+    mytoken: String!
   }
 
-  type UserForToken {
-    id: ID!
-  }
   extend type Mutation {
-    AuthLogin(input: AuthLogin): AuthResponse @skipAuth
+    AuthLogin(input: AuthLogin): AuthResponse
     authDisconnect(text: String): String
   }
 `;
 
 export const AuthResolvers = {
   Mutation: {
-    AuthLogin: async (_: any, { input }) => {
+    AuthLogin: async (_: any, { input }, { res }) => {
       const { email, password } = input;
 
-      const isValidUser = await UserModel.findOne({ email });
+      const isValidUser = await existFields('user', { email: email });
 
       if (!isValidUser) {
         throw handlerHttpError(
@@ -54,16 +54,20 @@ export const AuthResolvers = {
         );
       }
 
-      const userForToken = {
-        id: isValidUser.id
-      };
+      const mytoken = await createAccesToken({ id: isValidUser._id });
 
-      const getoken = await generateToken({ id: userForToken.id });
+      if (mytoken) {
+        setAccessTokenCookie(res, mytoken);
 
-      return {
-        userForToken,
-        getoken
-      };
+        return {
+          mytoken,
+          message: {
+            success: true,
+            message: 'Logued'
+          }
+        };
+      }
+      return null;
     },
 
     authDisconnect: () => {

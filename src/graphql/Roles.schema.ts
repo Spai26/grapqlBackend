@@ -1,7 +1,11 @@
 import { gql } from 'apollo-server-express';
 import { handlerHttpError, typesErrors } from '@middlewares/handlerErrors';
 
-import { isExistById, showlist } from '@helpers/generalConsult';
+import {
+  isExistById,
+  showlist,
+  showListRealTime
+} from '@helpers/generalConsult';
 import { updateElement } from '@helpers/RolesandPermisions.helper';
 
 export const RolesTypeDefs = gql`
@@ -31,7 +35,7 @@ export const RolesTypeDefs = gql`
 
 export const RolResolvers = {
   Query: {
-    roles: async () => await showlist('rol')
+    roles: async () => await showListRealTime('rol', 'permissions')
   },
   Mutation: {
     updateArrayRolesWithPermissions: async (_: any, args: any) => {
