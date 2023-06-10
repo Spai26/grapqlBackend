@@ -8,17 +8,11 @@ import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
 import apiRoute from '@routes/index';
-import { getUserToken } from '@helpers/context';
+import { isAuthentificate, MyContext, BaseContext } from '@helpers/context';
 
 config();
 
 const PORT: Number = Number.parseInt(process.env.PORT) || 3000;
-
-type BaseContext = {};
-
-interface MyContext {
-  user?: BaseContext;
-}
 
 export async function startApolloServer(
   typeDefs: any,
@@ -44,7 +38,10 @@ export async function startApolloServer(
     cors<cors.CorsRequest>(),
     json(),
     expressMiddleware(server, {
-      context: async ({ req }) => (await getUserToken(req)) as BaseContext
+      context: async ({ req, res }) => {
+        const user = (await isAuthentificate(req, res)) as BaseContext;
+        return { user, req, res };
+      }
     })
   );
 
