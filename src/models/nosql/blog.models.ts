@@ -7,7 +7,7 @@ const BlogSchema = new Schema<IBlogDocument, IBlogModel>(
   {
     title: { type: String, require: true, unique: true },
     body_content: { type: String, require: true },
-    front_image: { type: String, require: true },
+    front_image: { type: Schema.Types.ObjectId, ref: 'Image' },
     slug_title: { type: String, slug: 'title' },
     count_view: { type: Number, default: 0 },
     author: { type: Schema.Types.ObjectId, ref: 'User' }

@@ -7,7 +7,7 @@ export interface IBlog {
   front_image: String;
   slug_title: String;
   count_view: Number;
-  author: mongoose.Types.ObjectId | IUser;
+  author: mongoose.Types.ObjectId;
 }
 
 export interface IBlogDocument extends IBlog, Document {}
