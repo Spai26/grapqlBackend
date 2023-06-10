@@ -1,3 +1,4 @@
+import { handlerHttpError, typesErrors } from '@middlewares/handlerErrors';
 import { RolModel } from '@models/nosql/roles.models';
 
 export const createRoles = async () => {
@@ -21,6 +22,6 @@ export const createRoles = async () => {
     ]);
     console.log(values);
   } catch (error) {
-    console.error(error);
+    throw handlerHttpError('fields dont agregated.!', typesErrors.BAD_REQUEST);
   }
 };

@@ -1,3 +1,6 @@
+import { BlogModel } from '@models/nosql/blog.models';
+import { ComentModel } from '@models/nosql/coment.models';
+import { ImageModel } from '@models/nosql/image.models';
 import { PermisionModel } from '@models/nosql/permission.models';
 import { RolModel } from '@models/nosql/roles.models';
 import { UserModel } from '@models/nosql/user.models';
@@ -17,13 +20,25 @@ export interface searchOptions {
 export interface findOptions {
   password?: number;
   virtual?: boolean;
+  email?: string | number;
+  website?: number;
+  phone?: number;
 }
 
+/**
+ *
+ * * list of models created
+ * @param model
+ * @returns
+ */
 export const getModelByName = (model: string) => {
   const listModels: list = {
     user: UserModel,
     rol: RolModel,
-    permission: PermisionModel
+    permission: PermisionModel,
+    blog: BlogModel,
+    image: ImageModel,
+    comment: ComentModel
   };
 
   return listModels[model] || null;
@@ -31,7 +46,7 @@ export const getModelByName = (model: string) => {
 
 /**
  * !Model query User.
- * * I check if the email exists in the database
+ * * I get the first element it finds in my model
  * @param model
  * @param value
  * @returns Object existing
@@ -53,10 +68,11 @@ export const existFields = async (model: string, values: searchOptions) => {
 export const isExistById = async (
   id: string,
   model: string,
+  relation?: string,
   options?: findOptions
 ) => {
   Model = getModelByName(model);
-  return (await Model.findById(id, options)) || null;
+  return (await Model.findById(id, options).populate(relation)) || null;
 };
 
 /**
@@ -84,7 +100,6 @@ export const updateOneElement = async (
   values,
   model: string
 ) => {
-  console.log(id, values);
   Model = getModelByName(model);
   return (await Model.updateOne(id, values)) || null;
 };
@@ -115,7 +130,7 @@ export const showListRealTime = async (
  * @param model
  * @returns query
  */
-export const showlist = async (model: string): Promise<string[]> => {
+export const showlist = async (model: string) => {
   Model = getModelByName(model);
   return (await Model.find({})) || null;
 };

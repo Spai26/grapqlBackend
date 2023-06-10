@@ -1,3 +1,4 @@
+import { handlerHttpError, typesErrors } from '@middlewares/handlerErrors';
 import { PermisionModel } from '@models/nosql/permission.models';
 
 export const createPermissionBase = async () => {
@@ -16,6 +17,6 @@ export const createPermissionBase = async () => {
     ]);
     console.log(values);
   } catch (error) {
-    console.error(error);
+    throw handlerHttpError('fields dont agregated.!', typesErrors.BAD_REQUEST);
   }
 };

@@ -1,16 +1,22 @@
 import { handlerHttpError, typesErrors } from '@middlewares/handlerErrors';
-import { CheckVerifyToken } from '@middlewares/authToken';
-import { isExistUserTo } from './user.helper';
+import { CheckVerifyToken, optionUser } from '@middlewares/jwt';
 import { JwtPayload } from 'jsonwebtoken';
+import { isExistById } from './generalConsult';
 
-export const getUserToken = async (req) => {
+export type BaseContext = {};
+
+export interface MyContext {
+  user?: BaseContext | string;
+}
+
+export const isAuthentificate = async (req, res) => {
   try {
+    //Bearer token
     if (req.headers.authorization) {
-      //Bearer token
       const token: string = req.headers.authorization.split(' ').pop();
 
       if (!token) {
-        throw handlerHttpError('ACCESS_NO_VALID!', typesErrors.UNAUTHENTIFATED);
+        throw handlerHttpError('Access no valid!', typesErrors.UNAUTHENTIFATED);
       }
 
       const verify_token: JwtPayload = await CheckVerifyToken(token);
@@ -22,12 +28,19 @@ export const getUserToken = async (req) => {
         );
       }
 
-      const user = await isExistUserTo(verify_token.id);
+      const result = await isExistById(verify_token.id, 'user');
 
-      return { user };
+      const user: optionUser = {
+        id: result._id,
+        rol: result.rol
+      };
+
+      return user;
     }
-    return null;
   } catch (error) {
-    throw handlerHttpError(error, typesErrors.BAD_USER_INPUT);
+    throw handlerHttpError(
+      'Error Access no valid.!',
+      typesErrors.INTERNAL_SERVER_ERROR
+    );
   }
 };
