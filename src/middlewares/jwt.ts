@@ -1,6 +1,6 @@
 import * as jwt from 'jsonwebtoken';
 import { handlerHttpError, typesErrors } from './handlerErrors';
-import { searchOptions } from '@helpers/generalConsult';
+import { searchOptions } from '@helpers/querys/generalConsult';
 
 let token: string | jwt.JwtPayload;
 export interface optionUser {

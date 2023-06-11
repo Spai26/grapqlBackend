@@ -8,7 +8,7 @@ import {
   isExistById,
   showListRealTime,
   updateOneElement
-} from '@helpers/generalConsult';
+} from '@helpers/querys/generalConsult';
 
 let result;
 /**

@@ -1,4 +1,4 @@
-import { createNewDocument, isExistById } from '@helpers/generalConsult';
+import { createNewDocument, isExistById } from '@helpers/querys/generalConsult';
 import { uploadImage } from '@helpers/generateImageUrl';
 import { validExtensionImage } from '@helpers/validateExtension';
 import { handlerHttpError, typesErrors } from '@middlewares/handlerErrors';

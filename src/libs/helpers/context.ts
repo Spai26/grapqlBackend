@@ -1,7 +1,7 @@
 import { handlerHttpError, typesErrors } from '@middlewares/handlerErrors';
 import { CheckVerifyToken, optionUser } from '@middlewares/jwt';
 import { JwtPayload } from 'jsonwebtoken';
-import { isExistById } from './generalConsult';
+import { isExistById } from './querys/generalConsult';
 
 export type BaseContext = {};
 

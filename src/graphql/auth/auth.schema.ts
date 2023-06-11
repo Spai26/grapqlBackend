@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import { createAccesToken } from '@middlewares/jwt';
 import { UserModel } from '@models/nosql/user.models';
 import { handlerHttpError, typesErrors } from '@middlewares/handlerErrors';
-import { existFields } from '@helpers/generalConsult';
+import { existFields } from '@helpers/querys/generalConsult';
 import { setAccessTokenCookie } from '@helpers/accessToken';
 
 export const AuthTypeDefs = gql`

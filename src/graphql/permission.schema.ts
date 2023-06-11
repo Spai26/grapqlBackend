@@ -6,7 +6,7 @@ import {
   isExistById,
   showlist,
   updateOneElement
-} from '@helpers/generalConsult';
+} from '@helpers/querys/generalConsult';
 import { handlerHttpError, typesErrors } from '@middlewares/handlerErrors';
 
 import { RolModel } from '@models/nosql/roles.models';

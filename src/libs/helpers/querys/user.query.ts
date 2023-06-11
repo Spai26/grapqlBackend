@@ -7,7 +7,7 @@ import { UserModel } from '@models/nosql/user.models';
  * @returns Boolean
  */
 export const existUser = async (email: string): Promise<Boolean | null> => {
-  const user = await UserModel.findOne({ email: email });
+  const user = await UserModel.findById({ email: email });
 
   if (!user) {
     return null;

@@ -5,8 +5,8 @@ import {
   isExistById,
   showlist,
   showListRealTime
-} from '@helpers/generalConsult';
-import { updateElement } from '@helpers/RolesandPermisions.helper';
+} from '@helpers/querys/generalConsult';
+import { updateElement } from '@helpers/querys/RolesandPermisions.query';
 
 export const RolesTypeDefs = gql`
   extend type Query {
