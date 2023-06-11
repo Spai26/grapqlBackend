@@ -13,6 +13,5 @@ export interface IBlog {
 export interface IBlogDocument extends IBlog, Document {}
 
 export interface IBlogModel extends Model<IBlogDocument> {
-  incrementViewCount(): Number;
   updateSlug(id: String): String;
 }

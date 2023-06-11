@@ -13,15 +13,12 @@ const BlogSchema = new Schema<IBlogDocument, IBlogModel>(
     author: { type: Schema.Types.ObjectId, ref: 'User' }
   },
   {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
     timestamps: true,
     versionKey: false
   }
 );
-
-BlogSchema.methods.incrementViewCount = async function () {
-  this.count_view += 1;
-  await this.save();
-};
 
 BlogSchema.statics.updateSlug = async function (id: string) {
   const blogfound = await this.findById(id);

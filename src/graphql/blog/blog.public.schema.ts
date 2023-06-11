@@ -1,4 +1,7 @@
-import { isExistById, showListRealTime } from '@helpers/generalConsult';
+import {
+  counterViews,
+  showListWithTwoRelation
+} from '@helpers/querys/Blog.query';
 
 import gql from 'graphql-tag';
 
@@ -24,11 +27,10 @@ export const BlogPublicTypeDefs = gql`
 export const BlogPublicResolvers = {
   Query: {
     getpublicArrayBlogs: async () => {
-      return await showListRealTime('blog', 'author', { virtual: true });
+      return await showListWithTwoRelation('blog', 'author', 'front_image');
     },
-
     getOneBlogbyId: async (_: any, { id }) => {
-      return await isExistById(id, 'blog', 'author');
+      return await counterViews(id);
     }
   }
 };
