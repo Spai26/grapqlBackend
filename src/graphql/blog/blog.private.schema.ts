@@ -19,16 +19,26 @@ export const BlogPrivateTypeDefs = gql`
     front_image: image!
     author: ID!
   }
-
-  input image {
-    url: String
-    model_type: String
-  }
 `;
 
 export const BlogPrivateResolvers = {
   Mutation: {
     attachNewBlog: async (_: any, { input }, { user }) => {
+      if (!user) {
+        throw handlerHttpError(
+          'User dont register!',
+          typesErrors.UNAUTHENTIFATED
+        );
+      }
+
+      const checkrol = await isExistById(user.rol, 'rol');
+      if (checkrol.name !== 'superAdmin') {
+        throw handlerHttpError(
+          'you do not have access to this type of query!',
+          typesErrors.ROL_NOT_VALID
+        );
+      }
+
       /**
        * modo rootAdmin
        */
@@ -38,7 +48,7 @@ export const BlogPrivateResolvers = {
       const imageExtension = validExtensionImage(front_image.url);
 
       if (!exist) {
-        throw handlerHttpError('User no valid', typesErrors.BAD_USER_INPUT);
+        throw handlerHttpError('User no valid!', typesErrors.BAD_USER_INPUT);
       }
 
       if (!imageExtension) {
@@ -72,7 +82,7 @@ export const BlogPrivateResolvers = {
         };
       }
 
-      /* return null; */
+      return null;
     }
   }
 };

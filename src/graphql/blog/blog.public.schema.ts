@@ -1,36 +1,41 @@
-import {
-  counterViews,
-  showListWithTwoRelation
-} from '@helpers/querys/Blog.query';
-
 import gql from 'graphql-tag';
+import {
+  getAllBlogsWithRelations,
+  getBlogResulbyId,
+  searchBlogsByTitle
+} from '@controllers/blog/blog.controller';
 
 export const BlogPublicTypeDefs = gql`
   extend type Query {
     getpublicArrayBlogs: [Blog]
     getOneBlogbyId(id: ID!): Blog
+    searchByTitle(title: String!): [Blog]
   }
 
   type Blog {
     id: ID
     title: String!
     body_content: String!
-    front_image: Image
+    front_image: Image!
     slug_title: String
     count_view: Int
+    author: User!
+    origin: String!
     createdAt: String
     updatedAt: String
-    author: User!
   }
 `;
 
 export const BlogPublicResolvers = {
   Query: {
     getpublicArrayBlogs: async () => {
-      return await showListWithTwoRelation('blog', 'author', 'front_image');
+      return await getAllBlogsWithRelations();
     },
     getOneBlogbyId: async (_: any, { id }) => {
-      return await counterViews(id);
+      return await getBlogResulbyId(id);
+    },
+    searchByTitle: async (_: any, { title }) => {
+      return await searchBlogsByTitle(title);
     }
   }
 };
