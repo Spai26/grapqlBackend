@@ -59,6 +59,7 @@ export const AuthResolvers = {
       if (mytoken) {
         setAccessTokenCookie(res, mytoken);
 
+        res.cookie('access-token', mytoken);
         return {
           mytoken,
           message: {
