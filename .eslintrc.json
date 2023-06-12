@@ -27,13 +27,13 @@
           {
             "alias": {
               "@routes": "./src/routes",
-              "@constrollers": "./src/controllers",
               "@config": "./src/config",
               "@models": "./src/models",
               "@graphql": "./src/graphql",
               "@interfaces": "./src/interfaces",
               "@middlewares": "./src/middlewares",
-              "@helpers": "./src/libs/helpers"
+              "@helpers": "./src/libs/helpers",
+              "@controllers": "./src/controllers"
             }
           }
         ]
