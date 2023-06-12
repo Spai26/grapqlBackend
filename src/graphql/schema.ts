@@ -12,18 +12,19 @@ import {
 import { RolesTypeDefs, RolResolvers } from './Roles.schema';
 import { PermissionResolvers, PermissionTypeDefs } from './permission.schema';
 import { ImageTypeDefs } from './Image.schema';
+
 const rootTypeDefs = gql`
   type Query {
+    _: String
+  }
+
+  type Mutation {
     _: String
   }
 
   type messageCrud {
     success: Boolean
     message: String
-  }
-
-  type Mutation {
-    _: String
   }
 `;
 
