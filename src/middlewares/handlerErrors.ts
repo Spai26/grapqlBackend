@@ -25,6 +25,16 @@ export const typesErrors: Record<string, ErrorType> = {
     errorStatus: 500
   },
 
+  DATABASE_ERROR: {
+    errorCode: ApolloServerErrorCode.INTERNAL_SERVER_ERROR,
+    errorStatus: 500
+  },
+
+  ROL_NOT_VALID: {
+    errorCode: 'ROL NOT VALID',
+    errorStatus: 401
+  },
+
   UNAUTHENTIFATED: {
     errorCode: 'UNAUTHENTIFATED',
     errorStatus: 401
