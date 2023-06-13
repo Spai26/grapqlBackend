@@ -33,7 +33,8 @@
               "@interfaces": "./src/interfaces",
               "@middlewares": "./src/middlewares",
               "@helpers": "./src/libs/helpers",
-              "@controllers": "./src/controllers"
+              "@controllers": "./src/controllers",
+              "@utils": "./src/utils"
             }
           }
         ]
