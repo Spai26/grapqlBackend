@@ -1,9 +1,7 @@
 import { RolModel } from '@models/nosql/roles.models';
-import { getModelByName, list } from './generalConsult';
 import { PermisionModel } from '@models/nosql/permission.models';
 import { handlerHttpError, typesErrors } from '@middlewares/handlerErrors';
 
-let Model;
 /**
  * * Verifica si la lista es un array valido
  * @param elements

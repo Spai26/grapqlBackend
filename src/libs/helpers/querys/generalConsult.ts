@@ -1,21 +1,15 @@
+import { IBlog, IImage, IPermission, IRol, IUser } from '@interfaces/index';
 import { BlogModel } from '@models/nosql/blog.models';
 import { ComentModel } from '@models/nosql/coment.models';
 import { ImageModel } from '@models/nosql/image.models';
 import { PermisionModel } from '@models/nosql/permission.models';
 import { RolModel } from '@models/nosql/roles.models';
 import { UserModel } from '@models/nosql/user.models';
+import { searchOptions } from '@utils/typesCustom';
 
 let Model;
 
 export interface list {}
-
-export interface values {
-  name: string;
-}
-
-export interface searchOptions {
-  [key: string]: string | number | boolean;
-}
 
 export interface findOptions {
   password?: number;
@@ -23,21 +17,21 @@ export interface findOptions {
   email?: string | number;
   website?: number;
   phone?: number;
+  author?: string;
 }
 
 /**
- *
  * * list of models created
  * @param model
  * @returns
  */
 export const getModelByName = (model: string) => {
   const listModels: list = {
-    user: UserModel,
-    rol: RolModel,
-    permission: PermisionModel,
-    blog: BlogModel,
-    image: ImageModel,
+    user: UserModel<IUser>,
+    rol: RolModel<IRol>,
+    permission: PermisionModel<IPermission>,
+    blog: BlogModel<IBlog>,
+    image: ImageModel<IImage>,
     comment: ComentModel
   };
 
@@ -130,7 +124,7 @@ export const showListRealTime = async (
  * @param model
  * @returns query
  */
-export const showlist = async (model: string) => {
+export const showlist = async (model: string, options?: findOptions) => {
   Model = getModelByName(model);
   return (await Model.find({})) || null;
 };

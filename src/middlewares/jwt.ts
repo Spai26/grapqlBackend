@@ -1,16 +1,12 @@
 import * as jwt from 'jsonwebtoken';
 import { handlerHttpError, typesErrors } from './handlerErrors';
-import { searchOptions } from '@helpers/querys/generalConsult';
+import { optionUser } from '@utils/typesCustom';
 
 let token: string | jwt.JwtPayload;
-export interface optionUser {
-  id: searchOptions;
-  rol?: searchOptions;
-}
 
 export const createAccesToken = ({ id, rol }: optionUser): string => {
   try {
-    token = jwt.sign({ id }, process.env.ACCESS_TOKEN_SECRET, {
+    token = jwt.sign({ id, rol }, process.env.ACCESS_TOKEN_SECRET, {
       expiresIn: process.env.TOKEN_EXPIRES
     });
   } catch (error) {
