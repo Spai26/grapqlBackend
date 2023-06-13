@@ -1,4 +1,4 @@
-import { Document, Model } from 'mongoose';
+import mongoose, { Document, Model } from 'mongoose';
 
 export interface IUser {
   firstname: String;
@@ -7,7 +7,7 @@ export interface IUser {
   phone: String;
   website?: String;
   password: String;
-  rol: String;
+  rol: mongoose.Types.ObjectId;
 }
 
 export interface IUserDocument extends IUser, Document {}

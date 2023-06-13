@@ -3,7 +3,7 @@ import mongoose, { Schema, Document } from 'mongoose';
 /*  */
 enum imageTypes {
   GALLERY = 'gallery',
-  Image = 'image'
+  IMAGE = 'image'
 }
 
 export interface IImage {
