@@ -1,16 +1,29 @@
-import { createNewDocument, isExistById } from '@helpers/querys/generalConsult';
-import { uploadImage } from '@helpers/generateImageUrl';
-import { validExtensionImage } from '@helpers/validateExtension';
-import { handlerHttpError, typesErrors } from '@middlewares/handlerErrors';
 import gql from 'graphql-tag';
-let result;
+
+import { handlerHttpError, typesErrors } from '@middlewares/handlerErrors';
+import {
+  branchBlogController,
+  getAllBlogsWithRelations,
+  getBlogOnwer
+} from '@controllers/blog/blog.controller';
+import { updateBlogController } from '@controllers/blog/auth/rootBlogController';
+import {
+  deleteController,
+  updateStatusController
+} from '@controllers/blog/auth/userAuthBlog.controller';
+
 export const BlogPrivateTypeDefs = gql`
   extend type Query {
     #para evitar errores
     hello: String
+    getAllOnwerBlogs: [Blog]
+    getOneBlogbyIdOnwer(id: ID!): Blog
   }
   extend type Mutation {
     attachNewBlog(input: addNewBlog): messageCrud
+    updateMyBlog(id: ID!, input: rootUpdateMyBlog): messageCrud
+    updateStatusBlog(id: ID!, status: Boolean!): messageCrud
+    deleteMyBlog(id: ID!): messageCrud
   }
 
   input addNewBlog {
@@ -18,10 +31,43 @@ export const BlogPrivateTypeDefs = gql`
     body_content: String
     front_image: image!
     author: ID!
+    status: Boolean
+  }
+
+  input rootUpdateMyBlog {
+    title: String
+    body_content: String
+    status: Boolean
+    front_image: rootImage
+  }
+
+  input rootImage {
+    url: String
   }
 `;
 
 export const BlogPrivateResolvers = {
+  Query: {
+    getAllOnwerBlogs: (_, __, { user }) => {
+      if (!user) {
+        throw handlerHttpError(
+          'User dont register!',
+          typesErrors.UNAUTHENTIFATED
+        );
+      }
+      //falta considerar origin or source
+      return getAllBlogsWithRelations({ author: user.id });
+    },
+    getOneBlogbyIdOnwer: (_, { id }, { user }) => {
+      if (!user) {
+        throw handlerHttpError(
+          'User dont register!',
+          typesErrors.UNAUTHENTIFATED
+        );
+      }
+      return getBlogOnwer(id);
+    }
+  },
   Mutation: {
     attachNewBlog: async (_: any, { input }, { user }) => {
       if (!user) {
@@ -31,58 +77,35 @@ export const BlogPrivateResolvers = {
         );
       }
 
-      const checkrol = await isExistById(user.rol, 'rol');
-      if (checkrol.name !== 'superAdmin') {
+      return await branchBlogController(user, input);
+    },
+    updateMyBlog: async (_: any, { id, input }, { user }) => {
+      if (!user) {
         throw handlerHttpError(
-          'you do not have access to this type of query!',
-          typesErrors.ROL_NOT_VALID
+          'User dont register!',
+          typesErrors.UNAUTHENTIFATED
         );
       }
-
-      /**
-       * modo rootAdmin
-       */
-      const { title, body_content, front_image, author } = input;
-      const { model_type } = front_image;
-      const exist = await isExistById(author, 'user');
-      const imageExtension = validExtensionImage(front_image.url);
-
-      if (!exist) {
-        throw handlerHttpError('User no valid!', typesErrors.BAD_USER_INPUT);
-      }
-
-      if (!imageExtension) {
-        throw handlerHttpError('Image no valid!', typesErrors.BAD_REQUEST);
-      }
-
-      const urlimage = await uploadImage(front_image.url);
-      const image = await createNewDocument(
-        { url: urlimage, model_type, model_id: null },
-        'image'
-      );
-
-      if (exist && imageExtension) {
-        const newblog = await createNewDocument(
-          {
-            title,
-            body_content,
-            front_image: image._id,
-            author: exist._id
-          },
-          'blog'
+      return await updateBlogController(id, input);
+    },
+    updateStatusBlog: async (_: any, { id, status }, { user }) => {
+      if (!user) {
+        throw handlerHttpError(
+          'User dont register!',
+          typesErrors.UNAUTHENTIFATED
         );
-
-        image.model_id = newblog._id;
-        await image.save();
-        await newblog.save();
-
-        return {
-          success: true,
-          message: 'Blog agregate'
-        };
       }
+      return await updateStatusController(id, status);
+    },
 
-      return null;
+    deleteMyBlog: async (_: any, { id }, { user }) => {
+      if (!user) {
+        throw handlerHttpError(
+          'User dont register!',
+          typesErrors.UNAUTHENTIFATED
+        );
+      }
+      return await deleteController(id);
     }
   }
 };

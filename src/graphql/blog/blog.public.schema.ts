@@ -20,7 +20,8 @@ export const BlogPublicTypeDefs = gql`
     slug_title: String
     count_view: Int
     author: User!
-    origin: String!
+    status: Boolean
+
     createdAt: String
     updatedAt: String
   }
