@@ -24,7 +24,7 @@ const corsOptions = {
   methods: 'GET, POST, OPTIONS, PUT, DELETE',
   preflightContinue: false,
   optionsSuccessStatus: 204,
-  credentials: false // Deshabilitar el envío de cookies
+  credentials: true // Habilitar el envío de cookies
 };
 export async function startApolloServer(
   typeDefs: any,
