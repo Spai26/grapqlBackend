@@ -54,7 +54,10 @@ export const AuthResolvers = {
         );
       }
 
-      const mytoken = await createAccesToken({ id: isValidUser._id });
+      const mytoken = await createAccesToken({
+        id: isValidUser._id,
+        rol: isValidUser.rol
+      });
 
       if (mytoken) {
         setAccessTokenCookie(res, mytoken);
