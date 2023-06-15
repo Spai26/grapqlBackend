@@ -9,7 +9,7 @@ export interface IUser {
   phone: string;
   website?: string;
   password: string;
-  rol?: mongoose.Types.ObjectId;
+  rol?: mongoose.Types.ObjectId; //ref 'rol'
   branchs?: mongoose.Types.DocumentArray<IBranch>;
   stores?: mongoose.Types.DocumentArray<IStore>;
 }
