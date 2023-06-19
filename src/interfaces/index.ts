@@ -1,5 +1,5 @@
 export * from './blog.interface';
-export * from './branch.interface';
+export * from './brand.interface';
 export * from './category.interface';
 export * from './image.interface';
 export * from './permission.interface';

@@ -1,4 +1,4 @@
-import { Document } from 'mongoose';
+import { Document, Model } from 'mongoose';
 
 //amount llevar un contador de los usados ?? a ver
 export interface ITag {

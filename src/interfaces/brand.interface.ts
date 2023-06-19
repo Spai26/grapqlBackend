@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 import { IImage } from './image.interface';
 
-export interface IBranch {
+export interface IBrand {
   title: string;
   sub_title: string;
   biografy: string;
@@ -12,3 +12,5 @@ export interface IBranch {
   source: string;
   collections?: string;
 }
+
+export interface IBrandDocument extends IBrand, Document {}

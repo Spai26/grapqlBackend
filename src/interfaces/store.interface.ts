@@ -27,16 +27,16 @@ export interface IStore {
   categories?: mongoose.Types.DocumentArray<ICategory>;
 }
 
-type Times = {
+interface Times {
   week_name: string;
   open_time: string;
   close_time: string;
   open: boolean;
-};
+}
 
-type Social = {
+interface Social {
   name_social: string;
   url: string;
-};
+}
 
 export interface IStoreDocument extends IStore, Document {}
