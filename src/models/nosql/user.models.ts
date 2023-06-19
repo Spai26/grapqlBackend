@@ -7,12 +7,17 @@ const UserSchema = new Schema<IUserDocument, IUserModel>(
     firstname: { type: String, require: true },
     lastname: { type: String, require: true },
     email: { type: String, require: true, unique: true },
+    username: { type: String, require: true, unique: true },
     phone: { type: String, default: null },
     website: { type: String, default: null },
     password: { type: String, require: true },
-    rol: { type: Schema.Types.ObjectId, ref: 'Role' }
+    rol: { type: Schema.Types.ObjectId, ref: 'Role' },
+    branchs: [{ type: Schema.Types.ObjectId, ref: 'Branch' }],
+    stores: [{ type: Schema.Types.ObjectId, ref: 'Store' }]
   },
   {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
     timestamps: true,
     versionKey: false
   }

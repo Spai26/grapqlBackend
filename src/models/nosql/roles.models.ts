@@ -1,9 +1,9 @@
-import { Schema, model } from 'mongoose';
-import { IRolDocument } from '@interfaces/rol.interface';
+import { Model, Schema, model } from 'mongoose';
+import { IRol, IRolDocument } from '@interfaces/rol.interface';
 
-const RolSchema = new Schema<IRolDocument>(
+const RolSchema = new Schema<IRolDocument, Model<IRol>>(
   {
-    name: { type: String, unique: true },
+    name: { type: String, unique: true, require: true },
     description: { type: String },
     permissions: {
       type: [{ type: Schema.Types.ObjectId, ref: 'Permission' }]
@@ -15,4 +15,4 @@ const RolSchema = new Schema<IRolDocument>(
   }
 );
 
-export const RolModel = model<IRolDocument>('Role', RolSchema);
+export const RolModel = model<IRolDocument, Model<IRol>>('Role', RolSchema);
