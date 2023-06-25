@@ -1,12 +1,16 @@
-import { gql } from 'apollo-server-express';
-import { handlerHttpError, typesErrors } from '@middlewares/handlerErrors';
-import { showlist } from '@helpers/querys/generalConsult';
+import {
+  handlerHttpError,
+  typesErrors
+} from '@middlewares/handlerErrorsApollo';
+
 import {
   authAttachPermission,
   authDeletePermission,
   authUpdatePermission
 } from '@controllers/auth/auth.permission.controller';
-import { MyContext } from '@helpers/context';
+
+import gql from 'graphql-tag';
+import { showlist } from '@helpers/querys/generalConsult';
 
 export const PermissionTypeDefs = gql`
   extend type Query {
@@ -40,7 +44,7 @@ export const PermissionTypeDefs = gql`
 
 export const PermissionResolvers = {
   Query: {
-    getAllPermision: async (_, __, { user }: MyContext) => {
+    getAllPermision: async (_, __, { user }) => {
       if (!user) {
         throw handlerHttpError(
           'User dont register!',

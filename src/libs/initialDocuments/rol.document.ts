@@ -1,4 +1,7 @@
-import { handlerHttpError, typesErrors } from '@middlewares/handlerErrors';
+import {
+  handlerHttpError,
+  typesErrors
+} from '@middlewares/handlerErrorsApollo';
 import { RolModel } from '@models/nosql/roles.models';
 
 export const createRoles = async () => {

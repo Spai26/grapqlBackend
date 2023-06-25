@@ -32,7 +32,8 @@
               "@graphql": "./src/graphql",
               "@interfaces": "./src/interfaces",
               "@middlewares": "./src/middlewares",
-              "@helpers": "./src/libs/helpers",
+              "@libs": "./src/libs",
+              "@helpers": "./src/helpers",
               "@controllers": "./src/controllers",
               "@utils": "./src/utils"
             }

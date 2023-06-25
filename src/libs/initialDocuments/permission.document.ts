@@ -1,4 +1,7 @@
-import { handlerHttpError, typesErrors } from '@middlewares/handlerErrors';
+import {
+  handlerHttpError,
+  typesErrors
+} from '@middlewares/handlerErrorsApollo';
 import { PermisionModel } from '@models/nosql/permission.models';
 
 export const createPermissionBase = async () => {

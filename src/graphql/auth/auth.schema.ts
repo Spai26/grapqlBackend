@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
-import { createAccesToken } from '@middlewares/jwt';
-import { setAccessTokenCookie } from '@helpers/accessToken';
+import { createAccesToken } from '@middlewares/generateJWT';
+import { setAccessTokenCookie } from '@libs/accessWithCookie';
 import { authLoginController } from '@controllers/auth/authSessions';
 
 export const AuthTypeDefs = gql`

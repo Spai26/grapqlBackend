@@ -1,8 +1,12 @@
-import { handlerHttpError, typesErrors } from '@middlewares/handlerErrors';
-import { CheckVerifyToken } from '@middlewares/jwt';
+import {
+  handlerHttpError,
+  typesErrors
+} from '@middlewares/handlerErrorsApollo';
+import { CheckVerifyToken } from '@middlewares/generateJWT';
 import { JwtPayload } from 'jsonwebtoken';
-import { isExistById } from './querys/generalConsult';
+import { isExistById } from '../helpers/querys/generalConsult';
 import { optionUser } from '@utils/typesCustom';
+import { Request, Response } from 'express';
 
 export type BaseContext = {};
 
@@ -12,7 +16,7 @@ export interface MyContext {
   res;
 }
 
-export const isAuthentificate = async (req, res) => {
+export const isAuthentificate = async (req: Request, res: Response) => {
   try {
     //Bearer token
     if (req.headers.authorization) {

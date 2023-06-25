@@ -1,5 +1,5 @@
 import * as jwt from 'jsonwebtoken';
-import { handlerHttpError, typesErrors } from './handlerErrors';
+import { handlerHttpError, typesErrors } from './handlerErrorsApollo';
 import { optionUser } from '@utils/typesCustom';
 
 let token: string | jwt.JwtPayload;

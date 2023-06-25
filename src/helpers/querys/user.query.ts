@@ -1,4 +1,7 @@
-import { handlerHttpError, typesErrors } from '@middlewares/handlerErrors';
+import {
+  handlerHttpError,
+  typesErrors
+} from '@middlewares/handlerErrorsApollo';
 import { UserModel } from '@models/nosql/user.models';
 
 /**

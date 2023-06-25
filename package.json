@@ -14,7 +14,6 @@
     "dev": "nodemon"
   },
   "dependencies": {
-    "apollo-server-express": "^3.12.0",
     "bcrypt": "^5.1.0",
     "cloudinary": "^1.37.1",
     "cookie-parser": "^1.4.6",

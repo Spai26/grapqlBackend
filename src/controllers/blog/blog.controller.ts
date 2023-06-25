@@ -4,7 +4,10 @@ import {
   isExistById
 } from '@helpers/querys/generalConsult';
 import { IBlog } from '@interfaces/blog.interface';
-import { handlerHttpError, typesErrors } from '@middlewares/handlerErrors';
+import {
+  handlerHttpError,
+  typesErrors
+} from '@middlewares/handlerErrorsApollo';
 import { searchOptions } from '@utils/typesCustom';
 import { rootNewBlogController } from './auth/rootBlogController';
 import { createBlogController } from './auth/userAuthBlog.controller';

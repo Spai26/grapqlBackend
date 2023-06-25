@@ -1,6 +1,9 @@
 import gql from 'graphql-tag';
 
-import { handlerHttpError, typesErrors } from '@middlewares/handlerErrors';
+import {
+  handlerHttpError,
+  typesErrors
+} from '@middlewares/handlerErrorsApollo';
 import {
   branchBlogController,
   getAllBlogsWithRelations,

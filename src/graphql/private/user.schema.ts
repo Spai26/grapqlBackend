@@ -1,7 +1,10 @@
 import { gql } from 'graphql-tag';
 
 import { UserModel } from '@models/nosql/user.models';
-import { handlerHttpError, typesErrors } from '@middlewares/handlerErrors';
+import {
+  handlerHttpError,
+  typesErrors
+} from '@middlewares/handlerErrorsApollo';
 import {
   createNewDocument,
   isExistById,

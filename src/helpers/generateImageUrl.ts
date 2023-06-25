@@ -1,7 +1,9 @@
-import cloudinary from '@config/cloudinary';
-import { handlerHttpError, typesErrors } from '@middlewares/handlerErrors';
+import cloudinary from '@libs/cloudinary';
+import {
+  handlerHttpError,
+  typesErrors
+} from '@middlewares/handlerErrorsApollo';
 
-interface options {}
 export const uploadImage = async (path: string) => {
   try {
     const { url } = await cloudinary.uploader.upload(path);

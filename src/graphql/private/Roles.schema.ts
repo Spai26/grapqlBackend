@@ -1,13 +1,13 @@
-import { gql } from 'apollo-server-express';
-import { handlerHttpError, typesErrors } from '@middlewares/handlerErrors';
-
-import { showListRealTime } from '@helpers/querys/generalConsult';
-
-import { MyContext } from '@helpers/context';
 import {
   authDeleteRoles,
   updateRolesAndPermission
 } from '@controllers/auth/auth.rol.controller';
+import gql from 'graphql-tag';
+import {
+  handlerHttpError,
+  typesErrors
+} from '@middlewares/handlerErrorsApollo';
+import { showListRealTime } from '@helpers/querys/generalConsult';
 
 export const RolesTypeDefs = gql`
   extend type Query {
@@ -61,7 +61,7 @@ export const RolResolvers = {
       }
       return await updateRolesAndPermission(input);
     },
-    deleteRoles: async (_: any, { id }: any, { user }: MyContext) => {
+    deleteRoles: async (_: any, { id }: any, { user }) => {
       if (!user) {
         throw handlerHttpError(
           'User dont register!',

@@ -2,29 +2,20 @@ import http from 'http';
 import cors from 'cors';
 import morgan from 'morgan';
 import express from 'express';
+import { config } from 'dotenv';
 import cookieParser = require('cookie-parser');
 
-import { config } from 'dotenv';
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
-
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
-import { isAuthentificate, MyContext, BaseContext } from '@helpers/context';
 
 import routeIndex from '@routes/index';
+import { corsOptions } from '@libs/corsOptions';
+import { isAuthentificate, MyContext, BaseContext } from '@libs/apolloContext';
 
 config();
 
 const PORT: Number = Number.parseInt(process.env.PORT) || 3000;
-const corsOptions = {
-  origin: '*', // Permitir todos los orígenes
-  allowedHeaders:
-    'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method',
-  methods: 'GET, POST, OPTIONS, PUT, DELETE',
-  preflightContinue: false,
-  optionsSuccessStatus: 204,
-  credentials: true // Habilitar el envío de cookies
-};
 
 export async function startApolloServer(
   typeDefs: any,

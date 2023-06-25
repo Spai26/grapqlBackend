@@ -1,6 +1,6 @@
-import { showlist } from '@helpers/querys/generalConsult';
-import { GraphQLUpload, FileUpload } from 'graphql-upload-ts';
+import { FileUpload } from 'graphql-upload-ts';
 import gql from 'graphql-tag';
+import { showlist } from '@helpers/querys/generalConsult';
 
 export const ImageTypeDefs = gql`
   scalar Upload

@@ -1,6 +1,9 @@
 import { RolModel } from '@models/nosql/roles.models';
 import { PermisionModel } from '@models/nosql/permission.models';
-import { handlerHttpError, typesErrors } from '@middlewares/handlerErrors';
+import {
+  handlerHttpError,
+  typesErrors
+} from '@middlewares/handlerErrorsApollo';
 
 /**
  * * Verifica si la lista es un array valido

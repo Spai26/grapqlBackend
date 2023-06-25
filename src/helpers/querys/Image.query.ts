@@ -1,9 +1,9 @@
-import { handlerHttpError, typesErrors } from '@middlewares/handlerErrors';
-import { createNewDocument, getModelByName } from './generalConsult';
+import {
+  handlerHttpError,
+  typesErrors
+} from '@middlewares/handlerErrorsApollo';
+import { createNewDocument } from './generalConsult';
 import { validExtensionImage } from '@helpers/validateExtension';
-import { IImage } from '@interfaces/image.interface';
-
-//const Model = getModelByName('image');
 
 /**
  *

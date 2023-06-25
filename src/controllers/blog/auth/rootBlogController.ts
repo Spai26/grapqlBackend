@@ -6,7 +6,10 @@ import {
 } from '@helpers/querys/generalConsult';
 import { validExtensionImage } from '@helpers/validateExtension';
 import { IBlog } from '@interfaces/blog.interface';
-import { handlerHttpError, typesErrors } from '@middlewares/handlerErrors';
+import {
+  handlerHttpError,
+  typesErrors
+} from '@middlewares/handlerErrorsApollo';
 import { ImageModel } from '@models/nosql/image.models';
 
 let result;

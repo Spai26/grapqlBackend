@@ -7,7 +7,10 @@ import {
 } from '@helpers/querys/generalConsult';
 import { IPermission } from '@interfaces/permission.interface';
 
-import { handlerHttpError, typesErrors } from '@middlewares/handlerErrors';
+import {
+  handlerHttpError,
+  typesErrors
+} from '@middlewares/handlerErrorsApollo';
 import { keyValueData } from '@utils/typesCustom';
 
 const MPermission = getModelByName('permission');
