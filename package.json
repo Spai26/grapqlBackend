@@ -9,15 +9,13 @@
   "scripts": {
     "build": "babel src --extensions \".ts,.js\" --out-dir build --copy-files",
     "start": "node build/index.js",
-    "dev": "ts-node-dev  -r tsconfig-paths/register --respawn --ignore-watch node_modules --files src/index.ts",
     "lint": "eslint . --ext .ts",
-    "format": "prettier --config .prettierrc './src/' --write"
+    "format": "prettier --config .prettierrc './src/' --write",
+    "dev": "nodemon"
   },
   "dependencies": {
-    "@apollo/server": "^4.7.1",
     "apollo-server-express": "^3.12.0",
     "bcrypt": "^5.1.0",
-    "body-parser": "^1.20.2",
     "cloudinary": "^1.37.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -25,22 +23,28 @@
     "express": "^4.18.2",
     "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",
+    "graphql-upload-ts": "^2.0.6",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.8.0",
     "mongoose-slug-generator": "^1.0.4",
-    "typescript": "^5.0.4"
+    "multer": "^1.4.5-lts.1",
+    "nodemon": "^2.0.22",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@apollo/server": "^4.7.1",
     "@babel/cli": "^7.21.5",
     "@babel/core": "^7.22.1",
     "@babel/node": "^7.22.1",
     "@babel/preset-env": "^7.22.2",
     "@babel/preset-typescript": "^7.21.5",
-    "@types/cookie-parser": "^1.4.3",
+    "@types/cookie-parser": "^1.4.x",
     "@types/express": "^4.17.17",
     "@types/jsonwebtoken": "^9.0.2",
     "@types/morgan": "^1.9.4",
+    "@types/multer": "^1.4.7",
     "@types/node": "^20.2.5",
+    "@types/uuid": "^9.0.2",
     "@typescript-eslint/eslint-plugin": "^5.59.7",
     "@typescript-eslint/parser": "^5.59.7",
     "babel-plugin-module-resolver": "^5.0.0",
@@ -52,6 +56,7 @@
     "prettier": "^2.8.8",
     "ts-node": "^10.9.1",
     "ts-node-dev": "^2.0.0",
-    "tsconfig-paths": "^4.2.0"
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.0.4"
   }
 }

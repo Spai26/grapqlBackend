@@ -1,9 +1,24 @@
-import { IBlog, IImage, IPermission, IRol, IUser } from '@interfaces/index';
+import {
+  IBlog,
+  IBrand,
+  ICategory,
+  IImage,
+  IPermission,
+  IRol,
+  IStore,
+  ITag,
+  IUser
+} from '@interfaces/index';
+import { ITest } from '@interfaces/testing';
 import { BlogModel } from '@models/nosql/blog.models';
-import { ComentModel } from '@models/nosql/coment.models';
+import { BrandModel } from '@models/nosql/brand.models';
+import { CategoryModel } from '@models/nosql/category.models';
 import { ImageModel } from '@models/nosql/image.models';
 import { PermisionModel } from '@models/nosql/permission.models';
 import { RolModel } from '@models/nosql/roles.models';
+import { StoreModel } from '@models/nosql/store.models';
+import { TagModel } from '@models/nosql/tag.models';
+import { TestModel } from '@models/nosql/testing.models';
 import { UserModel } from '@models/nosql/user.models';
 import { searchOptions } from '@utils/typesCustom';
 
@@ -25,14 +40,19 @@ export interface findOptions {
  * @param model
  * @returns
  */
+
 export const getModelByName = (model: string) => {
   const listModels: list = {
     user: UserModel<IUser>,
+    blog: BlogModel<IBlog>,
+    store: StoreModel<IStore>,
+    brand: BrandModel<IBrand>,
     rol: RolModel<IRol>,
     permission: PermisionModel<IPermission>,
-    blog: BlogModel<IBlog>,
     image: ImageModel<IImage>,
-    comment: ComentModel
+    tag: TagModel<ITag>,
+    category: CategoryModel<ICategory>,
+    test: TestModel<ITest>
   };
 
   return listModels[model] || null;
@@ -45,7 +65,10 @@ export const getModelByName = (model: string) => {
  * @param value
  * @returns Object existing
  */
-export const existFields = async (model: string, values: searchOptions) => {
+export const existFields = async (
+  model: string,
+  values: searchOptions<string>
+) => {
   Model = getModelByName(model);
   return await Model.findOne(values);
 };
@@ -90,7 +113,7 @@ export const createNewDocument = async (values, model: string) => {
  * @returns query
  */
 export const updateOneElement = async (
-  id: searchOptions,
+  id: searchOptions<string>,
   values,
   model: string
 ) => {

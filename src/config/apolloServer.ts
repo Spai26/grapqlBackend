@@ -4,7 +4,6 @@ import morgan from 'morgan';
 import express from 'express';
 import cookieParser = require('cookie-parser');
 
-import { json } from 'body-parser';
 import { config } from 'dotenv';
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
@@ -12,7 +11,7 @@ import { expressMiddleware } from '@apollo/server/express4';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
 import { isAuthentificate, MyContext, BaseContext } from '@helpers/context';
 
-import apiRoute from '@routes/index';
+import routeIndex from '@routes/index';
 
 config();
 
@@ -26,11 +25,17 @@ const corsOptions = {
   optionsSuccessStatus: 204,
   credentials: true // Habilitar el envío de cookies
 };
+
 export async function startApolloServer(
   typeDefs: any,
   resolvers: any
 ): Promise<void> {
   const app = express();
+
+  app.use(morgan('dev'));
+  app.use(express.json());
+  app.use(cookieParser());
+
   const httpServer = http.createServer(app);
 
   const server = new ApolloServer<MyContext>({
@@ -42,14 +47,12 @@ export async function startApolloServer(
 
   await server.start();
 
-  app.use(morgan('dev'));
-  app.use(json());
-  app.use(cookieParser());
-  app.use('/api', apiRoute);
+  app.use('/api', routeIndex);
 
   app.use(
     '/graphql',
     cors<cors.CorsRequest>(corsOptions),
+
     expressMiddleware(server, {
       context: async ({ req, res }) => {
         const user = (await isAuthentificate(req, res)) as BaseContext;

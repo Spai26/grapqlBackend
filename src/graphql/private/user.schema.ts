@@ -4,7 +4,6 @@ import { UserModel } from '@models/nosql/user.models';
 import { handlerHttpError, typesErrors } from '@middlewares/handlerErrors';
 import {
   createNewDocument,
-  existFields,
   isExistById,
   showListRealTime,
   updateOneElement
@@ -12,7 +11,7 @@ import {
 
 let result;
 /**
- * @important: add ! if is required
+ * !important: add ! if is required
  */
 export const UsertypeDefs = gql`
   #Query consult list
@@ -36,6 +35,7 @@ export const UsertypeDefs = gql`
     phone: String
     website: String
     password: String!
+    photo: String
     rol: Rol
     createdAt: String
     updatedAt: String
@@ -62,7 +62,13 @@ export const UsertypeDefs = gql`
 
 export const UserResolvers = {
   Query: {
-    allUsers: async () => {
+    allUsers: async (_, __, { user }) => {
+      if (!user) {
+        throw handlerHttpError(
+          'User dont register!',
+          typesErrors.UNAUTHENTIFATED
+        );
+      }
       return await showListRealTime('user', 'rol', { virtual: true });
     },
 
@@ -71,10 +77,16 @@ export const UserResolvers = {
     }
   },
   Mutation: {
-    createUser: async (_: any, { input }) => {
+    createUser: async (_: any, { input }, { user }) => {
+      if (!user) {
+        throw handlerHttpError(
+          'User dont register!',
+          typesErrors.UNAUTHENTIFATED
+        );
+      }
       const { firstname, lastname, email, password, rol } = input;
 
-      const userExist = await existFields('user', email);
+      const userExist = await UserModel.findOne({ email: email });
       const rolExist = await isExistById(rol, 'rol');
 
       if (userExist) {
@@ -97,14 +109,20 @@ export const UserResolvers = {
 
       if (result) {
         return {
-          succes: true,
-          message: 'User Created!'
+          message: 'User Created!',
+          success: true
         };
       }
       return null;
     },
 
-    updateUser: async (_: any, args: any) => {
+    updateUser: async (_: any, args: any, { user }) => {
+      if (!user) {
+        throw handlerHttpError(
+          'User dont register!',
+          typesErrors.UNAUTHENTIFATED
+        );
+      }
       const { id, firstname, lastname, phone, website } = args.input;
 
       result = await updateOneElement(
@@ -123,8 +141,14 @@ export const UserResolvers = {
         message: 'User updated!'
       };
     },
-
-    deletedUser: async (_: any, { _id }) => {
+    //eliminar los blogs relacionados
+    deletedUser: async (_: any, { _id }, { user }) => {
+      if (!user) {
+        throw handlerHttpError(
+          'User dont register!',
+          typesErrors.UNAUTHENTIFATED
+        );
+      }
       const cleanUser = await UserModel.findByIdAndDelete(_id);
 
       return 'User Deleted';

@@ -29,7 +29,7 @@ export const BlogPrivateTypeDefs = gql`
   input addNewBlog {
     title: String!
     body_content: String
-    front_image: image!
+    front_image: Image!
     author: ID!
     status: Boolean
   }

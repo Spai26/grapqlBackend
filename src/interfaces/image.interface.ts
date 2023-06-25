@@ -1,8 +1,9 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 
 enum imageTypes {
   GALLERY = 'gallery',
-  IMAGE = 'image'
+  IMAGE = 'image',
+  LOGO = 'logo'
 }
 
 export interface IImage {

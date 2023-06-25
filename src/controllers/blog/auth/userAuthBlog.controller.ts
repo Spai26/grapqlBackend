@@ -2,8 +2,7 @@ import { validateAndCreateImage } from '@helpers/querys/Image.query';
 import {
   createNewDocument,
   getModelByName,
-  isExistById,
-  showlist
+  isExistById
 } from '@helpers/querys/generalConsult';
 import { IBlog } from '@interfaces/blog.interface';
 import { handlerHttpError, typesErrors } from '@middlewares/handlerErrors';
@@ -26,6 +25,7 @@ export const createBlogController = async (user, input) => {
       },
       'blog'
     );
+    image.model_id = newblog._id;
     await image.save();
     await newblog.save();
 

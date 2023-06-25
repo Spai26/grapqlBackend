@@ -1,5 +1,5 @@
 import mongoose, { Document, Model } from 'mongoose';
-import { IBranch } from './brand.interface';
+import { IBrand } from './brand.interface';
 import { IStore } from './store.interface';
 
 export interface IUser {
@@ -11,7 +11,7 @@ export interface IUser {
   website?: string;
   password: string;
   rol?: mongoose.Types.ObjectId; //ref 'rol'
-  branchs?: mongoose.Types.DocumentArray<IBranch>;
+  branchs?: mongoose.Types.DocumentArray<IBrand>;
   stores?: mongoose.Types.DocumentArray<IStore>;
 }
 

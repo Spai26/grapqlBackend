@@ -8,6 +8,8 @@ export type BaseContext = {};
 
 export interface MyContext {
   user?: BaseContext | string;
+  req;
+  res;
 }
 
 export const isAuthentificate = async (req, res) => {

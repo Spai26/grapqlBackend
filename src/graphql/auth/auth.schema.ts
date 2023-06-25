@@ -1,13 +1,9 @@
 import gql from 'graphql-tag';
 import { createAccesToken } from '@middlewares/jwt';
-import { UserModel } from '@models/nosql/user.models';
-import { handlerHttpError, typesErrors } from '@middlewares/handlerErrors';
-import { existFields } from '@helpers/querys/generalConsult';
 import { setAccessTokenCookie } from '@helpers/accessToken';
+import { authLoginController } from '@controllers/auth/authSessions';
 
 export const AuthTypeDefs = gql`
-  directive @skipAuth on FIELD_DEFINITION
-
   input AuthLogin {
     email: String!
     password: String!
@@ -31,32 +27,11 @@ export const AuthTypeDefs = gql`
 export const AuthResolvers = {
   Mutation: {
     AuthLogin: async (_: any, { input }, { res }) => {
-      const { email, password } = input;
-
-      const isValidUser = await existFields('user', { email: email });
-
-      if (!isValidUser) {
-        throw handlerHttpError(
-          'Invalid credentials, please verified.',
-          typesErrors.NOT_FOUND
-        );
-      }
-
-      const validPass = await UserModel.comparePassword(
-        password,
-        isValidUser.password
-      );
-
-      if (!validPass) {
-        throw handlerHttpError(
-          'Invalid credentials, please verified.',
-          typesErrors.UNAUTHENTIFATED
-        );
-      }
+      const auth = await authLoginController(input);
 
       const mytoken = await createAccesToken({
-        id: isValidUser._id,
-        rol: isValidUser.rol
+        id: auth._id,
+        rol: auth.rol
       });
 
       if (mytoken) {
@@ -66,8 +41,8 @@ export const AuthResolvers = {
         return {
           mytoken,
           message: {
-            success: true,
-            message: 'Logued'
+            message: 'Logued',
+            success: true
           }
         };
       }

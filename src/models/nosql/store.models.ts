@@ -27,12 +27,14 @@ const Storechema = new Schema<IStoreDocument, Model<IStore>>(
         url: { type: String }
       }
     ],
-    times_tables: {
-      week_name: { type: String },
-      open_time: { type: Date },
-      close_time: { type: Date },
-      open: { type: String }
-    },
+    times_tables: [
+      {
+        week_name: { type: String },
+        open_time: { type: String },
+        close_time: { type: String },
+        open: { type: Boolean }
+      }
+    ],
     onwer: { type: Schema.Types.ObjectId, ref: 'User' },
     tags: [{ type: Schema.Types.ObjectId, ref: 'Tag' }],
     galleries_image: [{ type: Schema.Types.ObjectId, ref: 'Image' }],
