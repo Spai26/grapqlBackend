@@ -4,10 +4,13 @@ import {
   isExistById
 } from '@helpers/querys/generalConsult';
 import { IBlog } from '@interfaces/blog.interface';
-import { handlerHttpError, typesErrors } from '@middlewares/handlerErrors';
-import { createBlogController } from './auth/userAuthBlog.controller';
-import { rootNewBlogController } from './auth/rootBlogController';
+import {
+  handlerHttpError,
+  typesErrors
+} from '@middlewares/handlerErrorsApollo';
 import { searchOptions } from '@utils/typesCustom';
+import { rootNewBlogController } from './auth/rootBlogController';
+import { createBlogController } from './auth/userAuthBlog.controller';
 
 let list: IBlog[];
 let blog: IBlog | null;
@@ -124,13 +127,23 @@ export const getBlogOnwer = async (id: string): Promise<IBlog> => {
  * @param input
  * @returns new IBlog
  */
-export const branchBlogController = async (user, input: searchOptions) => {
+export const branchBlogController = async (
+  user,
+  input: searchOptions<string>
+) => {
   try {
     const checkrol = await isExistById(user.rol, 'rol');
 
     if (checkrol.name === 'superAdmin') {
       return await rootNewBlogController(input);
     }
+    /* CHECK PERMISSION = anypermission.include("...")
+    let lispermission = {
+      update : fn(editar)
+      create: fn (crear)
+      delete: fn(delete)
+      
+    } */
     return await createBlogController(user, input);
   } catch (error) {
     throw handlerHttpError(

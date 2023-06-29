@@ -1,9 +1,13 @@
 import { Schema, model } from 'mongoose';
-import { IPermisionDocument } from '@interfaces/permission.interface';
+import {
+  IPermisionDocument,
+  IPermission
+} from '@interfaces/permission.interface';
+import { Model } from 'mongoose';
 
-const PermissionSchema = new Schema<IPermisionDocument>(
+const PermissionSchema = new Schema<IPermisionDocument, Model<IPermission>>(
   {
-    name: { type: String, unique: true },
+    namePermission: { type: String, unique: true, require: true },
     description: { type: String }
   },
   {
@@ -12,7 +16,7 @@ const PermissionSchema = new Schema<IPermisionDocument>(
   }
 );
 
-export const PermisionModel = model<IPermisionDocument>(
+export const PermisionModel = model<IPermisionDocument, Model<IPermission>>(
   'Permission',
   PermissionSchema
 );

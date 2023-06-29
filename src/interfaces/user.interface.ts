@@ -1,18 +1,30 @@
 import mongoose, { Document, Model } from 'mongoose';
+import { IBrand } from './brand.interface';
+import { IStore } from './store.interface';
 
 export interface IUser {
-  firstname: String;
-  lastname: String;
-  email: String;
-  phone: String;
-  website?: String;
-  password: String;
-  rol: mongoose.Types.ObjectId;
+  firstname: string;
+  lastname: string;
+  email: string;
+  username: string;
+  phone: string;
+  website?: string;
+  password: string;
+  rol: mongoose.Types.ObjectId; //ref 'rol'
+  branchs?: mongoose.Types.DocumentArray<IBrand>;
+  stores?: mongoose.Types.DocumentArray<IStore>;
 }
 
-export interface IUserDocument extends IUser, Document {}
+/**
+ * methods functions
+ */
+export interface IUserDocument extends IUser, Document {
+  encryptPassword(password: string): Promise<string>;
+}
 
+/**
+ * static functions
+ */
 export interface IUserModel extends Model<IUserDocument> {
-  encryptPassword(password: String): String;
-  comparePassword(password: String, recivePassword: String): Boolean;
+  comparePassword(password: string, recivePassword: string): Promise<boolean>;
 }

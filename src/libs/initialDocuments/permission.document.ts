@@ -1,22 +1,21 @@
-import { handlerHttpError, typesErrors } from '@middlewares/handlerErrors';
+import { IPermisionDocument } from '@interfaces/permission.interface';
 import { PermisionModel } from '@models/nosql/permission.models';
 
-export const createPermissionBase = async () => {
+export const createPermissionBase = async (): Promise<IPermisionDocument[]> => {
   try {
     const count = await PermisionModel.estimatedDocumentCount();
 
     if (count > 0) return;
 
     const values = await Promise.all([
-      new PermisionModel({ name: 'created' }).save(),
-      new PermisionModel({ name: 'read' }).save(),
-      new PermisionModel({ name: 'insert' }).save(),
-      new PermisionModel({ name: 'update' }).save(),
-      new PermisionModel({ name: 'delete' }).save(),
-      new PermisionModel({ name: 'deleted users' }).save()
+      new PermisionModel({ namePermission: 'created' }).save(),
+      new PermisionModel({ namePermission: 'read' }).save(),
+      new PermisionModel({ namePermission: 'insert' }).save(),
+      new PermisionModel({ namePermission: 'updated' }).save(),
+      new PermisionModel({ namePermission: 'deleted' }).save()
     ]);
     console.log(values);
   } catch (error) {
-    throw handlerHttpError('fields dont agregated.!', typesErrors.BAD_REQUEST);
+    console.log('fields dont agregated.!');
   }
 };

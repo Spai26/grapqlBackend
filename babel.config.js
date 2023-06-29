@@ -22,7 +22,8 @@ module.exports = {
           '@graphql': './src/graphql',
           '@interfaces': './src/interfaces',
           '@middlewares': './src/middlewares',
-          '@helpers': './src/libs/helpers',
+          '@libs': './src/libs',
+          '@helpers': './src/helpers',
           '@utils': './src/utils'
         }
       }

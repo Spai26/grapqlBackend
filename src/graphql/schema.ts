@@ -1,18 +1,16 @@
 import gql from 'graphql-tag';
-import { UsertypeDefs, UserResolvers } from './user.schema';
-import { AuthTypeDefs, AuthResolvers } from './auth/auth.schema';
-import {
-  BlogPublicTypeDefs,
-  BlogPublicResolvers
-} from './blog/blog.public.schema';
-import {
-  BlogPrivateResolvers,
-  BlogPrivateTypeDefs
-} from './blog/blog.private.schema';
-import { RolesTypeDefs, RolResolvers } from './Roles.schema';
-import { PermissionResolvers, PermissionTypeDefs } from './permission.schema';
-import { ImageTypeDefs } from './Image.schema';
 
+/**
+ * * Private routes graphql
+ */
+import { UserTypeDefs, UserResolvers } from './user';
+import { RolTypeDefs, RolResolvers } from './rol';
+import { PermissionTypeDefs, PermissionResolvers } from './permission';
+
+/**
+ * * Public routes graphql
+ */
+import { AuthTypeDefs, AuthResolvers } from './auth';
 const rootTypeDefs = gql`
   type Query {
     _: String
@@ -22,27 +20,24 @@ const rootTypeDefs = gql`
     _: String
   }
 
-  type messageCrud {
+  #message global
+  type Response {
     success: Boolean
     message: String
   }
 `;
 
 export const typeDefs = [
-  rootTypeDefs,
   AuthTypeDefs,
-  UsertypeDefs,
-  BlogPublicTypeDefs,
-  BlogPrivateTypeDefs,
-  RolesTypeDefs,
+  UserTypeDefs,
+  RolTypeDefs,
   PermissionTypeDefs,
-  ImageTypeDefs
+  rootTypeDefs
 ];
+
 export const resolvers = [
   AuthResolvers,
   UserResolvers,
-  BlogPublicResolvers,
-  BlogPrivateResolvers,
   RolResolvers,
   PermissionResolvers
 ];
