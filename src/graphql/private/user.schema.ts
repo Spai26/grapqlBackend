@@ -1,18 +1,5 @@
 import { gql } from 'graphql-tag';
 
-import { UserModel } from '@models/nosql/user.models';
-import {
-  handlerHttpError,
-  typesErrors
-} from '@middlewares/handlerErrorsApollo';
-import {
-  createNewDocument,
-  isExistById,
-  showListRealTime,
-  updateOneElement
-} from '@helpers/querys/generalConsult';
-
-let result;
 /**
  * !important: add ! if is required
  */

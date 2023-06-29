@@ -1,4 +1,3 @@
-import { FileUpload } from 'graphql-upload-ts';
 import gql from 'graphql-tag';
 import { showlist } from '@helpers/querys/generalConsult';
 
@@ -51,7 +50,7 @@ export const ImageResolvers = {
     }
   },
   Mutation: {
-    uploadImage: async (parent, { file }: { file: Promise<FileUpload> }) => {
+    uploadImage: async (parent, { file }) => {
       // Verifica si se proporcionó un archivo
       file.then((uploadedFile) => {
         // Aquí puedes manipular el archivo subido, por ejemplo, guardarlo en Cloudinary

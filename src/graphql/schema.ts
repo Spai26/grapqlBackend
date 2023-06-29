@@ -1,24 +1,16 @@
 import gql from 'graphql-tag';
-import { UsertypeDefs, UserResolvers } from './private/user.schema';
-import { AuthTypeDefs, AuthResolvers } from './auth/auth.schema';
-import { BlogPublicTypeDefs, BlogPublicResolvers } from './public/blog.schema';
-import {
-  BlogPrivateResolvers,
-  BlogPrivateTypeDefs
-} from './private/blog.schema';
-import { RolesTypeDefs, RolResolvers } from './private/Roles.schema';
-import {
-  PermissionResolvers,
-  PermissionTypeDefs
-} from './private/permission.schema';
-import { ImageResolvers, ImageTypeDefs } from './private/Image.schema';
-import {
-  StorePublicResolvers,
-  StorePublicTypeDefs
-} from './public/store.scchema';
-import { TagResolvers, TagTypeDefs } from './public/tag.schema';
-import { CategoryResolvers, CategoryTypeDefs } from './public/category.schema';
 
+/**
+ * * Private routes graphql
+ */
+import { UserTypeDefs, UserResolvers } from './user';
+import { RolTypeDefs, RolResolvers } from './rol';
+import { PermissionTypeDefs, PermissionResolvers } from './permission';
+
+/**
+ * * Public routes graphql
+ */
+import { AuthTypeDefs, AuthResolvers } from './auth';
 const rootTypeDefs = gql`
   type Query {
     _: String
@@ -28,38 +20,24 @@ const rootTypeDefs = gql`
     _: String
   }
 
-  type messageCrud {
+  #message global
+  type Response {
     success: Boolean
     message: String
-  }
-
-  input generalValues {
-    name: String!
   }
 `;
 
 export const typeDefs = [
-  rootTypeDefs,
   AuthTypeDefs,
-  UsertypeDefs,
-  /* BlogPublicTypeDefs,
-  BlogPrivateTypeDefs, */
-  RolesTypeDefs,
+  UserTypeDefs,
+  RolTypeDefs,
   PermissionTypeDefs,
-  /* StorePublicTypeDefs, */
-  ImageTypeDefs,
-  TagTypeDefs,
-  CategoryTypeDefs
+  rootTypeDefs
 ];
+
 export const resolvers = [
   AuthResolvers,
   UserResolvers,
-  /*  BlogPublicResolvers,
-  BlogPrivateResolvers, */
   RolResolvers,
-  PermissionResolvers,
-  /* StorePublicResolvers, */
-  TagResolvers,
-  CategoryResolvers,
-  ImageResolvers
+  PermissionResolvers
 ];

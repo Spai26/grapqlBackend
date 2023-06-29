@@ -40,6 +40,11 @@ export const typesErrors: Record<string, ErrorType> = {
     errorStatus: 401
   },
 
+  UNAUTHORIZED: {
+    errorCode: 'UNAUTHORIZED',
+    errorStatus: 401
+  },
+
   NOT_FOUND: {
     errorCode: 'NOT_FOUND',
     errorStatus: 404

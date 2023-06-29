@@ -2,7 +2,7 @@ import mongoose, { Document } from 'mongoose';
 import { IImage } from './image.interface';
 
 export interface IBrand {
-  title: string;
+  brandName: string;
   sub_title: string;
   biografy: string;
   short_biografy: string;

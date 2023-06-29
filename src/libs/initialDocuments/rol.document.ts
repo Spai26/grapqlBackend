@@ -1,30 +1,27 @@
-import {
-  handlerHttpError,
-  typesErrors
-} from '@middlewares/handlerErrorsApollo';
+import { IRolDocument } from '@interfaces/rol.interface';
 import { RolModel } from '@models/nosql/roles.models';
 
-export const createRoles = async () => {
+export const createRoles = async (): Promise<IRolDocument> => {
   try {
     const count = await RolModel.estimatedDocumentCount();
 
     if (count > 0) return;
 
     const values = await Promise.all([
-      new RolModel({ name: 'content creator' }).save(),
+      /*  new RolModel({ name: 'content creator' }).save(),
       new RolModel({ name: 'translator' }).save(),
       new RolModel({ name: 'shop manager' }).save(),
       new RolModel({ name: 'customer' }).save(),
-      new RolModel({ name: 'employer' }).save(),
-      new RolModel({ name: 'subscriber' }).save(),
-      new RolModel({ name: 'contributor' }).save(),
-      new RolModel({ name: 'author' }).save(),
+      new RolModel({ name: 'employer' }).save(), */
+      new RolModel({ name: 'usuario' }).save(),
+      new RolModel({ name: 'vendor' }).save(),
       new RolModel({ name: 'editor' }).save(),
+      new RolModel({ name: 'brand' }).save(),
       new RolModel({ name: 'administrator' }).save(),
-      new RolModel({ name: 'root' }).save()
+      new RolModel({ name: process.env.ROOTROL }).save()
     ]);
     console.log(values);
   } catch (error) {
-    throw handlerHttpError('fields dont agregated.!', typesErrors.BAD_REQUEST);
+    console.log('fields dont agregated.!');
   }
 };

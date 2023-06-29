@@ -1,7 +1,4 @@
 import gql from 'graphql-tag';
-import { createAccesToken } from '@middlewares/generateJWT';
-import { setAccessTokenCookie } from '@libs/accessWithCookie';
-import { authLoginController } from '@controllers/auth/authSessions';
 
 export const AuthTypeDefs = gql`
   input AuthLogin {
@@ -14,43 +11,12 @@ export const AuthTypeDefs = gql`
   }
 
   type AuthResponse {
-    message: messageCrud
+    message: Response
     mytoken: String!
   }
 
   extend type Mutation {
     AuthLogin(input: AuthLogin): AuthResponse
-    authDisconnect(text: String): String
+    authDisconnect: String!
   }
 `;
-
-export const AuthResolvers = {
-  Mutation: {
-    AuthLogin: async (_: any, { input }, { res }) => {
-      const auth = await authLoginController(input);
-
-      const mytoken = await createAccesToken({
-        id: auth._id,
-        rol: auth.rol
-      });
-
-      if (mytoken) {
-        setAccessTokenCookie(res, mytoken);
-
-        res.cookie('access-token', mytoken);
-        return {
-          mytoken,
-          message: {
-            message: 'Logued',
-            success: true
-          }
-        };
-      }
-      return null;
-    },
-
-    authDisconnect: () => {
-      //disconnect
-    }
-  }
-};

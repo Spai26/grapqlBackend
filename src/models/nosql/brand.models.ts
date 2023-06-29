@@ -7,7 +7,7 @@ mongoose.plugin(slug);
 
 const BrandShema = new Schema<IBrandDocument, Model<IBrand>>(
   {
-    title: { type: String, require: true, unique: true },
+    brandName: { type: String, require: true, unique: true },
     sub_title: { type: String },
     biografy: { type: String },
     short_biografy: { type: String },

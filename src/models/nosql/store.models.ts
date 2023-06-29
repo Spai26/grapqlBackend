@@ -6,9 +6,9 @@ mongoose.plugin(slug);
 
 const Storechema = new Schema<IStoreDocument, Model<IStore>>(
   {
-    title: { type: String, require: true, unique: true },
+    storeName: { type: String, require: true, unique: true },
     sub_title: { type: String },
-    slug: { type: String, slug: 'title' },
+    slug: { type: String, slug: 'storeName' },
     description: { type: String, require: true },
     main_image: { type: Schema.Types.ObjectId, ref: 'Image', require: true },
     logo: { type: Schema.Types.ObjectId, ref: 'Image' },

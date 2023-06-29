@@ -6,17 +6,21 @@ import { CheckVerifyToken } from '@middlewares/generateJWT';
 import { JwtPayload } from 'jsonwebtoken';
 import { isExistById } from '../helpers/querys/generalConsult';
 import { optionUser } from '@utils/typesCustom';
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
 export type BaseContext = {};
 
 export interface MyContext {
   user?: BaseContext | string;
-  req;
-  res;
+  req: Request;
+  res: Response;
 }
 
-export const isAuthentificate = async (req: Request, res: Response) => {
+interface customRequest extends Request {
+  user?: any;
+}
+
+export const isAuthentificate = async (req: customRequest, res: Response) => {
   try {
     //Bearer token
     if (req.headers.authorization) {
@@ -41,6 +45,8 @@ export const isAuthentificate = async (req: Request, res: Response) => {
         id: result._id,
         rol: result.rol
       };
+
+      req.user = user;
 
       return user;
     }

@@ -1,6 +1,6 @@
 import { Document } from 'mongoose';
 export interface IPermission {
-  name: string;
+  namePermission: string;
   description?: string;
 }
 

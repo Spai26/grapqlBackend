@@ -7,7 +7,7 @@ import { Model } from 'mongoose';
 
 const PermissionSchema = new Schema<IPermisionDocument, Model<IPermission>>(
   {
-    name: { type: String, unique: true, require: true },
+    namePermission: { type: String, unique: true, require: true },
     description: { type: String }
   },
   {

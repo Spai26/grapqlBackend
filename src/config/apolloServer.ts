@@ -43,7 +43,6 @@ export async function startApolloServer(
   app.use(
     '/graphql',
     cors<cors.CorsRequest>(corsOptions),
-
     expressMiddleware(server, {
       context: async ({ req, res }) => {
         const user = (await isAuthentificate(req, res)) as BaseContext;

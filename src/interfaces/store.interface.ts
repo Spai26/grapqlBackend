@@ -4,7 +4,7 @@ import { ITag } from './tag.interfaces';
 import { ICategory } from './category.interface';
 
 export interface IStore {
-  title: string;
+  storeName: string;
   sub_title: string;
   slug: string;
   description: string;

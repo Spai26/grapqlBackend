@@ -12,8 +12,8 @@ const UserSchema = new Schema<IUserDocument, IUserModel>(
     website: { type: String, default: null },
     password: { type: String, require: true },
     rol: { type: Schema.Types.ObjectId, ref: 'Role' },
-    branchs: [{ type: Schema.Types.ObjectId, ref: 'Branch' }],
-    stores: [{ type: Schema.Types.ObjectId, ref: 'Store' }]
+    branchs: [{ brandName: String }],
+    stores: [{ storeName: String }]
   },
   {
     toJSON: { virtuals: true },
@@ -23,7 +23,23 @@ const UserSchema = new Schema<IUserDocument, IUserModel>(
   }
 );
 
-UserSchema.statics.encryptPassword = async (password: string) => {
+UserSchema.pre<IUserDocument>('save', async function (next) {
+  const newuser = this;
+
+  if (!newuser.isNew) {
+    return next();
+  }
+  try {
+    const hashpass = await newuser.encryptPassword(newuser.password);
+
+    newuser.password = hashpass;
+    next();
+  } catch (error) {
+    return next(error);
+  }
+});
+
+UserSchema.methods.encryptPassword = async (password: string) => {
   const salt = await bcrypt.genSalt(10);
   return await bcrypt.hash(password, salt);
 };
