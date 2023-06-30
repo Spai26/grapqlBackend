@@ -1,11 +1,17 @@
 import { Router } from 'express';
-import { upload } from '@libs/multerStorage';
+import { readdirSync } from 'fs';
+import { removeExtends } from '@utils/removeExtens';
 
-import { showImage, uploadImage } from '@controllers/image.controller';
-
+const path_route = `${__dirname}`;
 const apiRoute = Router();
 
-apiRoute.post('/images', upload, uploadImage);
-apiRoute.get('/images', showImage);
+readdirSync(path_route).filter((filename) => {
+  const routefile = removeExtends(filename);
+  if (routefile !== 'index') {
+    import(`./${routefile}.routes`).then((moduleRouter) => {
+      apiRoute.use(`/${routefile}`, moduleRouter.router);
+    });
+  }
+});
 
 export default apiRoute;

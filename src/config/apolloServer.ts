@@ -3,6 +3,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import express from 'express';
 import { config } from 'dotenv';
+import compression from 'compression';
 import cookieParser = require('cookie-parser');
 
 import { ApolloServer } from '@apollo/server';
@@ -14,19 +15,19 @@ import { corsOptions } from '@libs/corsOptions';
 import { isAuthentificate, MyContext, BaseContext } from '@libs/apolloContext';
 
 config();
+const { PORT, HOST, NODE_ENV } = process.env;
 
-const PORT: Number = Number.parseInt(process.env.PORT) || 3000;
+const app = express();
+app.use(morgan('dev'));
+app.use(cors(corsOptions));
+app.use(express.json());
+app.use(cookieParser());
+app.use(compression());
 
 export async function startApolloServer(
   typeDefs: any,
   resolvers: any
 ): Promise<void> {
-  const app = express();
-
-  app.use(morgan('dev'));
-  app.use(express.json());
-  app.use(cookieParser());
-
   const httpServer = http.createServer(app);
 
   const server = new ApolloServer<MyContext>({
@@ -59,5 +60,7 @@ export async function startApolloServer(
       resolve
     )
   );
-  console.log(`🚀 Server ready at http://localhost:${PORT}/graphql`);
+  console.log(`Node env on ${NODE_ENV}`);
+  console.log(`✓ Server running on ${HOST}:${PORT}  `);
+  console.log(`✓ GraphQL running on ${HOST}:${PORT}/graphql  `);
 }

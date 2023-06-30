@@ -6,7 +6,7 @@ import { CheckVerifyToken } from '@middlewares/generateJWT';
 import { JwtPayload } from 'jsonwebtoken';
 import { isExistById } from '../helpers/querys/generalConsult';
 import { optionUser } from '@utils/typesCustom';
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 
 export type BaseContext = {};
 

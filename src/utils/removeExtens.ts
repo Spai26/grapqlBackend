@@ -1,3 +1,3 @@
 export const removeExtends = (filename: string) => {
-  return filename.split('').shift();
+  return filename.split('.').shift();
 };

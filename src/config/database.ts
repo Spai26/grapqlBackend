@@ -2,14 +2,13 @@ import mongoose, { ConnectOptions } from 'mongoose';
 
 let database: mongoose.Connection;
 
+const { DATABASE_URL } = process.env;
 export const connectionDB = async () => {
-  const uri = process.env.DATABASE_URL;
-
   if (database) {
     return;
   }
   mongoose.set('strictQuery', false);
-  await mongoose.connect(uri, {
+  await mongoose.connect(DATABASE_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   } as ConnectOptions);
