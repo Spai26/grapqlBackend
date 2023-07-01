@@ -8,7 +8,6 @@ import { logger } from '@libs/winstom.lib';
 import cookieParser = require('cookie-parser');
 
 import { ApolloServer } from '@apollo/server';
-import { applyMiddleware } from 'graphql-middleware';
 import { expressMiddleware } from '@apollo/server/express4';
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
@@ -16,7 +15,6 @@ import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHt
 import routeIndex from '@routes/index';
 import { corsOptions } from '@libs/corsOptions';
 import { isAuthentificate, MyContext, BaseContext } from '@libs/apolloContext';
-import { isAuthenticated } from '@libs/plugins/checkPermissionandRol';
 
 //variables de entorno
 config();
@@ -42,10 +40,8 @@ export async function startApolloServer(
 
   //graphql-middleware
 
-  const schemaWithMiddleware = applyMiddleware(schema, isAuthenticated);
-
   const server = new ApolloServer<MyContext>({
-    schema: schemaWithMiddleware,
+    schema,
     introspection: NODE_ENV !== 'production',
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
   });
