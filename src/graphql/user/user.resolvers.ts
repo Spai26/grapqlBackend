@@ -17,9 +17,7 @@ import {
 
 export const UserResolvers = {
   Query: {
-    getAllUsers: async (_, __, { user }) => {
-      isAuth(user);
-
+    getAllUsers: async (_, __, context) => {
       return await showListRealTime('user', 'rol', { virtual: true });
     },
 
