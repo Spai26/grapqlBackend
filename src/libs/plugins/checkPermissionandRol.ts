@@ -4,26 +4,27 @@ import {
   handlerHttpError,
   typesErrors
 } from '@middlewares/handlerErrorsApollo';
-import { RolModel } from '@models/nosql/roles.models';
 
-import { optionUser } from '@utils/typesCustom';
-import { hrtime } from 'process';
+export const isAuthenticated = async (resolve, parent, args, context, info) => {
+  const { user } = context;
 
-export const validateRole =
-  (allowedRoles) => async (resolve, parent, args, context, info) => {
-    // Verificar si el usuario tiene el rol necesario
-    const userRole = context.user.rol;
-    console.log(userRole);
-    if (!allowedRoles.includes(userRole)) {
-      throw new Error(
-        'No tienes los permisos necesarios para acceder a esta operación.'
-      );
-    }
+  if (!user) {
+    throw handlerHttpError('User dont register!', typesErrors.UNAUTHENTIFATED);
+  }
+  return resolve(parent, args, context, info);
+  // Verificar si el usuario tiene el rol necesario
+  /* const userRole = context.user.rol;
+  console.log(userRole);
+  if (!allowedRoles.includes(userRole)) {
+    throw new Error(
+      'No tienes los permisos necesarios para acceder a esta operación.'
+    );
+  }
 
-    // Llamar a la siguiente función en la cadena de resolvers
-    const result = await resolve(parent, args, context, info);
-    return result;
-  };
+  // Llamar a la siguiente función en la cadena de resolvers
+  const result = await resolve(parent, args, context, info);
+  return result; */
+};
 
 export const isAuth = (user) => {
   if (!user) {
