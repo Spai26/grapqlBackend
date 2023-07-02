@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import multer from 'multer';
 import { v4 as uuidv4 } from 'uuid';
-import { fileFilter } from '@middlewares/filterImage';
+import { fileFilter } from '@utils/filterImage';
 
 //verifico si existe la carpeta para crearlo
 let storageCreated = false;

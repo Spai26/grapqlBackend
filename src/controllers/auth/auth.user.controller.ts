@@ -1,6 +1,5 @@
 import {
   createNewDocument,
-  isExistById,
   updateOneElement
 } from '@helpers/querys/generalConsult';
 import {
@@ -9,8 +8,8 @@ import {
 } from '@middlewares/handlerErrorsApollo';
 import { UserModel } from '@models/nosql/user.models';
 
-let result;
-export const attachUser = async (values) => {
+let currentResult;
+export const attachUserInDB = async (values) => {
   const { email } = values;
   try {
     const userExist = await UserModel.findOne({ email });
@@ -21,9 +20,9 @@ export const attachUser = async (values) => {
 
     const newuser = await createNewDocument(values, 'user');
 
-    result = await newuser.save();
+    currentResult = await newuser.save();
 
-    if (result) {
+    if (currentResult) {
       return {
         message: 'User Created!',
         success: true
@@ -52,7 +51,7 @@ export const updateControllerUser = async (values: any) => {
   const { id, firstname, lastname, phone, website } = values;
 
   try {
-    result = await updateOneElement(
+    currentResult = await updateOneElement(
       { _id: id },
       {
         firstname,
@@ -74,3 +73,5 @@ export const updateControllerUser = async (values: any) => {
     );
   }
 };
+
+export const deleteWithAllRelations = async (id) => {};

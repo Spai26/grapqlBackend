@@ -1,8 +1,6 @@
-import { isAuthentificate } from '@libs/apolloContext';
-
 import { Router } from 'express';
 
 const router = Router();
 
-router.use('/', isAuthentificate, (req, res) => {});
+router.use('/', (req, res) => {});
 export { router };

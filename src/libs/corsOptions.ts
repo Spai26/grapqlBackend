@@ -1,7 +1,7 @@
-const url = process.env.URL_ORIGIN || '*';
+import { keys } from '@config/variables';
 
 export const corsOptions = {
-  origin: url, // Permitir todos los orígenes
+  origin: keys.ORIGIN, // Permitir todos los orígenes
   allowedHeaders:
     'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method',
   methods: 'GET, POST, OPTIONS, PUT, DELETE',

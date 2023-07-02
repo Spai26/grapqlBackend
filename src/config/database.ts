@@ -1,14 +1,15 @@
 import mongoose, { ConnectOptions } from 'mongoose';
+import { keys } from './variables';
+import { logger } from '@libs/winstom.lib';
 
 let database: mongoose.Connection;
 
-const { DATABASE_URL } = process.env;
 export const connectionDB = async () => {
   if (database) {
     return;
   }
   mongoose.set('strictQuery', false);
-  await mongoose.connect(DATABASE_URL, {
+  await mongoose.connect(keys.URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   } as ConnectOptions);
@@ -16,11 +17,11 @@ export const connectionDB = async () => {
   database = mongoose.connection;
 
   database.once('open', async () => {
-    console.log("Connected to the database successfully! It's time to work!");
+    logger.info("Connected to the database successfully! It's time to work!");
   });
 
   database.on('error', async () => {
-    console.log(`Connection error, please verify the credentials`);
+    logger.info(`Connection error, please verify the credentials`);
   });
 };
 

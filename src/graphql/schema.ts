@@ -3,9 +3,9 @@ import gql from 'graphql-tag';
 /**
  * * Private routes graphql
  */
-import { UserTypeDefs, UserResolvers } from './user';
-import { RolTypeDefs, RolResolvers } from './rol';
-import { PermissionTypeDefs, PermissionResolvers } from './permission';
+import { UserTypeDefs, UserResolvers } from './private/user';
+import { RolTypeDefs, RolResolvers } from './private/rol';
+import { PermissionTypeDefs, PermissionResolvers } from './private/permission';
 
 /**
  * * Public routes graphql

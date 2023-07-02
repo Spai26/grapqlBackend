@@ -1,15 +1,15 @@
-import { createAccesToken } from '@middlewares/generateJWT';
+import { createAccesToken } from '@libs/generateJWT';
 import { setAccessTokenCookie } from '@libs/accessWithCookie';
 import { authLoginController } from '@controllers/auth/authSessions';
 
 export const AuthResolvers = {
   Mutation: {
     AuthLogin: async (_: any, { input }, { res }) => {
-      const auth = await authLoginController(input);
+      const { _id, rol } = await authLoginController(input);
 
       const mytoken = await createAccesToken({
-        id: auth._id,
-        rol: auth.rol
+        id: _id,
+        rol
       });
 
       if (mytoken) {
@@ -18,7 +18,7 @@ export const AuthResolvers = {
         res.cookie('access-token', mytoken);
         return {
           mytoken,
-          message: {
+          response: {
             message: 'Logued',
             success: true
           }
@@ -29,7 +29,12 @@ export const AuthResolvers = {
 
     authDisconnect: (_: any, __: any, { res }) => {
       res.cookie('token', '');
-      return 'Good Bye!';
+      return {
+        response: {
+          message: 'Good Bye!',
+          success: false
+        }
+      };
     }
   }
 };

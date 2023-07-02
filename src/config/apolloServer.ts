@@ -2,7 +2,6 @@ import http from 'http';
 import cors from 'cors';
 import morgan from 'morgan';
 import express from 'express';
-import { config } from 'dotenv';
 import compression from 'compression';
 import { logger } from '@libs/winstom.lib';
 import cookieParser = require('cookie-parser');
@@ -14,11 +13,12 @@ import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHt
 
 import routeIndex from '@routes/index';
 import { corsOptions } from '@libs/corsOptions';
-import { isAuthentificate, MyContext, BaseContext } from '@libs/apolloContext';
-
-//variables de entorno
-config();
-const { PORT, HOST, NODE_ENV } = process.env;
+import {
+  getTokenforRequest,
+  IContext,
+  BaseContext
+} from '@middlewares/authorization/apolloContext';
+import { keys } from './variables';
 
 //configuracion de express
 const app = express();
@@ -38,11 +38,9 @@ export async function startApolloServer(
   //graphql-tols/schema
   const schema = makeExecutableSchema({ typeDefs, resolvers });
 
-  //graphql-middleware
-
-  const server = new ApolloServer<MyContext>({
+  const server = new ApolloServer<IContext>({
     schema,
-    introspection: NODE_ENV !== 'production',
+    introspection: keys.NODE_ENV !== 'production',
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
   });
 
@@ -57,7 +55,7 @@ export async function startApolloServer(
     cors<cors.CorsRequest>(corsOptions),
     expressMiddleware(server, {
       context: async ({ req, res }) => {
-        const user = (await isAuthentificate(req, res)) as BaseContext;
+        const user = (await getTokenforRequest(req)) as BaseContext;
         return { user, req, res };
       }
     })
@@ -66,14 +64,14 @@ export async function startApolloServer(
   await new Promise<void>((resolve) =>
     httpServer.listen(
       {
-        port: PORT
+        port: keys.PORT
       },
       resolve
     )
   );
 
   //info proyect
-  logger.info(`Node env on ${NODE_ENV}`);
-  logger.info(`✓ Server running on ${HOST}:${PORT}  `);
-  logger.info(`✓ GraphQL running on ${HOST}:${PORT}/graphql  `);
+  logger.info(`Node env on ${keys.NODE_ENV}`);
+  logger.info(`✓ Server running on ${keys.HOST}:${keys.PORT}  `);
+  logger.info(`✓ GraphQL running on ${keys.HOST}:${keys.PORT}/graphql  `);
 }

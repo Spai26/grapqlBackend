@@ -5,7 +5,7 @@ export const UserTypeDefs = gql`
   extend type Query {
     getAllUsers: [User]
     #por evaluar
-    getUserbyId(email: String!): User
+    searchUserforEmail(email: String!): User
   }
 
   #Mutation list

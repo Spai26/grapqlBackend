@@ -1,4 +1,5 @@
 import { IPermisionDocument } from '@interfaces/permission.interface';
+import { logger } from '@libs/winstom.lib';
 import { PermisionModel } from '@models/nosql/permission.models';
 
 export const createPermissionBase = async (): Promise<IPermisionDocument[]> => {
@@ -10,12 +11,11 @@ export const createPermissionBase = async (): Promise<IPermisionDocument[]> => {
     const values = await Promise.all([
       new PermisionModel({ namePermission: 'created' }).save(),
       new PermisionModel({ namePermission: 'read' }).save(),
-      new PermisionModel({ namePermission: 'insert' }).save(),
       new PermisionModel({ namePermission: 'updated' }).save(),
       new PermisionModel({ namePermission: 'deleted' }).save()
     ]);
-    console.log(values);
+    logger.info(values);
   } catch (error) {
-    console.log('fields dont agregated.!');
+    logger.info('fields dont agregated.!');
   }
 };

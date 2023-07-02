@@ -13,7 +13,7 @@ export const authLoginController = async (values) => {
 
     if (!isValidUser) {
       throw handlerHttpError(
-        'Invalid credentials, please verified.',
+        'Invalid credentials, please verified your email or password.',
         typesErrors.NOT_FOUND
       );
     }
@@ -25,7 +25,7 @@ export const authLoginController = async (values) => {
 
     if (!validPass) {
       throw handlerHttpError(
-        'Invalid credentials, please verified.',
+        'Invalid credentials, please verified your email or password.',
         typesErrors.UNAUTHENTIFATED
       );
     }
