@@ -1,10 +1,24 @@
-import { createNewDocument } from '@helpers/querys/generalConsult';
+import {
+  createNewDocument,
+  getModelByName
+} from '@helpers/querys/generalConsult';
 import {
   handlerHttpError,
   typesErrors
 } from '@middlewares/handlerErrorsApollo';
 import { CategoryModel } from '@models/nosql/category.models';
 let result = null;
+
+export const attachInDB = async (nameModel, values) => {
+  const Model = getModelByName(nameModel);
+  result = new Model(values);
+  result = await result.save();
+  return {
+    message: `${nameModel} add!`,
+    success: true
+  };
+};
+
 export const attachCategoryinDB = async (input) => {
   try {
     let result = await createNewDocument(input, 'category');

@@ -14,8 +14,8 @@ export const CategoryTypeDefs = gql`
   }
 
   #for search
-  type SeacrhCategory {
-    name: String!
+  type SearchCategory {
+    nameCat: String!
   }
 
   type Category {

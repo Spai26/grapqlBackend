@@ -1,4 +1,5 @@
-import { createNewDocument } from '@helpers/querys/generalConsult';
+import { attachInDB } from '@controllers/auth/auth.category.controller';
+
 import { PERMISSIONS, ROL } from '@interfaces/index';
 import { authMiddleware, hasPermission, hasRol } from '@middlewares/access';
 
@@ -6,13 +7,8 @@ export const TagResolvers = {
   Mutation: {
     newTag: authMiddleware(
       hasRol([ROL.ADMIN, ROL.ROOT])(
-        hasPermission(PERMISSIONS.READ)(async (_, { input }, { user }) => {
-          let result = await createNewDocument(input, 'tag');
-          result = await result.save();
-          return {
-            success: true,
-            message: 'Tag add!'
-          };
+        hasPermission(PERMISSIONS.CREATE)(async (_, { input }, context) => {
+          return attachInDB('tag', input);
         })
       )
     ),

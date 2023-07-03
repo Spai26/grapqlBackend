@@ -42,6 +42,7 @@ export interface findOptions {
  */
 
 export const getModelByName = (model: string) => {
+  //object
   const listModels: list = {
     user: UserModel<IUser>,
     blog: BlogModel<IBlog>,
@@ -55,6 +56,7 @@ export const getModelByName = (model: string) => {
     test: TestModel<ITest>
   };
 
+  //function
   return listModels[model] || null;
 };
 

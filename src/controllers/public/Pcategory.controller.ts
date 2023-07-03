@@ -8,12 +8,6 @@ export const showCategory = async () => {
   try {
     const current = await CategoryModel.find({});
 
-    if (!current.length) {
-      throw handlerHttpError(
-        `you dont have categories created.`,
-        typesErrors.NOT_FOUND
-      );
-    }
     return current;
   } catch (error) {
     throw handlerHttpError(

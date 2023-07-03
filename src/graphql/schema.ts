@@ -24,37 +24,18 @@ import {
   PCategoryTypeDefs,
   PCategoryResolvers,
   PTagTypeDefs,
-  PTagResolvers
+  PTagResolvers,
+  GeneralResolvers,
+  GeneralTypeDefs
 } from './public';
 
 const rootTypeDefs = gql`
-  #search global
-  #union SearchResult = SeacrhCategory | SearchTag
-
   type Query {
     _: String
   }
 
   type Mutation {
     _: String
-  }
-
-  #message global
-  type Response {
-    success: Boolean
-    message: String
-  }
-
-  #input for tag/category/permission/rol
-  input NameOrDescInput {
-    name: String!
-    description: String
-  }
-
-  input NameAndDescPatchInput {
-    id: ID!
-    name: String!
-    description: String
   }
 `;
 
@@ -69,7 +50,8 @@ export const typeDefs = [
 
   //
   PCategoryTypeDefs,
-  PTagTypeDefs
+  PTagTypeDefs,
+  GeneralTypeDefs
 ];
 
 export const resolvers = [
@@ -81,5 +63,6 @@ export const resolvers = [
   TagResolvers,
   //
   PCategoryResolvers,
-  PTagResolvers
+  PTagResolvers,
+  GeneralResolvers
 ];

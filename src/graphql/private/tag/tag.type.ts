@@ -2,9 +2,8 @@ import gql from 'graphql-tag';
 
 export const TagTypeDefs = gql`
   extend type Query {
-    _: String
     #para evitar errores
-    getAllTags: [Tag]
+    _: String
   }
   extend type Mutation {
     newTag(input: NameOrDescInput): Response
@@ -13,7 +12,7 @@ export const TagTypeDefs = gql`
   }
 
   type SearchTag {
-    name: String!
+    nameTag: String!
   }
 
   type Tag {
