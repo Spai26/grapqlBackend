@@ -38,3 +38,23 @@ export enum PERMISSIONS {
   UPDATE = 'updated',
   DELETE = 'deleted'
 }
+
+//test item model
+export interface listModel {
+  user: string;
+  blog: string;
+  store: string;
+  brand: string;
+  rol: string;
+  permission: string;
+  image: string;
+  tag: string;
+  category: string;
+  test: string;
+}
+
+//reponse
+export interface ResponseResult {
+  message: string;
+  success: boolean;
+}
