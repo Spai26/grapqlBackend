@@ -91,7 +91,7 @@ export const updateBlogController = async (id, input) => {
       },
       { new: true }
     );
-    result = await Model.updateSlug(id);
+    /// result = await Model.updateSlug(id);
 
     if (image && result) {
       return {

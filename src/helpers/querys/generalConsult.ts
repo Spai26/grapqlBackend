@@ -1,30 +1,21 @@
+import { IPropsTypes, listModel } from '@interfaces/index';
+
 import {
-  IBlog,
-  IBrand,
-  ICategory,
-  IImage,
-  IPermission,
-  IRol,
-  IStore,
-  ITag,
-  IUser
-} from '@interfaces/index';
-import { ITest } from '@interfaces/testing';
-import { BlogModel } from '@models/nosql/blog.models';
-import { BrandModel } from '@models/nosql/brand.models';
-import { CategoryModel } from '@models/nosql/category.models';
-import { ImageModel } from '@models/nosql/image.models';
-import { PermisionModel } from '@models/nosql/permission.models';
-import { RolModel } from '@models/nosql/roles.models';
-import { StoreModel } from '@models/nosql/store.models';
-import { TagModel } from '@models/nosql/tag.models';
-import { TestModel } from '@models/nosql/testing.models';
-import { UserModel } from '@models/nosql/user.models';
-import { searchOptions } from '@utils/typesCustom';
+  BlogModel,
+  BrandModel,
+  CategoryModel,
+  ImageModel,
+  PermisionModel,
+  RolModel,
+  TagModel,
+  StoreModel,
+  TestModel,
+  UserModel
+} from '@models/nosql';
+
+import { Model as MongooseModel } from 'mongoose';
 
 let Model;
-
-export interface list {}
 
 export interface findOptions {
   password?: number;
@@ -40,20 +31,20 @@ export interface findOptions {
  * @param model
  * @returns
  */
-
-export const getModelByName = (model: string) => {
-  //object
-  const listModels: list = {
-    user: UserModel<IUser>,
-    blog: BlogModel<IBlog>,
-    store: StoreModel<IStore>,
-    brand: BrandModel<IBrand>,
-    rol: RolModel<IRol>,
-    permission: PermisionModel<IPermission>,
-    image: ImageModel<IImage>,
-    tag: TagModel<ITag>,
-    category: CategoryModel<ICategory>,
-    test: TestModel<ITest>
+export const getModelByName = (
+  model: keyof listModel
+): MongooseModel<any> | null => {
+  const listModels: Record<keyof listModel, MongooseModel<any>> = {
+    user: UserModel,
+    blog: BlogModel,
+    store: StoreModel,
+    brand: BrandModel,
+    rol: RolModel,
+    permission: PermisionModel,
+    image: ImageModel,
+    tag: TagModel,
+    category: CategoryModel,
+    test: TestModel
   };
 
   //function
@@ -68,8 +59,8 @@ export const getModelByName = (model: string) => {
  * @returns Object existing
  */
 export const existFields = async (
-  model: string,
-  values: searchOptions<string>
+  model: keyof listModel,
+  values: IPropsTypes<string>
 ) => {
   Model = getModelByName(model);
   return await Model.findOne(values);
@@ -86,7 +77,7 @@ export const existFields = async (
  */
 export const isExistById = async (
   id: string,
-  model: string,
+  model: keyof listModel,
   relation?: string,
   options?: findOptions
 ) => {
@@ -101,7 +92,7 @@ export const isExistById = async (
  * @param model
  * @returns
  */
-export const createNewDocument = async (values, model: string) => {
+export const createNewDocument = async (values, model: keyof listModel) => {
   Model = getModelByName(model);
   return new Model(values) || null;
 };
@@ -114,11 +105,7 @@ export const createNewDocument = async (values, model: string) => {
  * @param model
  * @returns query
  */
-export const updateOneElement = async (
-  id: searchOptions<string>,
-  values,
-  model: string
-) => {
+export const updateOneElement = async (id, values, model: keyof listModel) => {
   Model = getModelByName(model);
   return (await Model.updateOne(id, values)) || null;
 };
@@ -132,7 +119,7 @@ export const updateOneElement = async (
  * @returns
  */
 export const showListRealTime = async (
-  model: string,
+  model: keyof listModel,
   relation: string,
   options?: findOptions
 ) => {
@@ -149,7 +136,10 @@ export const showListRealTime = async (
  * @param model
  * @returns query
  */
-export const showlist = async (model: string, options?: findOptions) => {
+export const showlist = async (
+  model: keyof listModel,
+  options?: findOptions
+) => {
   Model = getModelByName(model);
   return (await Model.find({})) || null;
 };

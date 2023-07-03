@@ -12,8 +12,8 @@ import { searchOptions } from '@utils/typesCustom';
 import { rootNewBlogController } from './auth/rootBlogController';
 import { createBlogController } from './auth/userAuthBlog.controller';
 
-let list: IBlog[];
-let blog: IBlog | null;
+let list = null;
+let blog = null;
 /** limit pagination for search */
 let pageSize: number = 4;
 let skipCount: number = (pageSize - 1) * pageSize;
@@ -23,20 +23,18 @@ const Model = getModelByName('blog');
  * * function for call of all the list of blogs
  * @returns IBlog[]
  */
-export const getAllBlogsWithRelations = async (
-  options?: findOptions
-): Promise<IBlog[]> => {
+export const getAllBlogsWithRelations = async (options?: findOptions) => {
   try {
     //'blog', 'author', 'front_image'
-    list = await Model.find(options)
+    /*  list = await Model.find(options)
       .populate({ path: 'author', select: 'id email firstname lastname' })
       .populate('front_image');
 
     if (list.length === 0) {
       return [];
     }
-
-    return list;
+ */
+    return 'here';
   } catch (error) {
     throw handlerHttpError(
       `Error fn: getAllBlogs: ${error}`,
@@ -75,9 +73,9 @@ export const searchBlogsByTitle = async (search: string): Promise<IBlog[]> => {
  * @param id
  * @returns Blog
  */
-export const getBlogResulbyId = async (id: string): Promise<IBlog> => {
+export const getBlogResulbyId = async (id: string) => {
   try {
-    blog = await Model.findOneAndUpdate(
+    /*  blog = await Model.findOneAndUpdate(
       { _id: id },
       { $inc: { count_view: 1 } },
       { new: true }
@@ -88,8 +86,8 @@ export const getBlogResulbyId = async (id: string): Promise<IBlog> => {
       })
       .populate('front_image', 'url')
       .lean();
-
-    return blog;
+ */
+    return 'update';
   } catch (error) {
     throw handlerHttpError(
       `Error fn: getBlogResulbyId: ${error}`,
@@ -103,16 +101,16 @@ export const getBlogResulbyId = async (id: string): Promise<IBlog> => {
  * @param id
  * @returns  IBlog
  */
-export const getBlogOnwer = async (id: string): Promise<IBlog> => {
+export const getBlogOnwer = async (id: string) => {
   try {
-    blog = await Model.findById(id)
+    /* blog = await Model.findById(id)
       .populate({
         path: 'author',
         select: 'id email firstname lastname'
       })
-      .populate('front_image', 'url');
+      .populate('front_image', 'url'); */
 
-    return blog;
+    return 'update';
   } catch (error) {
     throw handlerHttpError(
       `Error fn: getBlogOnwer: ${error}`,

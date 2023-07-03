@@ -72,7 +72,7 @@ export const authUpdatePermission = async (values: keyValueData<string>) => {
 };
 
 export const authDeletePermission = async (id: keyValueData<string>[]) => {
-  let updatePermissionDeleted: IPermission[];
+  let updatePermissionDeleted = null;
 
   try {
     const deletePromiseArray = id.map(async (data) => {

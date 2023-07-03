@@ -1,5 +1,4 @@
-import { attachInDB } from '@controllers/auth/auth.category.controller';
-
+import { attachInDB, updateNameWithSlugInDB } from '@controllers/auth';
 import { PERMISSIONS, ROL } from '@interfaces/index';
 import { authMiddleware, hasPermission, hasRol } from '@middlewares/access';
 
@@ -16,7 +15,7 @@ export const TagResolvers = {
       hasRol([ROL.ADMIN, ROL.ROOT])(
         hasPermission(PERMISSIONS.UPDATE)(
           async (_: any, { input }, context) => {
-            return 'update';
+            return updateNameWithSlugInDB('tag', input);
           }
         )
       )
@@ -25,7 +24,7 @@ export const TagResolvers = {
     deleteTag: authMiddleware(
       hasRol([ROL.ADMIN, ROL.ROOT])(
         hasPermission(PERMISSIONS.DELETE)(async (_: any, { id }, context) => {
-          return 'delete';
+          return 'por evaluar';
         })
       )
     )
