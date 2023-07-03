@@ -3,7 +3,6 @@ import gql from 'graphql-tag';
 export const BlogPrivateTypeDefs = gql`
   extend type Query {
     #para evitar errores
-    hello: String
     getAllOnwerBlogs: [Blog]
     getOneBlogbyIdOnwer(id: ID!): Blog
   }

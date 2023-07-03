@@ -18,7 +18,7 @@ export const hasPermission =
       return next(parent, args, context, info);
     }
 
-    currentPermission = currentRol.permissions.map((p) => p.namePermission);
+    currentPermission = currentRol.permissions.map((p) => p.name);
 
     if ((currentAccess = currentPermission.includes(allowenPermission))) {
       return next(parent, args, context, info);

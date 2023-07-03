@@ -6,26 +6,19 @@ export const PermissionTypeDefs = gql`
   }
 
   extend type Mutation {
-    createNewPermission(input: createNewPermission): Response
-    updateOnePermission(input: updateField!): Response
+    #nameorDescInput ref: schema
+    createNewPermission(input: NameOrDescInput): Response
+    updateOnePermission(input: NameAndDescPatchInput!): Response
     deletePermissionWithRelation(id: [ID!]!): Response
+  }
+
+  type SearchCategory {
+    name: String!
   }
 
   type Permision {
     id: ID
-    namePermission: String
-    description: String
-  }
-
-  input createNewPermission {
-    namePermission: String!
-    description: String
-  }
-
-  #ID requerido para validacion
-  input updateField {
-    id: ID!
-    namePermission: String
+    name: String
     description: String
   }
 `;

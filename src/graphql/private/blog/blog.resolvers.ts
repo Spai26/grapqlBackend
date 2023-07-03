@@ -1,8 +1,4 @@
 import {
-  handlerHttpError,
-  typesErrors
-} from '@middlewares/handlerErrorsApollo';
-import {
   branchBlogController,
   getAllBlogsWithRelations,
   getBlogOnwer
@@ -12,67 +8,64 @@ import {
   deleteController,
   updateStatusController
 } from '@controllers/blog/auth/userAuthBlog.controller';
+import { authMiddleware, hasPermission, hasRol } from '@middlewares/access';
+import { PERMISSIONS, ROL } from '@interfaces/types/type.custom';
 
 export const BlogPrivateResolvers = {
   Query: {
-    getAllOnwerBlogs: (_, __, { user }) => {
-      if (!user) {
-        throw handlerHttpError(
-          'User dont register!',
-          typesErrors.UNAUTHENTIFATED
-        );
-      }
-      //falta considerar origin or source
-      return getAllBlogsWithRelations({ author: user.id });
-    },
-    getOneBlogbyIdOnwer: (_, { id }, { user }) => {
-      if (!user) {
-        throw handlerHttpError(
-          'User dont register!',
-          typesErrors.UNAUTHENTIFATED
-        );
-      }
-      return getBlogOnwer(id);
-    }
+    getAllOnwerBlogs: authMiddleware(
+      hasRol([ROL.ADMIN, ROL.ROOT])(
+        hasPermission(PERMISSIONS.READ)(async (_, __, context) => {
+          const { id } = context.user;
+          //falta considerar origin or source
+          return getAllBlogsWithRelations({ author: id });
+        })
+      )
+    ),
+    getOneBlogbyIdOnwer: authMiddleware(
+      hasRol([ROL.ADMIN, ROL.ROOT])(
+        hasPermission(PERMISSIONS.READ)(async (_, { id }, context) => {
+          return getBlogOnwer(id);
+        })
+      )
+    )
   },
   Mutation: {
-    attachNewBlog: async (_: any, { input }, { user }) => {
-      if (!user) {
-        throw handlerHttpError(
-          'User dont register!',
-          typesErrors.UNAUTHENTIFATED
-        );
-      }
+    attachNewBlog: authMiddleware(
+      hasRol([ROL.ADMIN, ROL.ROOT])(
+        hasPermission(PERMISSIONS.CREATE)(
+          async (_: any, { input }, context) => {
+            const { user } = context.user;
+            return await branchBlogController(user, input);
+          }
+        )
+      )
+    ),
+    updateMyBlog: authMiddleware(
+      hasRol([ROL.ADMIN, ROL.ROOT])(
+        hasPermission(PERMISSIONS.UPDATE)(
+          async (_: any, { id, input }, context) => {
+            return await updateBlogController(id, input);
+          }
+        )
+      )
+    ),
+    updateStatusBlog: authMiddleware(
+      hasRol([ROL.ADMIN, ROL.ROOT])(
+        hasPermission(PERMISSIONS.UPDATE)(
+          async (_: any, { id, status }, context) => {
+            return await updateStatusController(id, status);
+          }
+        )
+      )
+    ),
 
-      return await branchBlogController(user, input);
-    },
-    updateMyBlog: async (_: any, { id, input }, { user }) => {
-      if (!user) {
-        throw handlerHttpError(
-          'User dont register!',
-          typesErrors.UNAUTHENTIFATED
-        );
-      }
-      return await updateBlogController(id, input);
-    },
-    updateStatusBlog: async (_: any, { id, status }, { user }) => {
-      if (!user) {
-        throw handlerHttpError(
-          'User dont register!',
-          typesErrors.UNAUTHENTIFATED
-        );
-      }
-      return await updateStatusController(id, status);
-    },
-
-    deleteMyBlog: async (_: any, { id }, { user }) => {
-      if (!user) {
-        throw handlerHttpError(
-          'User dont register!',
-          typesErrors.UNAUTHENTIFATED
-        );
-      }
-      return await deleteController(id);
-    }
+    deleteMyBlog: authMiddleware(
+      hasRol([ROL.ADMIN, ROL.ROOT])(
+        hasPermission(PERMISSIONS.DELETE)(async (_: any, { id }, context) => {
+          return await deleteController(id);
+        })
+      )
+    )
   }
 };

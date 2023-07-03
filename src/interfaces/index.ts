@@ -7,4 +7,5 @@ export * from './rol.interface';
 export * from './store.interface';
 export * from './tag.interfaces';
 export * from './testing';
+export * from './types/type.custom';
 export * from './user.interface';

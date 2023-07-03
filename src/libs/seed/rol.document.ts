@@ -15,7 +15,7 @@ export const createRoles = async (): Promise<IRolDocument[]> => {
       new RolModel({ name: 'editor' }).save(),
       new RolModel({ name: 'brand' }).save(),
       new RolModel({ name: 'administrator' }).save(),
-      new RolModel({ name: keys.ROOTNAME }).save()
+      new RolModel({ name: keys.ROOTROL }).save()
     ]);
     logger.info(values);
   } catch (error) {

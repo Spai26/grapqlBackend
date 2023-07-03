@@ -5,7 +5,7 @@ import {
   searchBlogsByTitle
 } from '@controllers/blog/blog.controller';
 
-export const BlogPublicTypeDefs = gql`
+export const PBlogPublicTypeDefs = gql`
   extend type Query {
     getpublicArrayBlogs: [Blog]
     getOneBlogbyId(id: ID!): Blog
@@ -21,13 +21,12 @@ export const BlogPublicTypeDefs = gql`
     count_view: Int
     author: User!
     status: Boolean
-
     createdAt: String
     updatedAt: String
   }
 `;
 
-export const BlogPublicResolvers = {
+export const PBlogPublicResolvers = {
   Query: {
     getpublicArrayBlogs: async () => {
       return await getAllBlogsWithRelations();

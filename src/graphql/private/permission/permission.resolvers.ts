@@ -11,7 +11,7 @@ export const PermissionResolvers = {
   Query: {
     getAllPermision: authMiddleware(
       hasRol([ROL.ADMIN, ROL.ROOT])(
-        hasPermission(PERMISSIONS.UPDATE)(async (_, __, context) => {
+        hasPermission(PERMISSIONS.READ)(async (_, __, context) => {
           return await showlist('permission');
         })
       )
@@ -20,7 +20,7 @@ export const PermissionResolvers = {
   Mutation: {
     createNewPermission: authMiddleware(
       hasRol([ROL.ADMIN, ROL.ROOT])(
-        hasPermission(PERMISSIONS.UPDATE)(
+        hasPermission(PERMISSIONS.CREATE)(
           async (_: any, { input }, context) => {
             return await authAttachPermission(input);
           }
@@ -39,7 +39,7 @@ export const PermissionResolvers = {
 
     deletePermissionWithRelation: authMiddleware(
       hasRol([ROL.ADMIN, ROL.ROOT])(
-        hasPermission(PERMISSIONS.UPDATE)(async (_: any, { id }, context) => {
+        hasPermission(PERMISSIONS.DELETE)(async (_: any, { id }, context) => {
           return authDeletePermission(id);
         })
       )

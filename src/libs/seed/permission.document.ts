@@ -9,10 +9,10 @@ export const createPermissionBase = async (): Promise<IPermisionDocument[]> => {
     if (count > 0) return;
 
     const values = await Promise.all([
-      new PermisionModel({ namePermission: 'created' }).save(),
-      new PermisionModel({ namePermission: 'read' }).save(),
-      new PermisionModel({ namePermission: 'updated' }).save(),
-      new PermisionModel({ namePermission: 'deleted' }).save()
+      new PermisionModel({ name: 'created' }).save(),
+      new PermisionModel({ name: 'read' }).save(),
+      new PermisionModel({ name: 'updated' }).save(),
+      new PermisionModel({ name: 'deleted' }).save()
     ]);
     logger.info(values);
   } catch (error) {

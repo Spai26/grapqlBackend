@@ -20,3 +20,12 @@ export const fileFilter = (
     cb(new Error('The file is not a valid image.'));
   }
 };
+
+/**
+ * * function take name for file
+ * @param filename
+ * @returns
+ */
+export const removeExtends = (filename: string) => {
+  return filename.split('.').shift();
+};
