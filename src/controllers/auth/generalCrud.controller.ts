@@ -59,3 +59,20 @@ export const updateNameWithSlugInDB = async (
     );
   }
 };
+
+export const deleteInDB = async (
+  nameModel: keyof listModel,
+  id: string
+): Promise<ResponseResult> => {
+  try {
+    return {
+      message: ' in progress',
+      success: false
+    };
+  } catch (error) {
+    throw handlerHttpError(
+      `Error in delete function: ${error}`,
+      typesErrors.DATABASE_ERROR
+    );
+  }
+};

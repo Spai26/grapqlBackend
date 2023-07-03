@@ -1,8 +1,9 @@
 import {
-  attachCategoryinDB,
-  deleteCategoryinDB,
-  updateCategoryinDB
-} from '@controllers/auth/auth.category.controller';
+  attachInDB,
+  deleteInDB,
+  updateNameWithSlugInDB
+} from '@controllers/auth';
+
 import { PERMISSIONS, ROL } from '@interfaces/index';
 import { authMiddleware, hasPermission, hasRol } from '@middlewares/access';
 
@@ -11,21 +12,21 @@ export const CategoryResolvers = {
     newCategory: authMiddleware(
       hasRol([ROL.ADMIN, ROL.ROOT])(
         hasPermission(PERMISSIONS.CREATE)((_, { input }, context) => {
-          return attachCategoryinDB(input);
+          return attachInDB('category', input);
         })
       )
     ),
     updatedCategory: authMiddleware(
       hasRol([ROL.ADMIN, ROL.ROOT])(
-        hasPermission(PERMISSIONS.UPDATE)(async (_, { input }, context) => {
-          return await updateCategoryinDB(input);
+        hasPermission(PERMISSIONS.UPDATE)((_, { input }, context) => {
+          return updateNameWithSlugInDB('category', input);
         })
       )
     ),
     deletedCategory: authMiddleware(
       hasRol([ROL.ADMIN, ROL.ROOT])(
-        hasPermission(PERMISSIONS.DELETE)(async (_, { input }, context) => {
-          return await deleteCategoryinDB(input);
+        hasPermission(PERMISSIONS.DELETE)((_, { input }, context) => {
+          return deleteInDB('category', input);
         })
       )
     )

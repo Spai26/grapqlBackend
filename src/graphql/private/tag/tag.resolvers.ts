@@ -6,24 +6,22 @@ export const TagResolvers = {
   Mutation: {
     newTag: authMiddleware(
       hasRol([ROL.ADMIN, ROL.ROOT])(
-        hasPermission(PERMISSIONS.CREATE)(async (_, { input }, context) => {
+        hasPermission(PERMISSIONS.CREATE)((_, { input }, context) => {
           return attachInDB('tag', input);
         })
       )
     ),
     updateTag: authMiddleware(
       hasRol([ROL.ADMIN, ROL.ROOT])(
-        hasPermission(PERMISSIONS.UPDATE)(
-          async (_: any, { input }, context) => {
-            return updateNameWithSlugInDB('tag', input);
-          }
-        )
+        hasPermission(PERMISSIONS.UPDATE)((_: any, { input }, context) => {
+          return updateNameWithSlugInDB('tag', input);
+        })
       )
     ),
 
     deleteTag: authMiddleware(
       hasRol([ROL.ADMIN, ROL.ROOT])(
-        hasPermission(PERMISSIONS.DELETE)(async (_: any, { id }, context) => {
+        hasPermission(PERMISSIONS.DELETE)((_: any, { id }, context) => {
           return 'por evaluar';
         })
       )

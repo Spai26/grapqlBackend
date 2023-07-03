@@ -7,7 +7,7 @@ export const CategoryTypeDefs = gql`
 
   extend type Mutation {
     _: String
-    #nameorDescInput ref: schema
+    #nameorDescInput ref: generalSchema
     newCategory(input: NameOrDescInput): Response
     updatedCategory(input: NameAndDescPatchInput): Response
     deletedCategory(id: ID!): Response

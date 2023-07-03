@@ -1,11 +1,12 @@
 import gql from 'graphql-tag';
 
 export const TagTypeDefs = gql`
-  extend type Query {
+  type Query {
     #para evitar errores
     _: String
   }
   extend type Mutation {
+    #nameorDescInput ref: generalSchema
     newTag(input: NameOrDescInput): Response
     updateTag(input: NameAndDescPatchInput): Response
     deleteTag(id: ID!): Response
