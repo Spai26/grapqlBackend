@@ -1,11 +1,12 @@
+import { BlogModel } from '@models/nosql';
 import { CategoryModel } from '@models/nosql/category.models';
 import { TagModel } from '@models/nosql/tag.models';
 import gql from 'graphql-tag';
 let result = null;
 export const GeneralTypeDefs = gql`
   #search global
-  union SearchResult = SearchCategory | SearchTag
-  extend type Query {
+  union SearchResult = SearchCategory | SearchTag | SearchBlog
+  type Query {
     search(contains: String): [SearchResult!]
   }
 
@@ -35,6 +36,8 @@ export const GeneralResolvers = {
         return 'SearchCategory';
       } else if (obj.hasOwnProperty('nameTag')) {
         return 'SearchTag';
+      } else if (obj.hasOwnProperty('title')) {
+        return 'SearchBlog';
       }
 
       return null;
@@ -49,6 +52,10 @@ export const GeneralResolvers = {
         name: { $regex: contains, $options: 'i' }
       });
 
+      const blog = await BlogModel.find({
+        title: { $regex: contains, $options: 'i' }
+      });
+
       result = [
         ...category.map((categoryItem) => ({
           __typename: 'SearchCategory',
@@ -57,6 +64,10 @@ export const GeneralResolvers = {
         ...tag.map((tagItem) => ({
           __typename: 'SearchTag',
           nameTag: tagItem.name
+        })),
+        ...blog.map((blogItem) => ({
+          __typename: 'SearchBlog',
+          title: blogItem
         }))
       ];
 

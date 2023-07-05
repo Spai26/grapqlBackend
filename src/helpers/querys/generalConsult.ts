@@ -108,7 +108,7 @@ export const createNewDocument = (values: any, model: keyof listModel) => {
  */
 export const updateOneElement = async (id, values, model: keyof listModel) => {
   Model = getModelByName(model);
-  return (await Model.updateOne(id, values)) || null;
+  return await Model.updateOne(id, values);
 };
 
 /**

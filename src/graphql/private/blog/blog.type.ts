@@ -4,11 +4,11 @@ export const BlogTypeDefs = gql`
   extend type Query {
     #para evitar errores
     getAllOnwerBlogs: [Blog]
-    getOneBlogbyIdOnwer(id: ID!): Blog
+    getBlogbyIdOnwer(id: ID!): Blog
   }
   extend type Mutation {
     newBlog(input: blogCreationInput): Response
-    updateMyBlog(id: ID!, input: blogCreationInput): Response
+    updateMyBlog(id: ID!, input: blogCreationInput!): Response
     updateStatusBlog(id: ID!, status: Boolean!): Response
     deleteMyBlog(id: ID!): Response
   }
@@ -32,16 +32,11 @@ export const BlogTypeDefs = gql`
     updatedAt: String
   }
 
-  type UserView {
-    id: ID
-    username: String
-  }
-
   #slug / origin / author autogenerate
   input blogCreationInput {
-    title: String!
+    title: String
     body_content: String
-    front_image: ImageInput!
+    front_image: ImageInput
     status: Boolean
   }
 `;

@@ -1,32 +1,27 @@
-import { deleteController } from '@controllers/blog/auth/userAuthBlog.controller';
 import { authMiddleware, hasPermission, hasRol } from '@middlewares/access';
+import { PERMISSIONS, ROL } from '@interfaces/types/type.custom';
 import {
-  PERMISSIONS,
-  ROL,
-  ResponseResult
-} from '@interfaces/types/type.custom';
-import {
-  createNewDocument,
-  getModelByName
-} from '@helpers/querys/generalConsult';
-import { attachInDBwithSingleImage } from '@controllers/auth/auth.blog.controller';
-import { BlogModel } from '@models/nosql';
+  attachInDBwithSingleImage,
+  deleteBlogCtr,
+  detailBlogCtr,
+  showListBlogCtr,
+  updateBlogCtr,
+  updateStatusBlogCtr
+} from '@controllers/auth/auth.blog.controller';
 
 export const BlogResolvers = {
   Query: {
     getAllOnwerBlogs: authMiddleware(
       hasRol([ROL.ADMIN, ROL.ROOT])(
-        hasPermission(PERMISSIONS.READ)(async (_, __, context) => {
-          const { id } = context.user;
-          //falta considerar origin or source
-          return BlogModel.find({}).populate('front_image').populate('author');
+        hasPermission(PERMISSIONS.READ)((_, __, context) => {
+          return showListBlogCtr(context);
         })
       )
     ),
-    getOneBlogbyIdOnwer: authMiddleware(
+    getBlogbyIdOnwer: authMiddleware(
       hasRol([ROL.ADMIN, ROL.ROOT])(
         hasPermission(PERMISSIONS.READ)(async (_, { id }, context) => {
-          return ' here' /* getBlogOnwer(id) */;
+          return detailBlogCtr(id);
         })
       )
     )
@@ -43,27 +38,23 @@ export const BlogResolvers = {
     ),
     updateMyBlog: authMiddleware(
       hasRol([ROL.ADMIN, ROL.ROOT])(
-        hasPermission(PERMISSIONS.UPDATE)(
-          async (_: any, { id, input }, context) => {
-            return 'here'; /* await updateBlogController(id, input); */
-          }
-        )
+        hasPermission(PERMISSIONS.UPDATE)(async (_: any, args, context) => {
+          return updateBlogCtr(args);
+        })
       )
     ),
     updateStatusBlog: authMiddleware(
       hasRol([ROL.ADMIN, ROL.ROOT])(
-        hasPermission(PERMISSIONS.UPDATE)(
-          async (_: any, { id, status }, context) => {
-            return 'here'; /* await updateStatusController(id, status); */
-          }
-        )
+        hasPermission(PERMISSIONS.UPDATE)((_: any, args, context) => {
+          return updateStatusBlogCtr(args, 'blog');
+        })
       )
     ),
 
     deleteMyBlog: authMiddleware(
       hasRol([ROL.ADMIN, ROL.ROOT])(
-        hasPermission(PERMISSIONS.DELETE)(async (_: any, { id }, context) => {
-          return await deleteController(id);
+        hasPermission(PERMISSIONS.DELETE)((_: any, { id }, context) => {
+          return deleteBlogCtr(id);
         })
       )
     )

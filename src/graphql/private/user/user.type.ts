@@ -34,6 +34,11 @@ export const UserTypeDefs = gql`
     updatedAt: String
   }
 
+  type UserView {
+    id: ID
+    username: String
+  }
+
   #fields necesary for create user
   input createNewUser {
     firstname: String
