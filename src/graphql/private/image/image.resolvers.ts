@@ -3,10 +3,7 @@ import { showlist } from '@helpers/querys/generalConsult';
 export const ImageResolvers = {
   Query: {
     getImages: async () => {
-      return await showlist('image');
-    },
-    getTesting: async () => {
-      return await showlist('test');
+      return 'gere'; /*  await showlist('image'); */
     }
   },
   Mutation: {

@@ -1,42 +1,81 @@
-import {
-  branchBlogController,
-  getAllBlogsWithRelations,
-  getBlogOnwer
-} from '@controllers/blog/blog.controller';
-import { updateBlogController } from '@controllers/blog/auth/rootBlogController';
-import {
-  deleteController,
-  updateStatusController
-} from '@controllers/blog/auth/userAuthBlog.controller';
+import { deleteController } from '@controllers/blog/auth/userAuthBlog.controller';
 import { authMiddleware, hasPermission, hasRol } from '@middlewares/access';
-import { PERMISSIONS, ROL } from '@interfaces/types/type.custom';
+import {
+  PERMISSIONS,
+  ROL,
+  ResponseResult
+} from '@interfaces/types/type.custom';
+import {
+  createNewDocument,
+  getModelByName
+} from '@helpers/querys/generalConsult';
+import { validExtensionImage } from '@helpers/validateExtension';
+import {
+  handlerHttpError,
+  typesErrors
+} from '@middlewares/handlerErrorsApollo';
+import { uploadImage } from '@helpers/generateImageUrl';
 
-export const BlogPrivateResolvers = {
+let result = null;
+
+export const BlogResolvers = {
   Query: {
     getAllOnwerBlogs: authMiddleware(
       hasRol([ROL.ADMIN, ROL.ROOT])(
         hasPermission(PERMISSIONS.READ)(async (_, __, context) => {
           const { id } = context.user;
           //falta considerar origin or source
-          return getAllBlogsWithRelations({ author: id });
+          return 'here' /* getAllBlogsWithRelations({ author: id }) */;
         })
       )
     ),
     getOneBlogbyIdOnwer: authMiddleware(
       hasRol([ROL.ADMIN, ROL.ROOT])(
         hasPermission(PERMISSIONS.READ)(async (_, { id }, context) => {
-          return getBlogOnwer(id);
+          return ' here' /* getBlogOnwer(id) */;
         })
       )
     )
   },
   Mutation: {
-    attachNewBlog: authMiddleware(
+    newBlog: authMiddleware(
       hasRol([ROL.ADMIN, ROL.ROOT])(
         hasPermission(PERMISSIONS.CREATE)(
-          async (_: any, { input }, context) => {
-            const { user } = context.user;
-            return await branchBlogController(user, input);
+          async (_: any, { input }, context): Promise<ResponseResult> => {
+            const { alias } = context.user;
+            const { title, body_content, front_image, status } = input;
+            const { url, model_type } = front_image;
+
+            const imageExtension = validExtensionImage(url);
+            if (!imageExtension) {
+              throw handlerHttpError(
+                'Image no valid!',
+                typesErrors.BAD_REQUEST
+              );
+            }
+
+            const urlimage = await uploadImage(url);
+            const image = await createNewDocument(
+              { url: urlimage, model_type, model_id: null },
+              'image'
+            );
+            const model = getModelByName('blog');
+            const newvalue = new model({
+              title,
+              body_content,
+              front_image: image._id,
+              status,
+              author: ROL.ROOT,
+              origin: 'root'
+            });
+
+            await image.save();
+            await newvalue.save();
+
+            return {
+              message: 'create',
+              success: true
+            };
           }
         )
       )
@@ -45,7 +84,7 @@ export const BlogPrivateResolvers = {
       hasRol([ROL.ADMIN, ROL.ROOT])(
         hasPermission(PERMISSIONS.UPDATE)(
           async (_: any, { id, input }, context) => {
-            return await updateBlogController(id, input);
+            return 'here'; /* await updateBlogController(id, input); */
           }
         )
       )
@@ -54,7 +93,7 @@ export const BlogPrivateResolvers = {
       hasRol([ROL.ADMIN, ROL.ROOT])(
         hasPermission(PERMISSIONS.UPDATE)(
           async (_: any, { id, status }, context) => {
-            return await updateStatusController(id, status);
+            return 'here'; /* await updateStatusController(id, status); */
           }
         )
       )

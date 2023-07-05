@@ -13,7 +13,12 @@ import {
   CategoryResolvers,
   CategoryTypeDefs,
   TagTypeDefs,
-  TagResolvers
+  TagResolvers,
+  BlogResolvers,
+  BlogTypeDefs,
+  //
+  ImageResolvers,
+  ImageTypeDefs
 } from './private';
 
 /**
@@ -47,7 +52,9 @@ export const typeDefs = [
   PermissionTypeDefs,
   CategoryTypeDefs,
   TagTypeDefs,
-
+  BlogTypeDefs,
+  //
+  ImageTypeDefs,
   //
   PCategoryTypeDefs,
   PTagTypeDefs,
@@ -61,6 +68,9 @@ export const resolvers = [
   PermissionResolvers,
   CategoryResolvers,
   TagResolvers,
+  BlogResolvers,
+  //
+  ImageResolvers,
   //
   PCategoryResolvers,
   PTagResolvers,

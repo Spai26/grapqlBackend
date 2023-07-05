@@ -36,7 +36,8 @@ export const getTokenforRequest = async (req: customRequest) => {
 
       const user: IUserAuth = {
         id: currentUser._id,
-        rol: currentUser.rol
+        rol: currentUser.rol,
+        alias: currentUser.username
       };
 
       //asign user on req

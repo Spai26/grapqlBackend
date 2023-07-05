@@ -19,6 +19,7 @@ export interface IPropsTypes<T> {
 export interface IUserAuth {
   id: IPropsTypes<string>;
   rol: IPropsTypes<string>;
+  alias: IPropsTypes<string>;
 }
 
 //variables static for rol

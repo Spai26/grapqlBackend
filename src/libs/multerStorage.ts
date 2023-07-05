@@ -31,5 +31,9 @@ const storage = multer.diskStorage({
   }
 });
 
-export const upload = multer({ storage, fileFilter }).single('file');
-export const arrayUpload = multer({ storage, fileFilter }).array('gallery', 10);
+export const logoUpload = multer({ storage, fileFilter }).single('logo');
+export const singleUpload = multer({ storage, fileFilter }).single('file');
+export const multipleUpload = multer({ storage, fileFilter }).array(
+  'gallery',
+  10
+);

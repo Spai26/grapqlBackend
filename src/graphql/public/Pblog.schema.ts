@@ -11,19 +11,6 @@ export const PBlogPublicTypeDefs = gql`
     getOneBlogbyId(id: ID!): Blog
     searchByTitle(title: String!): [Blog]
   }
-
-  type Blog {
-    id: ID
-    title: String!
-    body_content: String!
-    front_image: Image!
-    slug_title: String
-    count_view: Int
-    author: User!
-    status: Boolean
-    createdAt: String
-    updatedAt: String
-  }
 `;
 
 export const PBlogPublicResolvers = {

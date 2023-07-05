@@ -5,11 +5,12 @@ import { authLoginController } from '@controllers/auth/authSessions';
 export const AuthResolvers = {
   Mutation: {
     AuthLogin: async (_: any, { input }, { res }) => {
-      const { _id, rol } = await authLoginController(input);
+      const { _id, rol, username } = await authLoginController(input);
 
       const mytoken = await createAccesToken({
         id: _id,
-        rol
+        rol,
+        alias: username
       });
 
       if (mytoken) {

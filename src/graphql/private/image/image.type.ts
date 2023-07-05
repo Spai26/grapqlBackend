@@ -1,38 +1,31 @@
 import gql from 'graphql-tag';
 
 export const ImageTypeDefs = gql`
-  scalar Upload
-
   extend type Query {
     getImages: [Image]
-    getTesting: [Testing]
   }
 
   extend type Mutation {
-    uploadImage(file: Upload!): messageCrud
+    uploadImage(file: Upload!): Response
   }
 
   type Image {
     url: String
-    model_type: imageTypes
+    model_type: imageEnumTypes
     model_id: ID! #reference to models father
   }
 
-  type Testing {
-    image: Image
-    gallery: [Image]
-  }
-
-  enum imageTypes {
+  #reference IImage
+  enum imageEnumTypes {
     GALLERY
     IMAGE
     LOGO
   }
 
+  #model_id autogenerate when created
   input ImageInput {
     url: String!
-    model_type: imageTypes!
-    #model_id autogenerate when created
+    model_type: imageEnumTypes!
   }
 
   scalar Upload

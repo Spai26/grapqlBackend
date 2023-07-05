@@ -1,34 +1,41 @@
 import gql from 'graphql-tag';
 
-export const BlogPrivateTypeDefs = gql`
+export const BlogTypeDefs = gql`
   extend type Query {
     #para evitar errores
     getAllOnwerBlogs: [Blog]
     getOneBlogbyIdOnwer(id: ID!): Blog
   }
   extend type Mutation {
-    attachNewBlog(input: addNewBlog): messageCrud
-    updateMyBlog(id: ID!, input: rootUpdateMyBlog): messageCrud
-    updateStatusBlog(id: ID!, status: Boolean!): messageCrud
-    deleteMyBlog(id: ID!): messageCrud
+    newBlog(input: blogCreationInput): Response
+    updateMyBlog(id: ID!, input: blogCreationInput): Response
+    updateStatusBlog(id: ID!, status: Boolean!): Response
+    deleteMyBlog(id: ID!): Response
   }
 
-  input addNewBlog {
+  type SearchBlog {
+    title: String!
+  }
+
+  #model Blog
+  type Blog {
+    id: ID
+    title: String!
+    body_content: String!
+    front_image: Image! #change for string
+    slug_title: String
+    count_view: Int
+    author: String
+    status: Boolean
+    createdAt: String
+    updatedAt: String
+  }
+
+  #slug / origin / author autogenerate
+  input blogCreationInput {
     title: String!
     body_content: String
-    front_image: Image!
-    author: ID!
+    front_image: ImageInput!
     status: Boolean
-  }
-
-  input rootUpdateMyBlog {
-    title: String
-    body_content: String
-    status: Boolean
-    front_image: rootImage
-  }
-
-  input rootImage {
-    url: String
   }
 `;

@@ -1,7 +1,12 @@
 import { Request } from 'express';
 import { FileFilterCallback } from 'multer';
 
-const allowedMimeTypes: string[] = ['image/jpeg', 'image/png', 'image/gif'];
+const allowedMimeTypes: string[] = [
+  'image/jpeg',
+  'image/png',
+  'image/gif',
+  'image/jpg'
+];
 
 /**
  * * function is to filter uploaded files and only allow those that have a mimetype starting with "image/

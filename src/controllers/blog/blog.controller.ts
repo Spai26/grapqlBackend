@@ -11,6 +11,7 @@ import {
 import { searchOptions } from '@utils/typesCustom';
 import { rootNewBlogController } from './auth/rootBlogController';
 import { createBlogController } from './auth/userAuthBlog.controller';
+import { BlogModel } from '@models/nosql';
 
 let list = null;
 let blog = null;
@@ -34,7 +35,7 @@ export const getAllBlogsWithRelations = async (options?: findOptions) => {
       return [];
     }
  */
-    return 'here';
+    return await BlogModel.find({}).populate('front_image');
   } catch (error) {
     throw handlerHttpError(
       `Error fn: getAllBlogs: ${error}`,

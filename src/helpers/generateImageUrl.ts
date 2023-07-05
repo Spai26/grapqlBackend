@@ -6,8 +6,10 @@ import {
 
 export const uploadImage = async (path: string) => {
   try {
-    const { url } = await cloudinary.uploader.upload(path);
-    return url;
+    const { secure_url } = await cloudinary.uploader.upload(path);
+    //const image = `${result.public_id}.${result.format}`;
+    return secure_url;
+    //return image;
   } catch (error) {
     throw handlerHttpError(
       'Error cloudinary dont upload image.!',
