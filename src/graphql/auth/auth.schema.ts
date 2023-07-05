@@ -11,12 +11,12 @@ export const AuthTypeDefs = gql`
   }
 
   type AuthResponse {
-    message: Response
+    response: Response
     mytoken: String!
   }
 
   extend type Mutation {
     AuthLogin(input: AuthLogin): AuthResponse
-    authDisconnect: String!
+    authDisconnect: Response!
   }
 `;

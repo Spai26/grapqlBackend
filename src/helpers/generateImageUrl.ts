@@ -4,7 +4,7 @@ import {
   typesErrors
 } from '@middlewares/handlerErrorsApollo';
 
-export const uploadImage = async (path: string) => {
+export const uploadImage = async (path: string): Promise<string> => {
   try {
     const { secure_url } = await cloudinary.uploader.upload(path);
     //const image = `${result.public_id}.${result.format}`;

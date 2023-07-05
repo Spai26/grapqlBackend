@@ -25,16 +25,13 @@ export const AuthResolvers = {
           }
         };
       }
-      return null;
     },
 
     authDisconnect: (_: any, __: any, { res }) => {
       res.cookie('token', '');
       return {
-        response: {
-          message: 'Good Bye!',
-          success: false
-        }
+        message: 'Good Bye!',
+        success: false
       };
     }
   }

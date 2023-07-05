@@ -1,4 +1,4 @@
-import { validateAndCreateImage } from '@helpers/querys/Image.query';
+import { generateDocImage } from '@helpers/querys/Image.query';
 import { createNewDocument } from '@helpers/querys/generalConsult';
 import { StoreModel } from '@models/nosql/store.models';
 
@@ -24,7 +24,7 @@ export const StorePublicResolvers = {
       console.log({ input });
       let result;
       const newstore = await createNewDocument(input, 'store');
-      const frontPageImage = await validateAndCreateImage(input.main_image);
+      const frontPageImage = await generateDocImage(input);
 
       newstore.onwer = user.id;
       newstore.main_image = frontPageImage._id;

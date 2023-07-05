@@ -9,14 +9,7 @@ import {
   createNewDocument,
   getModelByName
 } from '@helpers/querys/generalConsult';
-import { validExtensionImage } from '@helpers/validateExtension';
-import {
-  handlerHttpError,
-  typesErrors
-} from '@middlewares/handlerErrorsApollo';
-import { uploadImage } from '@helpers/generateImageUrl';
-
-let result = null;
+import { attachInDBwithSingleImage } from '@controllers/auth/auth.blog.controller';
 
 export const BlogResolvers = {
   Query: {
@@ -41,41 +34,8 @@ export const BlogResolvers = {
     newBlog: authMiddleware(
       hasRol([ROL.ADMIN, ROL.ROOT])(
         hasPermission(PERMISSIONS.CREATE)(
-          async (_: any, { input }, context): Promise<ResponseResult> => {
-            const { alias } = context.user;
-            const { title, body_content, front_image, status } = input;
-            const { url, model_type } = front_image;
-
-            const imageExtension = validExtensionImage(url);
-            if (!imageExtension) {
-              throw handlerHttpError(
-                'Image no valid!',
-                typesErrors.BAD_REQUEST
-              );
-            }
-
-            const urlimage = await uploadImage(url);
-            const image = await createNewDocument(
-              { url: urlimage, model_type, model_id: null },
-              'image'
-            );
-            const model = getModelByName('blog');
-            const newvalue = new model({
-              title,
-              body_content,
-              front_image: image._id,
-              status,
-              author: ROL.ROOT,
-              origin: 'root'
-            });
-
-            await image.save();
-            await newvalue.save();
-
-            return {
-              message: 'create',
-              success: true
-            };
+          async (_: any, { input }, context) => {
+            return attachInDBwithSingleImage(input, context, 'blog');
           }
         )
       )

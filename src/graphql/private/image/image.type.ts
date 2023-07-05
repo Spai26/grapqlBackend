@@ -2,17 +2,18 @@ import gql from 'graphql-tag';
 
 export const ImageTypeDefs = gql`
   extend type Query {
-    getImages: [Image]
+    show: [Image]
   }
 
   extend type Mutation {
-    uploadImage(file: Upload!): Response
+    updateImage(input: ImageInput): Response
   }
 
   type Image {
     url: String
     model_type: imageEnumTypes
     model_id: ID! #reference to models father
+    source: String
   }
 
   #reference IImage
@@ -26,7 +27,6 @@ export const ImageTypeDefs = gql`
   input ImageInput {
     url: String!
     model_type: imageEnumTypes!
+    source: String
   }
-
-  scalar Upload
 `;

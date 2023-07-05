@@ -92,9 +92,10 @@ export const isExistById = async (
  * @param model
  * @returns
  */
-export const createNewDocument = async (values, model: keyof listModel) => {
+export const createNewDocument = (values: any, model: keyof listModel) => {
   Model = getModelByName(model);
-  return new Model(values) || null;
+
+  return new Model(values);
 };
 
 /**

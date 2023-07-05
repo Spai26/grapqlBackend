@@ -1,4 +1,3 @@
-import { validateAndCreateImage } from '@helpers/querys/Image.query';
 import {
   createNewDocument,
   getModelByName,
@@ -17,7 +16,7 @@ export const createBlogController = async (user, input) => {
   const { title, body_content, front_image, author, status } = input;
 
   try {
-    const image = await validateAndCreateImage(front_image);
+    /*    (front_image);
     const newblog = await createNewDocument(
       {
         title,
@@ -31,7 +30,7 @@ export const createBlogController = async (user, input) => {
     image.model_id = newblog._id;
     await image.save();
     await newblog.save();
-
+ */
     return {
       message: 'Blog created',
       success: true
