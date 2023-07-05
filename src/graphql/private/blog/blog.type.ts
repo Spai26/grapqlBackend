@@ -25,10 +25,16 @@ export const BlogTypeDefs = gql`
     front_image: Image! #change for string
     slug_title: String
     count_view: Int
-    author: String
+    author: UserView!
     status: Boolean
+    origin: String
     createdAt: String
     updatedAt: String
+  }
+
+  type UserView {
+    id: ID
+    username: String
   }
 
   #slug / origin / author autogenerate

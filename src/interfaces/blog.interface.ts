@@ -6,7 +6,7 @@ export interface IBlog {
   front_image: mongoose.Types.ObjectId; //ref 'image'
   slug_title: string;
   count_view: number;
-  author: string; //ref 'user'
+  author: mongoose.Types.ObjectId; //ref 'user'
   status: boolean;
   origin: string;
 }

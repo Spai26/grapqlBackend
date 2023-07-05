@@ -10,6 +10,7 @@ import {
   getModelByName
 } from '@helpers/querys/generalConsult';
 import { attachInDBwithSingleImage } from '@controllers/auth/auth.blog.controller';
+import { BlogModel } from '@models/nosql';
 
 export const BlogResolvers = {
   Query: {
@@ -18,7 +19,7 @@ export const BlogResolvers = {
         hasPermission(PERMISSIONS.READ)(async (_, __, context) => {
           const { id } = context.user;
           //falta considerar origin or source
-          return 'here' /* getAllBlogsWithRelations({ author: id }) */;
+          return BlogModel.find({}).populate('front_image').populate('author');
         })
       )
     ),

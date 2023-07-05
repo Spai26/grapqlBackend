@@ -18,7 +18,7 @@ export const attachInDBwithSingleImage = async (
   ctx: ICtx,
   modelname: keyof listModel
 ): Promise<ResponseResult> => {
-  const { alias } = ctx.user;
+  const { id, alias } = ctx.user;
   const { title, body_content, front_image, status } = values;
   const { url, model_type } = front_image;
 
@@ -39,7 +39,7 @@ export const attachInDBwithSingleImage = async (
         body_content,
         status,
         front_image: image._id,
-        author: ROL.ROOT,
+        author: id,
         origin: alias
       },
       modelname
