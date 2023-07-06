@@ -60,14 +60,24 @@ export const updateNameWithSlugInDB = async (
   }
 };
 
+/**
+ * * the function is to delete a document from a MongoDB database based on the provided model name and ID.
+ * !should not have any relationship
+ * @param nameModel
+ * @param id
+ * @returns
+ */
 export const deleteInDB = async (
   nameModel: keyof listModel,
   id: string
 ): Promise<ResponseResult> => {
   try {
+    const model = await getModelByName(nameModel);
+
+    const deletedRecord = await model.findByIdAndDelete(id);
     return {
-      message: ' in progress',
-      success: false
+      message: 'Record deleted successfully',
+      success: true
     };
   } catch (error) {
     throw handlerHttpError(
