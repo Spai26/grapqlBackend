@@ -2,8 +2,7 @@ import { generateDocImage } from '@helpers/querys/Image.query';
 
 import {
   createNewDocument,
-  getModelByName,
-  updateOneElement
+  getModelByName
 } from '@helpers/querys/generalConsult';
 import {
   IBlogDocument,
@@ -19,7 +18,10 @@ import { ImageModel } from '@models/nosql';
 import { generateSlug } from '@utils/funcitonHelpers';
 
 let blog = getModelByName('blog');
+let image = getModelByName('image');
+
 let updateData = null;
+let imageUpdate = null;
 /**
  * @param ctx
  * @returns
@@ -67,19 +69,18 @@ export const detailBlogCtr = async (id): Promise<IBlogDocument> => {
 
 export const updateBlogCtr = async (values): Promise<ResponseResult> => {
   const { id } = values;
-  const { title, body_content, front_image, status } = values.input;
+  const { title, body_content, status } = values.input;
 
   try {
     updateData = await blog.findByIdAndUpdate(id, {
       title,
       body_content,
-      front_image,
       status,
       slug_title: generateSlug(title)
     });
 
     return {
-      message: updateData ? 'Blog fields updated!' : 'Blo-.',
+      message: 'Blog fields updated!',
       success: !!updateData
     };
   } catch (error) {
@@ -90,17 +91,43 @@ export const updateBlogCtr = async (values): Promise<ResponseResult> => {
   }
 };
 
-export const updateStatusBlogCtr = async (
-  values,
-  modelname: keyof listModel
-): Promise<ResponseResult> => {
+export const updateBlogImageCtr = async (values): Promise<ResponseResult> => {
+  const { id } = values;
+  const { url } = values.input;
+
+  try {
+    //depliego la relacion con image
+    const existBlog = await blog.findById(id).populate('front_image');
+
+    //verifico si ingresa un url
+    if (existBlog.front_image.url !== url) {
+      //busco por model y actualizo
+      imageUpdate = await image.findOneAndUpdate(
+        { model_id: existBlog._id },
+        { url }
+      );
+    }
+
+    return {
+      message: 'Blog Image updated!',
+      success: !!imageUpdate
+    };
+  } catch (error) {
+    throw handlerHttpError(
+      `Error in update Image Blog auth function: ${error}`,
+      typesErrors.DATABASE_ERROR
+    );
+  }
+};
+
+export const updateStatusBlogCtr = async (values): Promise<ResponseResult> => {
   //solo actualiza status
 
   const { id, status } = values;
 
   try {
     updateData = await blog.findByIdAndUpdate(id, { status });
-    console.log(updateData);
+
     return {
       message: 'Blog status updated!',
       success: true

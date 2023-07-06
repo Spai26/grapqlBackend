@@ -8,8 +8,9 @@ export const BlogTypeDefs = gql`
   }
   extend type Mutation {
     newBlog(input: blogCreationInput): Response
-    updateMyBlog(id: ID!, input: blogCreationInput!): Response
+    updateMyBlog(id: ID!, input: blogUpdateInput!): Response
     updateStatusBlog(id: ID!, status: Boolean!): Response
+    updateBlogImage(id: ID!, input: ImageUpdateInput): Response
     deleteMyBlog(id: ID!): Response
   }
 
@@ -22,12 +23,12 @@ export const BlogTypeDefs = gql`
     id: ID
     title: String!
     body_content: String!
-    front_image: Image! #change for string
-    slug_title: String
+    front_image: Image!
+    slug_title: String #autogenerate
     count_view: Int
-    author: UserView!
+    author: UserView! #dont change
     status: Boolean
-    origin: String
+    origin: String #dont change
     createdAt: String
     updatedAt: String
   }
@@ -37,6 +38,13 @@ export const BlogTypeDefs = gql`
     title: String
     body_content: String
     front_image: ImageInput
+    status: Boolean
+  }
+
+  input blogUpdateInput {
+    title: String
+    body_content: String
+    front_image: ImageUpdateInput
     status: Boolean
   }
 `;

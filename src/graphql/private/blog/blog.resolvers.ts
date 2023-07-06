@@ -6,6 +6,7 @@ import {
   detailBlogCtr,
   showListBlogCtr,
   updateBlogCtr,
+  updateBlogImageCtr,
   updateStatusBlogCtr
 } from '@controllers/auth/auth.blog.controller';
 
@@ -43,10 +44,17 @@ export const BlogResolvers = {
         })
       )
     ),
+    updateBlogImage: authMiddleware(
+      hasRol([ROL.ADMIN, ROL.ROOT])(
+        hasPermission(PERMISSIONS.UPDATE)(async (_: any, args, context) => {
+          return updateBlogImageCtr(args);
+        })
+      )
+    ),
     updateStatusBlog: authMiddleware(
       hasRol([ROL.ADMIN, ROL.ROOT])(
         hasPermission(PERMISSIONS.UPDATE)((_: any, args, context) => {
-          return updateStatusBlogCtr(args, 'blog');
+          return updateStatusBlogCtr(args);
         })
       )
     ),
