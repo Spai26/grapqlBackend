@@ -47,8 +47,7 @@ export const getModelByName = (
     test: TestModel
   };
 
-  //function
-  return listModels[model] || null;
+  return listModels[model];
 };
 
 /**
@@ -133,14 +132,17 @@ export const showListRealTime = async (
 
 /**
  * !Model query General
- * * this function shows me the complete record of the document
+ * * function is to retrieve all the records of a specific document
+ * ? name of the document to retrieve records from.
  * @param model
- * @returns query
+ * ? an optional object containing additional options to filter the records
+ * @options
+ * @returns Document Mongoose []
  */
 export const showlist = async (
-  model: keyof listModel,
-  options?: findOptions
+  modelname: keyof listModel,
+  options?: IPropsTypes<string>
 ) => {
-  Model = getModelByName(model);
-  return (await Model.find({})) || null;
+  const Model = getModelByName(modelname);
+  return options ? Model.find(options) : Model.find({});
 };
