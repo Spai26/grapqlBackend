@@ -1,9 +1,4 @@
 import gql from 'graphql-tag';
-import {
-  getAllBlogsWithRelations,
-  getBlogResulbyId,
-  searchBlogsByTitle
-} from '@controllers/blog/blog.controller';
 
 export const PBlogPublicTypeDefs = gql`
   extend type Query {
@@ -16,13 +11,13 @@ export const PBlogPublicTypeDefs = gql`
 export const PBlogPublicResolvers = {
   Query: {
     getpublicArrayBlogs: async () => {
-      return await getAllBlogsWithRelations();
+      return 'await getAllBlogsWithRelations()';
     },
     getOneBlogbyId: async (_: any, { id }) => {
-      return await getBlogResulbyId(id);
+      return 'await getBlogResulbyId(id)';
     },
     searchByTitle: async (_: any, { title }) => {
-      return await searchBlogsByTitle(title);
+      return 'await searchBlogsByTitle(title)';
     }
   }
 };
