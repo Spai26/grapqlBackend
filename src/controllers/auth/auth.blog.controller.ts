@@ -31,7 +31,7 @@ export const showListBlogCtr = async (ctx): Promise<IBlogDocument[]> => {
   //falta considerar origin or source
   try {
     return await blog
-      .find({ author: id })
+      .find({ author: id }, { virtual: true })
       .populate('front_image')
       .populate('author');
   } catch (error) {

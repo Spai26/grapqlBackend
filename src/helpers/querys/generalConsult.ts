@@ -118,16 +118,13 @@ export const updateOneElement = async (id, values, model: keyof listModel) => {
  * @param options reference findoptions
  * @returns
  */
-export const showListRealTime = async (
-  model: keyof listModel,
-  relation: string,
-  options?: findOptions
+export const showListwithRelation = async (
+  modelname: keyof listModel,
+  relation: string
 ) => {
-  Model = getModelByName(model);
-  return await Model.find({}).populate({
-    path: relation,
-    options
-  });
+  const Model = getModelByName(modelname);
+
+  return await Model.find({}).populate(relation);
 };
 
 /**
@@ -144,5 +141,5 @@ export const showlist = async (
   options?: IPropsTypes<string>
 ) => {
   const Model = getModelByName(modelname);
-  return options ? Model.find(options) : Model.find({});
+  return options ? await Model.find(options) : await Model.find({});
 };

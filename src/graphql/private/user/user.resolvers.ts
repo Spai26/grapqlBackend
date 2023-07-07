@@ -1,4 +1,3 @@
-import { showListRealTime } from '@helpers/querys/generalConsult';
 import {
   attachUserInDB,
   deleteWithAllRelations,
@@ -12,12 +11,19 @@ import {
 } from '@middlewares/access/index';
 import { PERMISSIONS, ROL } from '@interfaces/types/type.custom';
 
+import { getModelByName } from '@helpers/querys/generalConsult';
+const user = getModelByName('user');
 export const UserResolvers = {
   Query: {
     getAllUsers: authMiddleware(
       hasRol([ROL.ADMIN, ROL.ROOT])(
         hasPermission(PERMISSIONS.READ)(async (_, __, context) => {
-          return await showListRealTime('user', 'rol', { virtual: true });
+          return await user.find({}).populate({
+            path: 'rol',
+            populate: {
+              path: 'permissions'
+            }
+          });
         })
       )
     ),

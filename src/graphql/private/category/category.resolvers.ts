@@ -25,8 +25,8 @@ export const CategoryResolvers = {
     ),
     deletedCategory: authMiddleware(
       hasRol([ROL.ADMIN, ROL.ROOT])(
-        hasPermission(PERMISSIONS.DELETE)((_, { input }, context) => {
-          return deleteInDB('category', input);
+        hasPermission(PERMISSIONS.DELETE)((_, { id }, context) => {
+          return deleteInDB('category', id);
         })
       )
     )

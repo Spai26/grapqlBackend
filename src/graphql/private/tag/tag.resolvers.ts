@@ -1,4 +1,8 @@
-import { attachInDB, updateNameWithSlugInDB } from '@controllers/auth';
+import {
+  attachInDB,
+  deleteInDB,
+  updateNameWithSlugInDB
+} from '@controllers/auth';
 import { PERMISSIONS, ROL } from '@interfaces/index';
 import { authMiddleware, hasPermission, hasRol } from '@middlewares/access';
 
@@ -22,7 +26,7 @@ export const TagResolvers = {
     deleteTag: authMiddleware(
       hasRol([ROL.ADMIN, ROL.ROOT])(
         hasPermission(PERMISSIONS.DELETE)((_: any, { id }, context) => {
-          return 'por evaluar';
+          return deleteInDB('tag', id);
         })
       )
     )

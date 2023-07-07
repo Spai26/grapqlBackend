@@ -3,7 +3,7 @@ import {
   updateRolesAndPermission
 } from '@controllers/auth/auth.rol.controller';
 
-import { showListRealTime } from '@helpers/querys/generalConsult';
+import { showListwithRelation } from '@helpers/querys/generalConsult';
 import { authMiddleware, hasPermission, hasRol } from '@middlewares/access';
 import { PERMISSIONS, ROL } from '@interfaces/types/type.custom';
 
@@ -11,8 +11,8 @@ export const RolResolvers = {
   Query: {
     getAllroles: authMiddleware(
       hasRol([ROL.ADMIN, ROL.ROOT])(
-        hasPermission(PERMISSIONS.READ)(async (_, __, context) => {
-          return await showListRealTime('rol', 'permissions');
+        hasPermission(PERMISSIONS.READ)((_, __, context) => {
+          return showListwithRelation('rol', 'permissions');
         })
       )
     )
