@@ -1,23 +1,35 @@
+import { incrementViewAndFetchBlogById } from '@controllers/public/PController';
+import { getModelByName } from '@helpers/querys';
+import { IBlogDocument } from '@interfaces/index';
+
 import gql from 'graphql-tag';
 
-export const PBlogPublicTypeDefs = gql`
+export const PBlogTypeDefs = gql`
   extend type Query {
-    getpublicArrayBlogs: [Blog]
-    getOneBlogbyId(id: ID!): Blog
-    searchByTitle(title: String!): [Blog]
+    getpublicBlogs: [PBlog]
+    getOneBlogbyId(id: ID!): PBlog
+    searchByTitle(title: String!): [PBlog]
   }
 `;
+const blog = getModelByName('blog');
 
-export const PBlogPublicResolvers = {
+export const PBlogResolvers = {
   Query: {
-    getpublicArrayBlogs: async () => {
-      return 'await getAllBlogsWithRelations()';
+    getpublicBlogs: async (): Promise<IBlogDocument[]> => {
+      return await blog
+        .find({}, { virtual: true })
+        .populate('author')
+        .populate('front_image');
     },
-    getOneBlogbyId: async (_: any, { id }) => {
-      return 'await getBlogResulbyId(id)';
+    getOneBlogbyId: async (_: any, args): Promise<IBlogDocument> => {
+      //count view
+      return await incrementViewAndFetchBlogById('blog', args);
     },
-    searchByTitle: async (_: any, { title }) => {
-      return 'await searchBlogsByTitle(title)';
+    searchByTitle: async (_: any, { title }): Promise<IBlogDocument[]> => {
+      return await blog
+        .find({ title: { $regex: title, $options: 'i' } })
+        .populate('author')
+        .populate('front_image');
     }
   }
 };

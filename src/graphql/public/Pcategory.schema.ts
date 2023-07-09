@@ -1,17 +1,21 @@
-import { showCategory } from '@controllers/public/Pcategory.controller';
+import { searchByRegex, showlist } from '@helpers/querys';
 import gql from 'graphql-tag';
 
 export const PCategoryTypeDefs = gql`
   extend type Query {
-    _: String
     getAllCategory: [Category]
+    searchCategoryByName: [Category]
   }
 `;
 
 export const PCategoryResolvers = {
   Query: {
     getAllCategory: () => {
-      return showCategory();
+      return showlist('category');
+    },
+    searchCategoryByName: async (_, { text }) => {
+      const category = await searchByRegex('category', 'name', text);
+      return category;
     }
   }
 };
