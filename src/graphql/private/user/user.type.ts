@@ -34,7 +34,8 @@ export const UserTypeDefs = gql`
     updatedAt: String
   }
 
-  type UserView {
+  #Public user
+  type PUser {
     id: ID
     username: String
   }
@@ -43,9 +44,9 @@ export const UserTypeDefs = gql`
   input createNewUser {
     firstname: String
     lastname: String
-    password: String!
-    email: String!
-    username: String!
+    password: String
+    email: String
+    username: String
     rol: ID!
   }
 

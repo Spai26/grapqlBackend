@@ -20,6 +20,11 @@ export const ImageTypeDefs = gql`
     source: String
   }
 
+  type PImage {
+    id: ID
+    url: String
+  }
+
   #reference IImage
   enum imageEnumTypes {
     GALLERY

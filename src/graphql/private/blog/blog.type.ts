@@ -26,9 +26,21 @@ export const BlogTypeDefs = gql`
     front_image: Image!
     slug_title: String #autogenerate
     count_view: Int
-    author: UserView! #dont change
+    author: PUser! #dont change
     status: Boolean
     origin: String #dont change
+    createdAt: String
+    updatedAt: String
+  }
+
+  type PBlog {
+    id: ID
+    title: String
+    body_content: String
+    front_image: PImage
+    slug_title: String
+    count_view: Int
+    author: PUser
     createdAt: String
     updatedAt: String
   }
