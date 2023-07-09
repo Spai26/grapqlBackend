@@ -50,6 +50,15 @@ export const getModelByName = (
   return listModels[model];
 };
 
+export const existDocById = async (
+  modelname: keyof listModel,
+  id: IPropsTypes<string>
+) => {
+  const model = getModelByName(modelname);
+  const exist = await model.findById(id);
+  return exist;
+};
+
 /**
  * !Model query User.
  * * I get the first element it finds in my model
@@ -61,7 +70,7 @@ export const existFields = async (
   model: keyof listModel,
   values: IPropsTypes<string>
 ) => {
-  Model = getModelByName(model);
+  const Model = getModelByName(model);
   return await Model.findOne(values);
 };
 
@@ -91,8 +100,8 @@ export const isExistById = async (
  * @param model
  * @returns
  */
-export const createNewDocument = (values: any, model: keyof listModel) => {
-  Model = getModelByName(model);
+export const createNewDocument = (values, model: keyof listModel) => {
+  const Model = getModelByName(model);
 
   return new Model(values);
 };
@@ -123,7 +132,6 @@ export const showListwithRelation = async (
   relation: string
 ) => {
   const Model = getModelByName(modelname);
-
   return await Model.find({}).populate(relation);
 };
 
@@ -142,4 +150,30 @@ export const showlist = async (
 ) => {
   const Model = getModelByName(modelname);
   return options ? await Model.find(options) : await Model.find({});
+};
+
+export const searchByRegex = async (
+  modelname: keyof listModel,
+  field: string,
+  contains: string
+) => {
+  const Model = getModelByName(modelname);
+  const query = {};
+  query[field] = { $regex: contains, $options: 'i' };
+  return await Model.find(query);
+};
+
+/**
+ * !This function is only valid for store blog brand or any model that has the view_count field
+ * @param modelname
+ * @param id
+ * @returns
+ */
+export const incrementViewModelbyId = async (modelname, id) => {
+  const Model = getModelByName(modelname);
+  const updateDoc = await Model.updateOne(
+    { _id: id },
+    { $inc: { count_view: 1 } }
+  );
+  return updateDoc;
 };
