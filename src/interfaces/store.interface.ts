@@ -4,13 +4,13 @@ import { ITag } from './tag.interfaces';
 import { ICategory } from './category.interface';
 
 export interface IStore {
-  storeName: string;
+  title: string;
   sub_title: string;
   slug: string;
   description: string;
-  main_image: mongoose.Types.ObjectId; //ref 'img'
-  logo?: mongoose.Types.ObjectId; //ref 'img'
-  galleries_image?: mongoose.Types.DocumentArray<IImage>; //ref 'img'
+  main_image: mongoose.Types.ObjectId; //ref 'img' string ?
+  logo?: mongoose.Types.ObjectId; //ref 'img' string ?
+  gallery?: mongoose.Types.DocumentArray<IImage>; //ref 'img'
   phone: string;
   address: string;
   positionX: string;
@@ -19,6 +19,7 @@ export interface IStore {
   country?: string;
   url_video?: string;
   url_website?: string;
+  status: boolean;
   email: string;
   socials?: Social[];
   times_tables: Times[];

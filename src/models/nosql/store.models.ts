@@ -6,13 +6,13 @@ mongoose.plugin(slug);
 
 const Storechema = new Schema<IStoreDocument, Model<IStore>>(
   {
-    storeName: { type: String, require: true, unique: true },
+    title: { type: String, required: true, unique: true },
     sub_title: { type: String },
-    slug: { type: String, slug: 'storeName' },
-    description: { type: String, require: true },
-    main_image: { type: Schema.Types.ObjectId, ref: 'Image', require: true },
+    slug: { type: String, slug: 'title' },
+    description: { type: String, required: true },
+    main_image: { type: Schema.Types.ObjectId, ref: 'Image', required: true },
     logo: { type: Schema.Types.ObjectId, ref: 'Image' },
-    phone: { type: String, require: true },
+    phone: { type: String, required: true },
     address: { type: String },
     positionX: { type: String },
     positionY: { type: String },
@@ -20,7 +20,8 @@ const Storechema = new Schema<IStoreDocument, Model<IStore>>(
     country: { type: String },
     url_video: { type: String },
     url_website: { type: String },
-    email: { type: String, require: true },
+    status: { type: Boolean },
+    email: { type: String, required: true },
     socials: [
       {
         name_social: { type: String },
@@ -37,7 +38,7 @@ const Storechema = new Schema<IStoreDocument, Model<IStore>>(
     ],
     onwer: { type: Schema.Types.ObjectId, ref: 'User' },
     tags: [{ type: Schema.Types.ObjectId, ref: 'Tag' }],
-    galleries_image: [{ type: Schema.Types.ObjectId, ref: 'Image' }],
+    gallery: [{ type: Schema.Types.ObjectId, ref: 'Image' }],
     categories: [{ type: Schema.Types.ObjectId, ref: 'Category' }]
   },
   {
