@@ -1,46 +1,77 @@
-import { generateDocImage } from '@helpers/querys/Image.query';
-import { createNewDocument } from '@helpers/querys/generalConsult';
-import { StoreModel } from '@models/nosql/store.models';
+import {
+  createNewStoreDocument,
+  deleteStoreCtr,
+  updateStoreImages
+} from '@controllers/auth/auth.store.controller';
+import { getModelByName } from '@helpers/querys';
+import { PERMISSIONS, ROL } from '@interfaces/index';
 
-export const StorePublicResolvers = {
+import { authMiddleware, hasPermission, hasRol } from '@middlewares/access';
+
+import { generateSlug } from '@utils/funcitonHelpers';
+
+const store = getModelByName('store');
+export const StoreResolvers = {
   Query: {
-    getAllStore: async () => {
-      return StoreModel.find({})
-        .populate('logo')
-        .populate('onwer')
-        .populate('tags')
-        .populate('categories')
-        .populate('main_image');
-    },
+    getAllOwnerStore: authMiddleware(
+      hasRol([ROL.ADMIN, ROL.ROOT])(
+        hasPermission(PERMISSIONS.READ)(async (_, __, context) => {
+          const { id } = context.user;
+
+          const data = store
+            .find({ onwer: id })
+            .populate('logo')
+            .populate('onwer')
+            .populate('tags')
+            .populate('categories')
+            .populate('main_image')
+            .populate('gallery');
+
+          return data;
+        })
+      )
+    ),
     getDetailStore: async () => {
-      return 'hello';
-    },
-    getOnwerAllStore: async () => {
       return 'hello';
     }
   },
   Mutation: {
-    attachNewStore: async (_, { input }, { user }) => {
-      console.log({ input });
-      let result;
-      const newstore = await createNewDocument(input, 'store');
-      const frontPageImage = await generateDocImage(input);
+    attachNewStore: authMiddleware(
+      hasRol([ROL.ADMIN, ROL.ROOT])(
+        hasPermission(PERMISSIONS.CREATE)(async (_, { input }, context) => {
+          return createNewStoreDocument(input, context);
+        })
+      )
+    ),
+    updateMyStore: authMiddleware(
+      hasRol([ROL.ADMIN, ROL.ROOT])(
+        hasPermission(PERMISSIONS.UPDATE)(async (_, args, context) => {
+          const { id } = args;
+          const { title, ...resInput } = args.input;
 
-      newstore.onwer = user.id;
-      newstore.main_image = frontPageImage._id;
+          const update = await store.findByIdAndUpdate(id, {
+            title,
+            slug: generateSlug(title),
+            ...resInput
+          });
+          return update;
+        })
+      )
+    ),
 
-      frontPageImage.model_id = newstore._id;
-      await frontPageImage.save();
-      result = await newstore.save();
-      console.log(result);
-
-      return 'hello';
-    },
-    updateMyStore: async () => {
-      return 'hello';
-    },
-    deleteMyStore: async () => {
-      return 'hello';
-    }
+    updateAnyImageOnStore: authMiddleware(
+      hasRol([ROL.ADMIN, ROL.ROOT])(
+        hasPermission(PERMISSIONS.UPDATE)(async (_, args, context) => {
+          return await updateStoreImages(args);
+        })
+      )
+    ),
+    deleteMyStore: authMiddleware(
+      hasRol([ROL.ADMIN, ROL.ROOT])(
+        hasPermission(PERMISSIONS.DELETE)(async (_, { id }, context) => {
+          return await deleteStoreCtr(id);
+        })
+      )
+    )
   }
 };

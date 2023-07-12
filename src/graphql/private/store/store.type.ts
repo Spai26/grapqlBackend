@@ -1,19 +1,20 @@
 import gql from 'graphql-tag';
 
-export const StorePublicTypeDefs = gql`
+export const StoreTypeDefs = gql`
   extend type Query {
     #para evitar errores
-    getAllStore: [Store]
+    getAllOwnerStore: [Store]
     getDetailStore(id: ID!): Store
-    getOnwerAllStore: [Store]
   }
 
   extend type Mutation {
-    attachNewStore(input: addnewstore): messageCrud
-    updateMyStore(id: ID!, input: onwerUpdateStore): messageCrud
-    deleteMyStore(id: ID!): messageCrud
+    attachNewStore(input: storeCreationInput): Response
+    updateMyStore(id: ID!, input: storeUpdateInput): Response
+    updateAnyImageOnStore(id: ID!, input: storeUpdateImageInput): Response
+    deleteMyStore(id: ID!): Response
   }
 
+  #Model schema
   type Store {
     id: ID
     title: String!
@@ -35,8 +36,10 @@ export const StorePublicTypeDefs = gql`
     times_tables: [Times]
     onwer: User
     tags: [Tag]
-    galleries_image: [Image]
+    gallery: [Image]
     categories: [Category]
+    createdAt: String
+    updatedAt: String
   }
 
   type Social {
@@ -51,7 +54,8 @@ export const StorePublicTypeDefs = gql`
     open: Boolean
   }
 
-  input addnewstore {
+  #owner autogenerate
+  input storeCreationInput {
     title: String!
     sub_title: String!
     description: String!
@@ -68,8 +72,7 @@ export const StorePublicTypeDefs = gql`
     email: String
     socials: [SocialInput]
     times_tables: [TimesInput]
-    galleries_image: [ImageInput]
-    onwer: ID
+    gallery: [ImageInput]
     categories: [ID!]
     tags: [ID!]
   }
@@ -86,7 +89,28 @@ export const StorePublicTypeDefs = gql`
     url: String
   }
 
-  input onwerUpdateStore {
-    id: ID!
+  input storeUpdateInput {
+    title: String
+    sub_title: String
+    description: String
+    phone: String
+    address: String
+    positionX: String
+    positionY: String
+    region: String
+    country: String
+    url_video: String
+    url_website: String
+    email: String
+    socials: [SocialInput]
+    times_tables: [TimesInput]
+    categories: [ID]
+    tags: [ID]
+  }
+
+  input storeUpdateImageInput {
+    main_image: ImageUpdateInput
+    logo: ImageUpdateInput
+    gallery: [ImageUpdateInput]
   }
 `;
