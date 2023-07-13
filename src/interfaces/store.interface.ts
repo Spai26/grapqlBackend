@@ -18,6 +18,7 @@ export interface IStore {
   region: string;
   country?: string;
   url_video?: string;
+  count_view: number;
   url_website?: string;
   status: boolean;
   email: string;

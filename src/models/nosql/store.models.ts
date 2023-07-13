@@ -18,6 +18,7 @@ const Storechema = new Schema<IStoreDocument, Model<IStore>>(
     positionY: { type: String },
     region: { type: String },
     country: { type: String },
+    count_view: { type: Number },
     url_video: { type: String },
     url_website: { type: String },
     status: { type: Boolean },
