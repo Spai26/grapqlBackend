@@ -35,8 +35,36 @@ export const StoreTypeDefs = gql`
     socials: [Social]
     times_tables: [Times]
     onwer: User
+    status: Boolean
     tags: [Tag]
     gallery: [Image]
+    categories: [Category]
+    createdAt: String
+    updatedAt: String
+  }
+
+  type PStore {
+    id: ID
+    title: String
+    sub_title: String
+    slug: String
+    description: String
+    main_image: PImage
+    logo: PImage
+    phone: String
+    address: String
+    positionX: String
+    positionY: String
+    region: String
+    country: String
+    url_website: String
+    url_video: String
+    email: String
+    socials: [Social]
+    times_tables: [Times]
+    onwer: User
+    tags: [Tag]
+    gallery: [PImage]
     categories: [Category]
     createdAt: String
     updatedAt: String
