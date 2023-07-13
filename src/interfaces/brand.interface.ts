@@ -11,6 +11,7 @@ export interface IBrand {
   galleries: mongoose.Types.DocumentArray<IImage>;
   source: string;
   collections?: string;
+  count_view: number;
 }
 
 export interface IBrandDocument extends IBrand, Document {}

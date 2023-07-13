@@ -15,7 +15,8 @@ const BrandShema = new Schema<IBrandDocument, Model<IBrand>>(
     logo: { type: Schema.Types.ObjectId, ref: 'Image' },
     galleries: [{ type: Schema.Types.ObjectId, ref: 'Image' }],
     source: { type: String },
-    collections: { type: String }
+    collections: { type: String },
+    count_view: { type: Number }
   },
   {
     toJSON: { virtuals: true },
@@ -26,6 +27,6 @@ const BrandShema = new Schema<IBrandDocument, Model<IBrand>>(
 );
 
 export const BrandModel = model<IBrandDocument, Model<IBrand>>(
-  'Branch',
+  'Brand',
   BrandShema
 );
