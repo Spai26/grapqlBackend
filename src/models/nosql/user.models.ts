@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import { Schema, model } from 'mongoose';
-import { IUserDocument, IUserModel } from '@interfaces/user.interface';
+import { IUserDocument, IUserModel } from '@interfaces/index';
 
 const UserSchema = new Schema<IUserDocument, IUserModel>(
   {
@@ -12,7 +12,7 @@ const UserSchema = new Schema<IUserDocument, IUserModel>(
     website: { type: String, default: null },
     password: { type: String, require: true },
     rol: { type: Schema.Types.ObjectId, ref: 'Role' },
-    branchs: [{ brandName: String }],
+    brands: [{ brandName: String }],
     stores: [{ storeName: String }]
   },
   {

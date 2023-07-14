@@ -1,13 +1,28 @@
 import { createNewDocument } from './generalConsult';
 
-import { IImageDocument } from '@interfaces/image.interface';
-
 /**
  *
  * @param values
  * @returns IImage
  */
-export const generateDocImage = async (values): Promise<IImageDocument> => {
-  const image = await createNewDocument(values, 'image');
-  return image;
+export const generateDocImage = async (values) => {
+  let result = null;
+
+  if (values.gallery && values.gallery.length > 0) {
+    result = await Promise.all(
+      values.gallery.map(async (element) => {
+        return await createNewDocument(
+          { ...element, source: values.source },
+          'image'
+        );
+      })
+    );
+  } else {
+    result = await createNewDocument(
+      { ...values.logo, ...values.main_image, source: values.source },
+      'image'
+    );
+  }
+
+  return result;
 };

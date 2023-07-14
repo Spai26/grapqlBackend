@@ -1,24 +1,32 @@
+import { HydratedDocument } from 'mongoose';
+
 import {
   createNewDocument,
+  getModelByName,
   updateOneElement
 } from '@helpers/querys/generalConsult';
 import {
   handlerHttpError,
   typesErrors
 } from '@middlewares/handlerErrorsApollo';
-import { UserModel } from '@models/nosql/user.models';
+import { IUser } from '@interfaces/user.interface';
 
-let currentResult;
+let currentResult = null;
+const user = getModelByName('user');
+
 export const attachUserInDB = async (values) => {
   const { email } = values;
   try {
-    const userExist = await UserModel.findOne({ email });
+    const userExist = await user.findOne({ email });
 
     if (userExist) {
       throw handlerHttpError('try another email', typesErrors.ALREADY_EXIST);
     }
 
-    const newuser = await createNewDocument(values, 'user');
+    const newuser: HydratedDocument<IUser> = await createNewDocument(
+      values,
+      'user'
+    );
 
     currentResult = await newuser.save();
 
@@ -38,7 +46,7 @@ export const attachUserInDB = async (values) => {
 
 export const getUserForId = async (email) => {
   try {
-    return await UserModel.findOne({ email: email });
+    return await user.findOne({ email: email });
   } catch (error) {
     throw handlerHttpError(
       `Error fn: searchUser ${error}`,

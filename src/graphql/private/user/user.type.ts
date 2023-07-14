@@ -28,7 +28,7 @@ export const UserTypeDefs = gql`
     password: String
     photo: String
     rol: Rol
-    branchs: String #
+    branchs: [Store] #
     stores: String #
     createdAt: String
     updatedAt: String

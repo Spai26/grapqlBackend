@@ -11,7 +11,7 @@ export interface IUser {
   website?: string;
   password: string;
   rol: mongoose.Types.ObjectId; //ref 'rol'
-  branchs?: mongoose.Types.DocumentArray<IBrand>;
+  brands?: mongoose.Types.DocumentArray<IBrand>;
   stores?: mongoose.Types.DocumentArray<IStore>;
 }
 

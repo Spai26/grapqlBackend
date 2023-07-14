@@ -16,6 +16,8 @@ import {
   TagResolvers,
   BlogResolvers,
   BlogTypeDefs,
+  StoreResolvers,
+  StoreTypeDefs,
   //
   ImageResolvers,
   ImageTypeDefs
@@ -30,8 +32,11 @@ import {
   PCategoryResolvers,
   PTagTypeDefs,
   PTagResolvers,
-  GeneralResolvers,
-  GeneralTypeDefs
+  GeneralTypeDefs,
+  PBlogTypeDefs,
+  PBlogResolvers,
+  PStoreTypeDefs,
+  PStoreResolvers
 } from './public';
 
 const rootTypeDefs = gql`
@@ -53,12 +58,15 @@ export const typeDefs = [
   CategoryTypeDefs,
   TagTypeDefs,
   BlogTypeDefs,
+  StoreTypeDefs,
   //
   ImageTypeDefs,
   //
   PCategoryTypeDefs,
   PTagTypeDefs,
-  GeneralTypeDefs
+  PBlogTypeDefs,
+  GeneralTypeDefs,
+  PStoreTypeDefs
 ];
 
 export const resolvers = [
@@ -69,10 +77,12 @@ export const resolvers = [
   CategoryResolvers,
   TagResolvers,
   BlogResolvers,
+  StoreResolvers,
   //
   ImageResolvers,
   //
   PCategoryResolvers,
   PTagResolvers,
-  GeneralResolvers
+  PBlogResolvers,
+  PStoreResolvers
 ];
